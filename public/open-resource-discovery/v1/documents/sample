@@ -1,0 +1,454 @@
+{
+  "openResourceDiscovery": "1.14",
+  "description": "Example based on https://example.com/",
+  "policyLevels": [
+    "sap:core:v1"
+  ],
+  "describedSystemInstance": {
+    "baseUrl": "https://example.com"
+  },
+  "products": [
+    {
+      "ordId": "sap.xref:product:ord-reference-app:",
+      "title": "ORD Reference App",
+      "vendor": "sap:vendor:SAP:",
+      "shortDescription": "Open Resource Discovery Reference Application"
+    }
+  ],
+  "packages": [
+    {
+      "ordId": "sap.xref:package:astronomy:v1",
+      "title": "Astronomy Package",
+      "shortDescription": "APIs and events for astronomical data access",
+      "description": "This package exposes the core astronomical data APIs of the ORD Reference Application. It includes REST endpoints for querying celestial objects and an AsyncAPI event stream for real-time observation updates.\n\nAll resources follow the **sap:core:v1** policy level and are versioned independently.",
+      "version": "1.2.0",
+      "partOfProducts": [
+        "sap.xref:product:ord-reference-app:"
+      ],
+      "vendor": "sap:vendor:SAP:",
+      "tags": [
+        "astronomy",
+        "reference"
+      ]
+    },
+    {
+      "ordId": "sap.xref:package:billing:v1",
+      "title": "Billing Package",
+      "shortDescription": "Billing document management and lifecycle events",
+      "description": "Provides APIs for billing document lifecycle management and publishes events when billing documents are created, updated, or cancelled. Intended for ERP integration scenarios.",
+      "version": "2.0.1",
+      "partOfProducts": [
+        "sap.xref:product:ord-reference-app:"
+      ],
+      "vendor": "sap:vendor:SAP:",
+      "tags": [
+        "billing",
+        "erp"
+      ]
+    },
+    {
+      "ordId": "sap.xref:package:configuration:v1",
+      "title": "Configuration Package",
+      "shortDescription": "System configuration and settings APIs",
+      "description": "Configuration and settings endpoints. The original Configuration API is **deprecated** and will be sunset 30 Jun 2025 — migrate to the new Settings API.",
+      "version": "1.0.0",
+      "partOfProducts": [
+        "sap.xref:product:ord-reference-app:"
+      ],
+      "vendor": "sap:vendor:SAP:",
+      "tags": [
+        "configuration"
+      ]
+    }
+  ],
+  "consumptionBundles": [
+    {
+      "ordId": "sap.xref:consumptionBundle:noAuth:v1",
+      "title": "Public — No Authentication",
+      "shortDescription": "Unprotected resources, accessible without credentials",
+      "description": "This bundle groups all resources that are publicly accessible without any authentication. Suitable for exploratory use and integration testing.",
+      "version": "1.0.0",
+      "lastUpdate": "2022-12-19T15:47:04+00:00"
+    },
+    {
+      "ordId": "sap.xref:consumptionBundle:oauth2:v1",
+      "title": "OAuth 2.0 — Client Credentials",
+      "shortDescription": "Protected resources requiring OAuth 2.0 client credentials",
+      "description": "Resources in this bundle require a valid OAuth 2.0 access token obtained via the client credentials flow. Use this bundle for **machine-to-machine** integration scenarios.",
+      "version": "1.1.0",
+      "lastUpdate": "2023-06-01T09:00:00+00:00",
+      "credentialExchangeStrategies": [
+        {
+          "type": "oauth2ClientCredentials",
+          "callbackUrl": "https://example.com/oauth/token"
+        }
+      ]
+    },
+    {
+      "ordId": "sap.xref:consumptionBundle:samlBearer:v1",
+      "title": "SAML 2.0 Bearer Assertion",
+      "shortDescription": "Resources accessible via SAML bearer assertion (user propagation)",
+      "description": "Use this bundle for **user-facing** integrations where the calling user's identity must be propagated. Requires a SAML 2.0 bearer token issued by a trusted identity provider.",
+      "version": "1.0.0",
+      "lastUpdate": "2023-03-15T12:00:00+00:00",
+      "credentialExchangeStrategies": [
+        {
+          "type": "samlBearer"
+        }
+      ]
+    }
+  ],
+  "apiResources": [
+    {
+      "ordId": "sap.xref:apiResource:astronomy:v1",
+      "title": "Astronomy API",
+      "shortDescription": "Query celestial objects, constellations, and observation data",
+      "description": "A longer description of the Astronomy API with **markdown** support.\n\nProvides endpoints for:\n- Querying stars and deep-sky objects by catalog ID\n- Retrieving real-time observation windows for a given location\n- Fetching historical observation records",
+      "version": "1.0.3",
+      "visibility": "public",
+      "releaseStatus": "active",
+      "lastUpdate": "2024-08-01T00:00:00Z",
+      "partOfPackage": "sap.xref:package:astronomy:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:noAuth:v1"
+        }
+      ],
+      "apiProtocol": "rest",
+      "resourceDefinitions": [
+        {
+          "type": "openapi-v3",
+          "mediaType": "application/json",
+          "url": "open-resource-discovery/v1/api-metadata/astronomy-v1.oas3.json"
+        }
+      ],
+      "links": [
+        {
+          "type": "api-documentation",
+          "title": "Astronomy API Reference",
+          "url": "https://example.com/docs/astronomy"
+        }
+      ],
+      "tags": [
+        "astronomy"
+      ],
+      "changelogEntries": [
+        {
+          "version": "1.0.3",
+          "releaseStatus": "active",
+          "date": "2024-08-01",
+          "description": "Fixed pagination bug in the `/stars` endpoint where `$top` was silently ignored beyond 1 000 results.\n\nAlso improves error messages for invalid catalog IDs — the response now includes the offending ID and a link to the catalog reference.",
+          "url": "https://example.com/changelog#1.0.3"
+        },
+        {
+          "version": "1.0.2",
+          "releaseStatus": "active",
+          "date": "2024-05-15",
+          "description": "Added support for filtering by constellation in the `/stars` endpoint via the new `constellation` query parameter.\n\n> **Note:** Values must use IAU three-letter abbreviations (e.g. `Ori`, `UMa`)."
+        },
+        {
+          "version": "1.0.1",
+          "releaseStatus": "active",
+          "date": "2024-02-01",
+          "url": "https://example.com/changelog#1.0.1"
+        },
+        {
+          "version": "1.0.0",
+          "releaseStatus": "beta",
+          "date": "2023-11-01",
+          "description": "Initial public release of the Astronomy API."
+        }
+      ]
+    },
+    {
+      "ordId": "sap.xref:apiResource:billing:v2",
+      "title": "Billing Documents API",
+      "shortDescription": "Create, read, and void billing documents",
+      "description": "Full CRUD operations for billing documents. Supports OData v4 query options for filtering and pagination.\n\n> **Note:** v1 of this API is deprecated. See tombstones.",
+      "version": "2.1.0",
+      "visibility": "public",
+      "releaseStatus": "active",
+      "partOfPackage": "sap.xref:package:billing:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:oauth2:v1"
+        },
+        {
+          "ordId": "sap.xref:consumptionBundle:samlBearer:v1"
+        }
+      ],
+      "apiProtocol": "odata-v4",
+      "resourceDefinitions": [
+        {
+          "type": "edmx",
+          "mediaType": "application/xml",
+          "url": "open-resource-discovery/v1/api-metadata/billing-v2.edmx"
+        }
+      ],
+      "tags": [
+        "billing"
+      ],
+      "changelogEntries": [
+        {
+          "version": "2.1.0",
+          "releaseStatus": "active",
+          "date": "2024-09-10",
+          "description": "Added `void` action to the `BillingDocument` entity set."
+        },
+        {
+          "version": "2.0.0",
+          "releaseStatus": "active",
+          "date": "2024-01-15",
+          "description": "Breaking change: migrated from OData v2 to **OData v4**. The `BillingDocument` entity key changed from `DocumentId` (string) to `Id` (Guid).\n\nMigration guide: <https://example.com/docs/billing/migration>",
+          "url": "https://example.com/changelog/billing#2.0.0"
+        },
+        {
+          "version": "1.0.0",
+          "releaseStatus": "deprecated",
+          "date": "2022-06-01"
+        }
+      ]
+    },
+    {
+      "ordId": "sap.xref:apiResource:configuration:v1",
+      "title": "Configuration API",
+      "shortDescription": "Read system configuration settings",
+      "description": "Read-only REST API for retrieving system configuration. No write operations are exposed.\n\nThis API is **deprecated** — migrate to the new Settings API (v2) before the sunset date.",
+      "version": "0.8.0",
+      "visibility": "internal",
+      "releaseStatus": "deprecated",
+      "deprecationDate": "2024-03-01T00:00:00Z",
+      "sunsetDate": "2025-06-30T00:00:00Z",
+      "successors": [
+        "sap.xref:apiResource:settings:v1"
+      ],
+      "partOfPackage": "sap.xref:package:configuration:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:oauth2:v1"
+        }
+      ],
+      "apiProtocol": "rest",
+      "tags": [
+        "configuration"
+      ]
+    },
+    {
+      "ordId": "sap.xref:apiResource:settings:v1",
+      "title": "Settings API",
+      "shortDescription": "Read and write system configuration settings",
+      "description": "REST API for managing system configuration. Supersedes the deprecated Configuration API with full read/write support and a cleaner resource model.",
+      "version": "1.0.0",
+      "visibility": "internal",
+      "releaseStatus": "active",
+      "partOfPackage": "sap.xref:package:configuration:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:oauth2:v1"
+        }
+      ],
+      "apiProtocol": "rest",
+      "tags": [
+        "configuration"
+      ]
+    }
+  ],
+  "eventResources": [
+    {
+      "ordId": "sap.xref:eventResource:astronomyObservation:v1",
+      "title": "Astronomy Observation Events",
+      "shortDescription": "Real-time stream of telescope observation updates",
+      "description": "AsyncAPI event stream that publishes updates whenever a new observation record is created or an existing one is revised.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "partOfPackage": "sap.xref:package:astronomy:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:noAuth:v1"
+        }
+      ],
+      "visibility": "public",
+      "resourceDefinitions": [
+        {
+          "type": "asyncapi-v2",
+          "mediaType": "application/json",
+          "url": "open-resource-discovery/v1/api-metadata/observation-events-v1.asyncapi2.json"
+        }
+      ],
+      "tags": [
+        "astronomy",
+        "events"
+      ]
+    },
+    {
+      "ordId": "sap.xref:eventResource:BillingDocumentEvents:v1",
+      "title": "Billing Document Events",
+      "shortDescription": "Lifecycle events for billing documents",
+      "description": "Published when billing documents are created, changed, or cancelled. Subscribe to keep downstream systems in sync with the billing document state machine.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "partOfPackage": "sap.xref:package:billing:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:oauth2:v1"
+        }
+      ],
+      "visibility": "public",
+      "tags": [
+        "billing",
+        "events"
+      ]
+    }
+  ],
+  "entityTypes": [
+    {
+      "ordId": "sap.xref:entityType:CelestialObject:v1",
+      "localId": "CelestialObject",
+      "level": "aggregate",
+      "title": "Celestial Object",
+      "shortDescription": "A star, planet, or deep-sky object in the catalogue",
+      "description": "Represents a catalogued celestial object with positional data, magnitude, and classification metadata.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "visibility": "public",
+      "partOfPackage": "sap.xref:package:astronomy:v1",
+      "tags": [
+        "astronomy"
+      ]
+    },
+    {
+      "ordId": "sap.xref:entityType:BillingDocument:v1",
+      "localId": "BillingDocument",
+      "level": "aggregate",
+      "title": "Billing Document",
+      "shortDescription": "A billing document header with line items",
+      "description": "Represents the lifecycle state of a billing document — from draft through issued to cancelled.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "visibility": "public",
+      "partOfPackage": "sap.xref:package:billing:v1",
+      "tags": [
+        "billing"
+      ]
+    }
+  ],
+  "dataProducts": [
+    {
+      "ordId": "sap.xref:dataProduct:astronomyCatalogue:v1",
+      "title": "Astronomy Catalogue",
+      "shortDescription": "Curated dataset of catalogued celestial objects",
+      "description": "A read-optimised data product exposing the full celestial object catalogue. Intended for analytics and reporting consumers.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "visibility": "public",
+      "partOfPackage": "sap.xref:package:astronomy:v1",
+      "responsible": "sap:ems:component:BC-CP-ORD",
+      "type": "primary",
+      "category": "business-object",
+      "outputPorts": [
+        {
+          "ordId": "sap.xref:dataProduct:astronomyCatalogue:v1:output:default"
+        }
+      ],
+      "tags": [
+        "astronomy",
+        "data-product"
+      ]
+    }
+  ],
+  "integrationDependencies": [
+    {
+      "ordId": "sap.xref:integrationDependency:billingSync:v1",
+      "title": "Billing Sync Dependency",
+      "shortDescription": "Integration dependency on the external billing platform",
+      "description": "Declares that this system depends on the external billing platform for creating and confirming billing documents.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "visibility": "public",
+      "partOfPackage": "sap.xref:package:billing:v1",
+      "mandatory": true,
+      "aspects": [
+        {
+          "title": "Billing API aspect",
+          "mandatory": true,
+          "apiResources": [
+            {
+              "ordId": "sap.xref:apiResource:billing:v2",
+              "minVersion": "2.0.0"
+            }
+          ],
+          "eventResources": [
+            {
+              "ordId": "sap.xref:eventResource:BillingDocumentEvents:v1",
+              "subset": []
+            }
+          ]
+        }
+      ],
+      "tags": [
+        "billing"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "ordId": "sap.xref:capability:sampleSearch:v1",
+      "title": "Full-Text Search",
+      "shortDescription": "Full-text search across all resource types",
+      "description": "Exposes full-text search capability across all registered resources using a fuzzy index.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "visibility": "public",
+      "partOfPackage": "sap.xref:package:astronomy:v1",
+      "type": "sap.mdo:capability:search:v1",
+      "tags": [
+        "search"
+      ]
+    }
+  ],
+  "agents": [
+    {
+      "ordId": "sap.xref:agent:disputeResolution:v1",
+      "title": "Dispute Resolution Agent",
+      "shortDescription": "AI agent that autonomously resolves open dispute cases",
+      "description": "This agent monitors open dispute cases, gathers evidence from relevant APIs, proposes resolutions, and awaits human approval before closing. It integrates with the billing and CRM systems.",
+      "aiHint": "Invoke this agent to **resolve** open dispute cases. Provide the `caseId`; the agent autonomously gathers evidence, proposes resolution, and awaits approval before closing.",
+      "version": "1.0.0",
+      "releaseStatus": "beta",
+      "visibility": "internal",
+      "partOfPackage": "sap.xref:package:billing:v1",
+      "relatedEntityTypes": [],
+      "tags": [
+        "ai",
+        "dispute",
+        "automation"
+      ]
+    },
+    {
+      "ordId": "sap.xref:agent:astronomyAssistant:v1",
+      "title": "Astronomy Data Assistant",
+      "shortDescription": "Conversational agent for querying celestial object data",
+      "description": "An AI-powered assistant that lets users query astronomical data using natural language. It translates questions into API calls against the Astronomy API and returns human-readable summaries.",
+      "aiHint": "Ask this agent questions about celestial objects in natural language, e.g. *'What are the brightest stars visible tonight?'*. It queries the Astronomy API and returns a plain-language summary.",
+      "version": "1.0.0",
+      "releaseStatus": "active",
+      "visibility": "public",
+      "partOfPackage": "sap.xref:package:astronomy:v1",
+      "tags": [
+        "ai",
+        "astronomy",
+        "natural-language"
+      ]
+    }
+  ],
+  "tombstones": [
+    {
+      "ordId": "sap.xref:apiResource:astronomy:v0",
+      "removalDate": "2020-12-02T14:12:59Z"
+    },
+    {
+      "ordId": "sap.xref:apiResource:billing:v1",
+      "removalDate": "2023-01-01T00:00:00Z"
+    }
+  ]
+}

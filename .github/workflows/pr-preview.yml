@@ -1,0 +1,47 @@
+name: PR Preview
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, closed]
+
+jobs:
+  pr-preview:
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        if: github.event.action != 'closed'
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          cache: "npm"
+
+      - name: Build preview
+        if: github.event.action != 'closed'
+        env:
+          VITE_BASE: /pr-preview/explorer/pr-${{ github.event.pull_request.number }}/
+          VITE_PROXY_BASE_URL: https://ord-explorer-auth-proxy.cfapps.sap.hana.ondemand.com
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+
+      - name: PR preview
+        uses: open-resource-discovery/pr-preview-action@2abf52396925f6bb4d0a82e27bd6f060260d09ae # main
+        with:
+          fork: true
+          target-repo: open-resource-discovery/pr-preview
+          pages-base-url: https://open-resource-discovery.github.io/pr-preview
+          umbrella-dir: explorer
+          token: ${{ secrets.PR_PREVIEW_TOKEN }}
+          build-dir: dist

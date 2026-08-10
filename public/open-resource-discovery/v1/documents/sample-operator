@@ -1,0 +1,93 @@
+{
+  "openResourceDiscovery": "1.14",
+  "description": "Operator perspective — internal configuration and monitoring resources",
+  "policyLevels": [
+    "sap:core:v1"
+  ],
+  "describedSystemInstance": {
+    "baseUrl": "https://ord-reference-app.example.com"
+  },
+  "packages": [
+    {
+      "ordId": "sap.xref:package:configuration:v1",
+      "title": "Configuration Package",
+      "shortDescription": "System configuration and settings APIs",
+      "description": "Configuration and settings endpoints. The original Configuration API is **deprecated** and will be sunset 30 Jun 2025 — migrate to the new Settings API.",
+      "version": "1.0.0",
+      "partOfProducts": [
+        "sap.xref:product:ord-reference-app:"
+      ],
+      "vendor": "sap:vendor:SAP:",
+      "tags": [
+        "configuration"
+      ]
+    }
+  ],
+  "consumptionBundles": [
+    {
+      "ordId": "sap.xref:consumptionBundle:oauth2:v1",
+      "title": "OAuth 2.0 — Client Credentials",
+      "shortDescription": "Protected resources requiring OAuth 2.0 client credentials",
+      "description": "Resources in this bundle require a valid OAuth 2.0 access token obtained via the client credentials flow.",
+      "version": "1.1.0",
+      "lastUpdate": "2023-06-01T09:00:00+00:00",
+      "credentialExchangeStrategies": [
+        {
+          "type": "oauth2ClientCredentials",
+          "callbackUrl": "https://ord-reference-app.example.com/oauth/token"
+        }
+      ]
+    }
+  ],
+  "apiResources": [
+    {
+      "ordId": "sap.xref:apiResource:configuration:v1",
+      "title": "Configuration API",
+      "shortDescription": "Read system configuration settings",
+      "description": "Read-only REST API for retrieving system configuration. No write operations are exposed.\n\nThis API is **deprecated** — migrate to the new Settings API (v2) before the sunset date.",
+      "version": "0.8.0",
+      "visibility": "internal",
+      "releaseStatus": "deprecated",
+      "deprecationDate": "2024-03-01T00:00:00Z",
+      "sunsetDate": "2025-06-30T00:00:00Z",
+      "successors": [
+        "sap.xref:apiResource:settings:v1"
+      ],
+      "partOfPackage": "sap.xref:package:configuration:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:oauth2:v1"
+        }
+      ],
+      "apiProtocol": "rest",
+      "tags": [
+        "configuration"
+      ]
+    },
+    {
+      "ordId": "sap.xref:apiResource:settings:v1",
+      "title": "Settings API",
+      "shortDescription": "Read and write system configuration settings",
+      "description": "REST API for managing system configuration. Supersedes the deprecated Configuration API with full read/write support and a cleaner resource model.",
+      "version": "1.0.0",
+      "visibility": "internal",
+      "releaseStatus": "active",
+      "partOfPackage": "sap.xref:package:configuration:v1",
+      "partOfConsumptionBundles": [
+        {
+          "ordId": "sap.xref:consumptionBundle:oauth2:v1"
+        }
+      ],
+      "apiProtocol": "rest",
+      "tags": [
+        "configuration"
+      ]
+    }
+  ],
+  "tombstones": [
+    {
+      "ordId": "sap.xref:apiResource:admin:v1",
+      "removalDate": "2024-01-01T00:00:00Z"
+    }
+  ]
+}

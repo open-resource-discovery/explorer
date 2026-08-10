@@ -1,0 +1,47 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":pinAllExceptPeerDependencies"],
+  "semanticCommits": "enabled",
+  "enabledManagers": ["npm", "github-actions"],
+  "branchPrefix": "deps/",
+  "timezone": "Europe/Berlin",
+  "schedule": ["every weekend"],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Security patches: bypass weekly schedule, automerge immediately",
+      "matchUpdateTypes": ["security"],
+      "schedule": ["at any time"],
+      "automerge": true,
+      "semanticCommitType": "fix",
+      "groupName": "Security patches"
+    },
+    {
+      "description": "Major updates: never automerge, require manual review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "Runtime deps: ships to users",
+      "groupName": "Runtime dependencies",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "semanticCommitType": "chore",
+      "automerge": true,
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Dev toolchain: never ships",
+      "groupName": "Dev toolchain",
+      "matchManagers": ["npm", "github-actions"],
+      "matchDepTypes": ["devDependencies"],
+      "semanticCommitType": "chore",
+      "automerge": true,
+      "matchUpdateTypes": ["minor", "patch"]
+    }
+  ]
+}

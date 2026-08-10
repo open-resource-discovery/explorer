@@ -1,0 +1,25 @@
+{
+  "name": "@open-resource-discovery/explorer-auth-proxy",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/proxy.mjs --external:node:*",
+    "start": "node dist/proxy.mjs",
+    "dev:server": "node --experimental-strip-types dev/mtls-server.ts",
+    "dev:gen-certs": "node --experimental-strip-types dev/gen-certs.ts"
+  },
+  "dependencies": {
+    "hono": "4.13.0",
+    "undici": "8.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.5",
+    "esbuild": "0.28.1",
+    "selfsigned": "5.5.0",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  }
+}

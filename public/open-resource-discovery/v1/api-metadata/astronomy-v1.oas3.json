@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Astronomy API",
+    "version": "1.0.3",
+    "description": "Query celestial objects, constellations, and observation data."
+  },
+  "paths": {
+    "/celestial-objects": {
+      "get": {
+        "summary": "List celestial objects",
+        "operationId": "listCelestialObjects",
+        "responses": {
+          "200": {
+            "description": "A list of celestial objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "object" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/celestial-objects/{id}": {
+      "get": {
+        "summary": "Get a celestial object by ID",
+        "operationId": "getCelestialObject",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A celestial object",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

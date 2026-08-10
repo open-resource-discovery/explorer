@@ -1,0 +1,117 @@
+{
+  "name": "@open-resource-discovery/explorer",
+  "version": "0.1.0",
+  "description": "A UI for exploring ORD (Open Resource Discovery) documents — browse, fetch, and merge resources.",
+  "license": "Apache-2.0",
+  "private": true,
+  "homepage": "https://github.com/open-resource-discovery/explorer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-resource-discovery/explorer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/open-resource-discovery/explorer/issues"
+  },
+  "keywords": [
+    "ord",
+    "open-resource-discovery",
+    "api",
+    "explorer",
+    "documentation"
+  ],
+  "author": "SAP SE",
+  "type": "module",
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,yml,yaml,md,html,css}": [
+      "prettier --write"
+    ]
+  },
+  "scripts": {
+    "dev": "vite --config app/vite.config.ts",
+    "generate:sample": "node --experimental-strip-types scripts/generate-sample-doc.ts",
+    "build": "npm run generate:sample && tsc -b && vite build --config app/vite.config.ts",
+    "typecheck": "node node_modules/typescript/bin/tsc -b --noEmit",
+    "lint": "npm run eslint:ci",
+    "eslint": "eslint . --fix",
+    "eslint:ci": "eslint .",
+    "prettier": "prettier --write \"**/*.{ts,tsx,json,yml,yaml,md,html,css}\"",
+    "prettier:ci": "prettier --check \"**/*.{ts,tsx,json,yml,yaml,md,html,css}\"",
+    "format": "npm run prettier && npm run eslint",
+    "format:check": "npm run prettier:ci && npm run eslint:ci",
+    "preview": "vite preview --config app/vite.config.ts",
+    "proxy": "node auth-proxy/dist/proxy.mjs",
+    "test": "vitest run --coverage --config app/vitest.config.ts",
+    "test:watch": "vitest --config app/vitest.config.ts",
+    "test:coverage": "vitest run --coverage --config app/vitest.config.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@leeoniya/ufuzzy": "1.0.19",
+    "@open-resource-discovery/ui-components": "0.1.6",
+    "@open-resource-discovery/metadata-renderer": "1.0.0",
+    "@tanstack/react-router": "1.170.21",
+    "clsx": "2.1.1",
+    "hono": "4.13.0",
+    "lucide-react": "1.29.0",
+    "react-markdown": "10.1.0",
+    "tailwind-merge": "3.6.0",
+    "undici": "8.10.0",
+    "uuid": "14.0.1"
+  },
+  "overrides": {
+    "dompurify": "3.4.13",
+    "ts-deepmerge": "8.0.0",
+    "yaml": "2.9.0",
+    "fast-uri": "4.1.2",
+    "js-yaml": "5.2.3",
+    "nanoid": "5.1.16",
+    "postcss": {
+      "nanoid": "3.3.17"
+    },
+    "isomorphic-dompurify": {
+      "undici": "8.10.0"
+    }
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@monaco-editor/react": "4.7.0",
+    "@open-resource-discovery/specification": "1.16.3",
+    "@playwright/test": "1.62.1",
+    "@tailwindcss/vite": "4.3.3",
+    "@testing-library/jest-dom": "7.0.0",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.3",
+    "@types/node": "25.9.5",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@vitejs/plugin-react": "6.0.5",
+    "@vitest/coverage-v8": "4.1.10",
+    "eslint": "10.8.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.3",
+    "globals": "17.9.0",
+    "husky": "9.1.7",
+    "jsdom": "30.0.1",
+    "lint-staged": "17.3.0",
+    "prettier": "3.9.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "shiki": "4.4.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.66.0",
+    "vite": "8.2.1",
+    "vitest": "4.1.10",
+    "zod": "4.4.3"
+  }
+}

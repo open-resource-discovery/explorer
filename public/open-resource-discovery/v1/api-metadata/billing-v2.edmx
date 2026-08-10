@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="sap.xref.billing" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="BillingDocument">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.String" Nullable="false" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="Amount" Type="Edm.Decimal" />
+      </EntityType>
+      <EntityContainer Name="Service">
+        <EntitySet Name="BillingDocuments" EntityType="sap.xref.billing.BillingDocument" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

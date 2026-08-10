@@ -1,0 +1,289 @@
+@layer theme, base, components, utilities;
+
+@import "@open-resource-discovery/ui-components/styles";
+@import "@sap/metadata-renderer/styles";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * All CSS variables and base styles are scoped to .ord-root so the library
+ * does not leak styles when embedded in a host page.
+ * Dark mode activates when .ord-root also has the .dark class.
+ */
+.ord-root {
+  --radius: 0.375rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.13 0.028 261.692);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.13 0.028 261.692);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.028 261.692);
+  --primary: #0070d2;
+  --primary-foreground: #ffffff;
+  --secondary: oklch(0.967 0.003 264.542);
+  --secondary-foreground: oklch(0.21 0.034 264.665);
+  --muted: oklch(0.967 0.003 264.542);
+  --muted-foreground: oklch(0.551 0.027 264.364);
+  --accent: oklch(0.967 0.003 264.542);
+  --accent-foreground: oklch(0.21 0.034 264.665);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.928 0.006 264.531);
+  --input: oklch(0.928 0.006 264.531);
+  --ring: #0070d2;
+  --sidebar: oklch(0.985 0.002 247.839);
+  --sidebar-foreground: oklch(0.13 0.028 261.692);
+  --sidebar-primary: #0070d2;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: oklch(0.967 0.003 264.542);
+  --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
+  --sidebar-border: oklch(0.928 0.006 264.531);
+  --sidebar-ring: oklch(0.707 0.022 261.325);
+  /* Bridge: map --ord-* vars (from ui-components) to host design tokens */
+  --ord-background: var(--background);
+  --ord-foreground: var(--foreground);
+  --ord-card: var(--card);
+  --ord-card-foreground: var(--card-foreground);
+  --ord-popover: var(--popover);
+  --ord-popover-foreground: var(--popover-foreground);
+  --ord-primary: var(--primary);
+  --ord-primary-foreground: var(--primary-foreground);
+  --ord-secondary: var(--secondary);
+  --ord-secondary-foreground: var(--secondary-foreground);
+  --ord-muted: var(--muted);
+  --ord-muted-foreground: var(--muted-foreground);
+  --ord-accent: var(--accent);
+  --ord-accent-foreground: var(--accent-foreground);
+  --ord-destructive: var(--destructive);
+  --ord-destructive-foreground: var(--destructive-foreground);
+  --ord-border: var(--border);
+  --ord-input: var(--input);
+  --ord-ring: var(--ring);
+  --ord-radius: var(--radius);
+  --ord-sidebar: var(--sidebar);
+  --ord-sidebar-foreground: var(--sidebar-foreground);
+  --ord-sidebar-primary: var(--sidebar-primary);
+  --ord-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --ord-sidebar-accent: var(--sidebar-accent);
+  --ord-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --ord-sidebar-border: var(--sidebar-border);
+  --ord-sidebar-ring: var(--sidebar-ring);
+  /* Syntax highlighting tokens (light) */
+  --hljs-attr: #881391;
+  --hljs-string: #a31515;
+  --hljs-number: #098658;
+  --hljs-literal: #0000ff;
+  --hljs-punctuation: #000000;
+  --hljs-tag: #800000;
+  --hljs-keyword: #0000ff;
+  --hljs-comment: #008000;
+}
+
+.ord-root.dark {
+  --background: #1e1e1e;
+  --foreground: #d4d4d4;
+  --card: #252526;
+  --card-foreground: #d4d4d4;
+  --popover: #252526;
+  --popover-foreground: #d4d4d4;
+  --primary: #0098ff;
+  --primary-foreground: #1e1e1e;
+  --secondary: #2d2d30;
+  --secondary-foreground: #d4d4d4;
+  --muted: #2d2d30;
+  --muted-foreground: #969696;
+  --accent: #2d2d30;
+  --accent-foreground: #d4d4d4;
+  --destructive: #f44747;
+  --border: #3e3e42;
+  --input: #3e3e42;
+  --ring: #0098ff;
+  --sidebar: #252526;
+  --sidebar-foreground: #d4d4d4;
+  --sidebar-primary: #0098ff;
+  --sidebar-primary-foreground: #d4d4d4;
+  --sidebar-accent: #2d2d30;
+  --sidebar-accent-foreground: #d4d4d4;
+  --sidebar-border: #3e3e42;
+  --sidebar-ring: #0098ff;
+  /* Syntax highlighting tokens (dark) */
+  --hljs-attr: #9cdcfe;
+  --hljs-string: #ce9178;
+  --hljs-number: #b5cea8;
+  --hljs-literal: #569cd6;
+  --hljs-punctuation: #d4d4d4;
+  --hljs-tag: #569cd6;
+  --hljs-keyword: #569cd6;
+  --hljs-comment: #6a9955;
+}
+
+/* Syntax highlighting classes (maps hljs tokens to CSS vars) */
+.ord-root .hljs-attr {
+  color: var(--hljs-attr);
+}
+.ord-root .hljs-string {
+  color: var(--hljs-string);
+}
+.ord-root .hljs-number {
+  color: var(--hljs-number);
+}
+.ord-root .hljs-literal {
+  color: var(--hljs-literal);
+}
+.ord-root .hljs-punctuation {
+  color: var(--hljs-punctuation);
+}
+.ord-root .hljs-tag {
+  color: var(--hljs-tag);
+}
+.ord-root .hljs-keyword {
+  color: var(--hljs-keyword);
+}
+.ord-root .hljs-comment {
+  color: var(--hljs-comment);
+}
+
+@theme inline {
+  --radius: 0.375rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --shadow-sm: 0 1px 3px #0006;
+  --shadow-md: 0 4px 12px #0009;
+}
+
+@layer base {
+  .ord-root :where(*),
+  .ord-root :where(::after),
+  .ord-root :where(::before),
+  .ord-root :where(::backdrop) {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+
+  .ord-root {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .ord-root :where(h1, h2, h3, h4, h5, h6) {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  .ord-root :where(a) {
+    color: inherit;
+    -webkit-text-decoration: inherit;
+    text-decoration: inherit;
+  }
+
+  .ord-root :where(b, strong) {
+    font-weight: bolder;
+  }
+
+  .ord-root :where(code, kbd, samp, pre) {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    font-size: inherit;
+  }
+
+  .ord-root :where(ol, ul, menu) {
+    list-style: none;
+  }
+
+  .ord-root :where(img, svg, video, canvas, audio, iframe, embed, object) {
+    display: block;
+    vertical-align: middle;
+  }
+
+  .ord-root :where(button, input, select, optgroup, textarea) {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+
+  .ord-root :where([hidden]:not([hidden="until-found"])) {
+    display: none !important;
+  }
+
+  .ord-root,
+  .ord-root * {
+    @apply border-border outline-ring/50;
+  }
+  .ord-root {
+    @apply bg-background text-foreground;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+  }
+
+  .ord-root :where(button, a, [role="button"]) {
+    cursor: pointer;
+  }
+  .ord-root :where(:disabled, [aria-disabled="true"]) {
+    cursor: not-allowed;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: var(--muted-foreground);
+  }
+}
