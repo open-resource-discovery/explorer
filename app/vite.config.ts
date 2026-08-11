@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     fs: {
       // Allow serving files from outside the app root (needed when
-      // @sap/metadata-renderer resolves via a local symlink in dev).
+      // @open-resource-discovery/metadata-renderer resolves via a local symlink in dev).
       allow: [".."],
     },
     proxy: {

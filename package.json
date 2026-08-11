@@ -83,6 +83,7 @@
     "node": ">=22.19.0"
   },
   "devDependencies": {
+    "@scalar/types": "^0.17.1",
     "@eslint/js": "10.0.1",
     "@monaco-editor/react": "4.7.0",
     "@open-resource-discovery/specification": "1.16.3",
