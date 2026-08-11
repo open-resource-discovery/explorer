@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      // GH Pages SPA fallback. When a user navigates directly to or reloads a
+      // client-side route, GH Pages returns this 404 page instead of index.html.
+      // We store the intended path and redirect to the app root so the React
+      // router can take over and render the correct page.
+      //
+      // The app is always deployed two path segments deep (/org/repo/), so we
+      // derive the base by taking the first two segments of the current path.
+      var parts = window.location.pathname.split("/").filter(Boolean);
+      var base = "/" + parts.slice(0, 2).join("/") + "/";
+      sessionStorage.setItem(
+        "spa-redirect",
+        window.location.pathname +
+          window.location.search +
+          window.location.hash,
+      );
+      window.location.replace(base);
+    </script>
+  </head>
+</html>

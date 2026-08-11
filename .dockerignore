@@ -1,0 +1,38 @@
+# Dependencies that should never be in the Docker image
+node_modules
+npm-debug.log*
+
+# Dev artifacts
+dist
+auth-proxy/dist
+coverage
+playwright-report
+test-results
+
+# Dev certs (never ship into an image)
+auth-proxy/dev/certs/*.pem
+auth-proxy/dev/certs/*.crt
+auth-proxy/dev/certs/*.key
+auth-proxy/dev/certs/*.csr
+
+# Editor / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Git / CI
+.git
+.github
+.husky
+.hyperspace
+.claude
+
+# Env files
+.env*
+!.env.example
+
+# Docs / tests (not needed in the image)
+docs
+e2e
+*.md

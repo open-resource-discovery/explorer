@@ -1,0 +1,48 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+auth-proxy/dist/
+
+# Vite / TypeScript caches
+*.local
+*.tsbuildinfo
+
+# Claude Code
+.claude/
+
+# Environment files
+.env.*
+!.env.example
+!.env.test
+
+# Editor directories
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage
+
+# Hyperspace
+.hyperspace/
+
+# Certs
+auth-proxy/dev/certs/*.pem
+auth-proxy/dev/certs/*.crt
+auth-proxy/dev/certs/*.key
+auth-proxy/dev/certs/*.csr
+
+# Playwright
+playwright-report/
+test-results/

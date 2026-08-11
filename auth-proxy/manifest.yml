@@ -1,0 +1,18 @@
+---
+applications:
+  - name: ord-explorer-auth-proxy
+    buildpacks:
+      - nodejs_buildpack
+    instances: 1
+    memory: 256M
+    disk_quota: 512M
+    routes:
+      - route: ord-explorer-auth-proxy.cfapps.sap.hana.ondemand.com
+    health-check-type: http
+    health-check-http-endpoint: /health
+    env:
+      NODE_ENV: production
+      ALLOW_ORIGIN: https://open-resource-discovery.github.io
+      # SAP corporate PKI certs are not in Node's bundled OpenSSL trust store.
+      # See docs/adr/0008-authentication-browser-and-mtls-proxy.md for rationale.
+      TRUST_ALL_CERTS: "true"

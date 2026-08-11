@@ -1,0 +1,16 @@
+{
+  "openResourceDiscoveryV1": {
+    "documents": [
+      {
+        "url": "open-resource-discovery/v1/documents/sample",
+        "perspective": "system-instance",
+        "accessStrategies": [{ "type": "open" }]
+      },
+      {
+        "url": "open-resource-discovery/v1/documents/sample-operator",
+        "perspective": "operator",
+        "accessStrategies": [{ "type": "open" }]
+      }
+    ]
+  }
+}
