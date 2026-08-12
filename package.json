@@ -8,12 +8,8 @@
   },
   "files": [
     "dist",
-    "bin",
     "README.md"
   ],
-  "bin": {
-    "ord-explorer": "./bin/serve.mjs"
-  },
   "homepage": "https://github.com/open-resource-discovery/explorer",
   "repository": {
     "type": "git",
