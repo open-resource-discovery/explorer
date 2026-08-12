@@ -3,7 +3,17 @@
   "version": "0.1.0",
   "description": "A UI for exploring ORD (Open Resource Discovery) documents — browse, fetch, and merge resources.",
   "license": "Apache-2.0",
-  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "bin": {
+    "ord-explorer": "./bin/serve.mjs"
+  },
   "homepage": "https://github.com/open-resource-discovery/explorer",
   "repository": {
     "type": "git",
