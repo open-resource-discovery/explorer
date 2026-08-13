@@ -7,6 +7,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+### Added
+
+- Package published to npm as [`@open-resource-discovery/explorer`](https://www.npmjs.com/package/@open-resource-discovery/explorer) — the built app (`dist/`) is now available for self-hosting
+- Docker image published to GitHub Container Registry at `ghcr.io/open-resource-discovery/explorer`
+
 ## [0.1.0] - 2026-08-03
 
 ### Added

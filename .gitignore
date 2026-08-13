@@ -34,9 +34,6 @@ npm-debug.log*
 # Test coverage
 coverage
 
-# Hyperspace
-.hyperspace/
-
 # Certs
 auth-proxy/dev/certs/*.pem
 auth-proxy/dev/certs/*.crt

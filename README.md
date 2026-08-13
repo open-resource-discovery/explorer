@@ -7,6 +7,10 @@
 
 A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.github.io/specification/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
 
+## Live Demo
+
+👉 [open-resource-discovery.github.io/explorer](https://open-resource-discovery.github.io/explorer/)
+
 ## What it is
 
 The app manages one or more **connections** (system endpoints or direct document URLs). For each connection it fetches, merges, and renders a three-level browsing UI:
