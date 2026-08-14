@@ -58,17 +58,19 @@ export function ConnectionDropdown({
         }`}
       >
         <Button
+          variant="ghost"
           onClick={() => {
             setOpen(false);
             if (hasResourceDetail) onReset();
           }}
-          className="py-3 pl-3 text-sm font-medium"
+          className="h-auto py-3 pl-3 text-sm font-medium"
         >
           {current?.name ?? currentConnectionId}
         </Button>
         <Button
+          variant="ghost"
           onClick={() => setOpen((o) => !o)}
-          className="px-1 py-3 pr-3"
+          className="h-auto px-1 py-3 pr-3"
           aria-label="Switch connection"
         >
           <ChevronDown className="h-3.5 w-3.5" />
@@ -85,7 +87,8 @@ export function ConnectionDropdown({
               }`}
             >
               <Button
-                className="flex min-w-0 flex-1 items-center gap-2 text-left text-sm"
+                variant="ghost"
+                className="h-auto flex min-w-0 flex-1 items-center gap-2 text-left text-sm"
                 onClick={() => switchTo(conn)}
               >
                 <Server
@@ -94,6 +97,7 @@ export function ConnectionDropdown({
                 <span className="truncate text-foreground">{conn.name}</span>
               </Button>
               <Button
+                variant="ghost"
                 onClick={() => {
                   setOpen(false);
                   void navigate({
@@ -101,7 +105,7 @@ export function ConnectionDropdown({
                     params: { id: conn.id },
                   });
                 }}
-                className="shrink-0 text-xs text-primary hover:underline"
+                className="h-auto shrink-0 text-xs text-primary hover:underline"
               >
                 Details
               </Button>

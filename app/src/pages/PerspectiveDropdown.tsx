@@ -41,12 +41,12 @@ export function PerspectiveDropdown({
   const displayName = current?.label ?? current?.id ?? currentPerspectiveId;
 
   if (perspectivesState.status !== "ready" || perspectives.length <= 1) {
-    const isActive = !hasResourceDetail;
     if (hasResourceDetail) {
       return (
         <Button
+          variant="ghost"
           onClick={onReset}
-          className="flex items-center gap-1 border-b-2 border-transparent px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="h-auto flex items-center gap-1 border-b-2 border-transparent px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           <Layers className="h-3.5 w-3.5 shrink-0" />
           {displayName}
@@ -54,9 +54,7 @@ export function PerspectiveDropdown({
       );
     }
     return (
-      <span
-        className={`flex items-center gap-1 border-b-2 px-3 py-3 text-sm font-medium ${isActive ? "border-primary text-primary" : "border-transparent text-muted-foreground"}`}
-      >
+      <span className="flex items-center gap-1 border-b-2 border-primary px-3 py-3 text-sm font-medium text-primary">
         <Layers className="h-3.5 w-3.5 shrink-0" />
         {displayName}
       </span>
@@ -73,18 +71,20 @@ export function PerspectiveDropdown({
         }`}
       >
         <Button
+          variant="ghost"
           onClick={() => {
             setOpen(false);
             if (hasResourceDetail) onReset();
           }}
-          className="flex items-center gap-1 py-3 pl-3 text-sm font-medium"
+          className="h-auto flex items-center gap-1 py-3 pl-3 text-sm font-medium"
         >
           <Layers className="h-3.5 w-3.5 shrink-0" />
           {displayName}
         </Button>
         <Button
+          variant="ghost"
           onClick={() => setOpen((o) => !o)}
-          className="px-1 py-3 pr-3"
+          className="h-auto px-1 py-3 pr-3"
           aria-label="Switch perspective"
         >
           <ChevronDown className="h-3.5 w-3.5" />
@@ -95,8 +95,9 @@ export function PerspectiveDropdown({
         <div className="absolute left-0 top-full z-50 mt-1 min-w-48 rounded-lg border border-border/60 bg-background shadow-lg">
           {perspectives.map((p, i) => (
             <Button
+              variant="ghost"
               key={p.id}
-              className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent ${
+              className={`h-auto flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent ${
                 i === 0 ? "rounded-t-lg" : ""
               } ${i === perspectives.length - 1 ? "rounded-b-lg" : ""}`}
               onClick={() => {

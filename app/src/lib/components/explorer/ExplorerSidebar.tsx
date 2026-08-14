@@ -67,7 +67,8 @@ function SidebarSection({
   return (
     <div className="border-b border-border/60 last:border-0">
       <Button
-        className="flex w-full items-center bg-muted/50 hover:bg-muted/70 pl-6 pr-3 py-2"
+        variant="ghost"
+        className="h-auto flex w-full items-center bg-muted/50 hover:bg-muted/70 pl-6 pr-3 py-2"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
       >
@@ -89,8 +90,9 @@ function SidebarSection({
             const isSelected = selectedOrdId === r.ordId;
             return (
               <Button
+                variant="ghost"
                 key={r.ordId}
-                className={`flex w-full items-baseline gap-1.5 px-6 py-1 text-left hover:bg-muted/50 transition-colors ${isSelected ? "bg-primary/8" : ""}`}
+                className={`h-auto flex w-full items-baseline gap-1.5 px-6 py-1 text-left hover:bg-muted/50 transition-colors ${isSelected ? "bg-primary/8" : ""}`}
                 onClick={() =>
                   onSelect({
                     id: "resourceDetail",
@@ -114,7 +116,8 @@ function SidebarSection({
           })}
           {filteredResources.length > 50 && (
             <Button
-              className="w-full px-6 py-1 text-left text-xs text-primary hover:underline"
+              variant="ghost"
+              className="h-auto w-full px-6 py-1 text-left text-xs text-primary hover:underline"
               onClick={() =>
                 onSelect({ id: "resourceList", resourceType: type })
               }
@@ -159,7 +162,8 @@ function FlatListSection({
   return (
     <div className="border-b border-border/60 last:border-0">
       <Button
-        className="flex w-full items-center bg-muted/50 hover:bg-muted/70 pl-6 pr-3 py-2"
+        variant="ghost"
+        className="h-auto flex w-full items-center bg-muted/50 hover:bg-muted/70 pl-6 pr-3 py-2"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
       >
@@ -182,8 +186,9 @@ function FlatListSection({
             const isSelected = selectedId === item.id;
             return (
               <Button
+                variant="ghost"
                 key={item.id}
-                className={`flex w-full items-baseline gap-1.5 px-6 py-1 text-left hover:bg-muted/50 transition-colors ${isSelected ? "bg-primary/8" : ""}`}
+                className={`h-auto flex w-full items-baseline gap-1.5 px-6 py-1 text-left hover:bg-muted/50 transition-colors ${isSelected ? "bg-primary/8" : ""}`}
                 onClick={() => onSelect(buildDetailSelection(item.id))}
               >
                 <span
@@ -201,7 +206,8 @@ function FlatListSection({
           })}
           {items.length > 50 && (
             <Button
-              className="w-full px-6 py-1 text-left text-xs text-primary hover:underline"
+              variant="ghost"
+              className="h-auto w-full px-6 py-1 text-left text-xs text-primary hover:underline"
               onClick={() => onSelect({ id: listId })}
             >
               + {items.length - 50} more…

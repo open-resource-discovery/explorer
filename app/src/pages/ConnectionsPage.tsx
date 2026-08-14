@@ -55,14 +55,16 @@ function ConnectionCard({
         </div>
         <div className="relative" ref={menuRef}>
           <Button
+            variant="ghost"
             onClick={() => setMenuOpen((o) => !o)}
-            className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="h-auto rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <MoreHorizontal className="h-4 w-4" />
           </Button>
           {menuOpen && (
             <div className="absolute right-0 top-full z-50 mt-1 w-36 rounded-lg border border-border bg-background shadow-md">
               <Button
+                variant="ghost"
                 onClick={() => {
                   setMenuOpen(false);
                   void navigate({
@@ -70,12 +72,13 @@ function ConnectionCard({
                     params: { id: conn.id },
                   });
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-t-lg"
+                className="h-auto flex w-full items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-t-lg"
               >
                 <Pencil className="h-3.5 w-3.5" />
                 Edit
               </Button>
               <Button
+                variant="ghost"
                 onClick={() => {
                   setMenuOpen(false);
                   try {
@@ -85,7 +88,7 @@ function ConnectionCard({
                     // localStorage write failed; state unchanged
                   }
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-accent rounded-b-lg"
+                className="h-auto flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-accent rounded-b-lg"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 Delete
