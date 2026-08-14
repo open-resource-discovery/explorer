@@ -31,16 +31,12 @@ interface PemFile {
 }
 
 async function readPemFile(file: File): Promise<PemFile> {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const content = reader.result as string;
-      resolve({ file, content });
-    };
-    reader.onerror = () =>
-      resolve({ file, content: "", error: "Could not read file" });
-    reader.readAsText(file);
-  });
+  try {
+    const content = await file.text();
+    return { file, content };
+  } catch {
+    return { file, content: "", error: "Could not read file" };
+  }
 }
 
 function PemFileInput({
