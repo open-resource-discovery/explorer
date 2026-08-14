@@ -190,26 +190,6 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
     }
   }
 
-  async function handleTestAndSave() {
-    const err = validate();
-    if (err) {
-      setValidationError(err);
-      return;
-    }
-    setValidationError(null);
-    setIsSubmitting(true);
-    try {
-      const conn = await buildAndSave();
-      await navigate(
-        existing
-          ? { to: "/connections/$id", params: { id: conn.id } }
-          : { to: "/connections" },
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   return (
     <div className="min-h-full bg-background">
       <div className="mx-auto max-w-2xl px-8 py-8">
@@ -414,14 +394,6 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
             </Link>
 
             <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleTestAndSave}
-                disabled={isSubmitting}
-              >
-                Test connection
-              </Button>
               <Button
                 type="button"
                 onClick={handleSave}
