@@ -7,7 +7,7 @@ import {
   getConnection,
   parseDestinationUrl,
 } from "@lib/connection";
-import type { AuthType } from "@lib/connection";
+import { AUTH_TYPES, type AuthType } from "@lib/connection";
 import { classifyPemFile } from "@lib/connection/pemUtils";
 import { useProxy, PROXY_BASE_URL } from "@lib/proxy";
 import {
@@ -279,14 +279,17 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
             </span>
             <RadioGroup
               value={authType}
-              onValueChange={(v) => setAuthType(v as AuthType)}
+              onValueChange={(v: unknown): void => {
+                const found = AUTH_TYPES.find((t) => t === v);
+                if (found !== undefined) setAuthType(found);
+              }}
               className="grid grid-cols-3 gap-2"
             >
               {[
-                { value: "none" as AuthType, label: "None" },
-                { value: "bearer" as AuthType, label: "Bearer Token" },
+                { value: "none" as const, label: "None" },
+                { value: "bearer" as const, label: "Bearer Token" },
                 {
-                  value: "mtls" as AuthType,
+                  value: "mtls" as const,
                   label: "mTLS",
                   disabled: !proxyAvailable,
                 },
