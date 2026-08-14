@@ -10,116 +10,16 @@ import {
 import type { AuthType } from "@lib/connection";
 import { classifyPemFile } from "@lib/connection/pemUtils";
 import { useProxy, PROXY_BASE_URL } from "@lib/proxy";
+import {
+  Button,
+  buttonVariants,
+  Input,
+  PasswordInput,
+  Field,
+  RadioGroup,
+} from "@open-resource-discovery/ui-components";
+import { Radio } from "@base-ui/react/radio";
 
-// ---------------------------------------------------------------------------
-// Small reusable primitives
-// ---------------------------------------------------------------------------
-
-function FormField({
-  label,
-  required,
-  children,
-  hint,
-}: {
-  label: string;
-  required?: boolean;
-  children: React.ReactNode;
-  hint?: string;
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-foreground">
-        {label}
-        {required && <span className="ml-0.5 text-red-500">*</span>}
-      </label>
-      {children}
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
-    </div>
-  );
-}
-
-function TextInput({
-  value,
-  onChange,
-  type = "text",
-  placeholder,
-  required,
-  disabled,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-  disabled?: boolean;
-}) {
-  return (
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      required={required}
-      disabled={disabled}
-      className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
-    />
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Radio-card group for connection type / auth type
-// ---------------------------------------------------------------------------
-
-function RadioCard<T extends string>({
-  value,
-  current,
-  onChange,
-  label,
-  description,
-  disabled,
-}: {
-  value: T;
-  current: T;
-  onChange: (v: T) => void;
-  label: string;
-  description?: string;
-  disabled?: boolean;
-}) {
-  const selected = value === current;
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={() => !disabled && onChange(value)}
-      className={[
-        "flex flex-col gap-0.5 rounded-lg border px-4 py-3 text-left transition-colors",
-        selected
-          ? "border-primary bg-primary/5 text-foreground"
-          : "border-border bg-background text-muted-foreground hover:bg-accent",
-        disabled ? "opacity-40" : "",
-      ].join(" ")}
-    >
-      <span className="flex items-center gap-2 text-sm font-medium">
-        <span
-          className={[
-            "mt-0.5 h-3.5 w-3.5 shrink-0 rounded-full border-2",
-            selected
-              ? "border-primary bg-primary"
-              : "border-border bg-background",
-          ].join(" ")}
-        />
-        {label}
-      </span>
-      {description && (
-        <span className="pl-5 text-xs text-muted-foreground">
-          {description}
-        </span>
-      )}
-    </button>
-  );
-}
-
-// ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // mTLS PEM file input
 // ---------------------------------------------------------------------------
@@ -150,6 +50,7 @@ function PemFileInput({
   value,
   error,
   onChange,
+  inputId,
 }: {
   label: string;
   hint: string;
@@ -157,15 +58,22 @@ function PemFileInput({
   value: PemFile | null;
   error?: string;
   onChange: (pem: PemFile | null) => void;
+  inputId: string;
 }) {
   const hasError = Boolean(error);
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-baseline gap-1.5">
-        <span className="text-sm font-medium text-foreground">{label}</span>
+        <label
+          htmlFor={inputId}
+          className="text-sm font-medium text-foreground"
+        >
+          {label}
+        </label>
         <span className="text-xs text-muted-foreground">{hint}</span>
       </div>
       <input
+        id={inputId}
         type="file"
         accept={accept}
         onChange={async (e) => {
@@ -320,55 +228,82 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
         </div>
 
         <div className="space-y-6">
-          {/* Basic fields */}
-          <FormField label="Name" required>
-            <TextInput
+          {/* Name */}
+          <Field.Root className="flex flex-col gap-1.5">
+            <Field.Label
+              htmlFor="field-name"
+              className="text-sm font-medium text-foreground"
+            >
+              Name
+              <span className="ml-0.5 text-red-500">*</span>
+            </Field.Label>
+            <Input
+              id="field-name"
               value={name}
-              onChange={setName}
+              onChange={(e) => setName(e.target.value)}
               placeholder="My ORD Provider"
               required
             />
-          </FormField>
+          </Field.Root>
 
-          <FormField
-            label="ORD Configuration URL"
-            required
-            hint="Enter the URL to the ORD configuration endpoint. If no path is given, the well-known path (/.well-known/open-resource-discovery) is appended automatically. Custom paths are also supported, e.g. https://example.com/custom/ord-config"
-          >
-            <TextInput
+          {/* ORD Configuration URL */}
+          <Field.Root className="flex flex-col gap-1.5">
+            <Field.Label
+              htmlFor="field-url"
+              className="text-sm font-medium text-foreground"
+            >
+              ORD Configuration URL
+              <span className="ml-0.5 text-red-500">*</span>
+            </Field.Label>
+            <Input
+              id="field-url"
               value={url}
-              onChange={setUrl}
+              onChange={(e) => setUrl(e.target.value)}
               type="url"
               placeholder="https://example.com"
               required
             />
-          </FormField>
+            <Field.Description className="text-xs text-muted-foreground">
+              Enter the URL to the ORD configuration endpoint. If no path is
+              given, the well-known path (/.well-known/open-resource-discovery)
+              is appended automatically. Custom paths are also supported, e.g.
+              https://example.com/custom/ord-config
+            </Field.Description>
+          </Field.Root>
 
           {/* Auth type */}
-          <FormField label="Authentication" required>
-            <div className="grid grid-cols-3 gap-2">
-              <RadioCard<AuthType>
-                value="none"
-                current={authType}
-                onChange={setAuthType}
-                label="None"
-              />
-              <RadioCard<AuthType>
-                value="bearer"
-                current={authType}
-                onChange={setAuthType}
-                label="Bearer Token"
-              />
-              <RadioCard<AuthType>
-                value="mtls"
-                current={authType}
-                onChange={(v) => {
-                  if (proxyAvailable) setAuthType(v);
-                }}
-                label="mTLS"
-                disabled={!proxyAvailable}
-              />
-            </div>
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-foreground">
+              Authentication
+              <span className="ml-0.5 text-red-500">*</span>
+            </span>
+            <RadioGroup
+              value={authType}
+              onValueChange={(v) => setAuthType(v as AuthType)}
+              className="grid grid-cols-3 gap-2"
+            >
+              {[
+                { value: "none" as AuthType, label: "None" },
+                { value: "bearer" as AuthType, label: "Bearer Token" },
+                {
+                  value: "mtls" as AuthType,
+                  label: "mTLS",
+                  disabled: !proxyAvailable,
+                },
+              ].map(({ value, label, disabled }) => (
+                <Radio.Root
+                  key={value}
+                  value={value}
+                  disabled={disabled}
+                  className="flex cursor-pointer flex-col gap-0.5 rounded-lg border border-border bg-background px-4 py-3 text-left text-muted-foreground transition-colors hover:bg-accent data-[checked]:border-primary data-[checked]:bg-primary/5 data-[checked]:text-foreground disabled:cursor-default disabled:opacity-40"
+                >
+                  <span className="flex items-center gap-2 text-sm font-medium">
+                    <Radio.Indicator className="mt-0.5 h-3.5 w-3.5 shrink-0 rounded-full border-2 border-border bg-background data-[checked]:border-primary data-[checked]:bg-primary" />
+                    {label}
+                  </span>
+                </Radio.Root>
+              ))}
+            </RadioGroup>
             {!proxyAvailable && (
               <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Info className="h-3.5 w-3.5 shrink-0" />
@@ -379,18 +314,25 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
                 to enable
               </p>
             )}
-          </FormField>
+          </div>
 
           {/* Conditional: Bearer Token */}
           {authType === "bearer" && (
-            <FormField label="Bearer Token" required>
-              <TextInput
+            <Field.Root className="flex flex-col gap-1.5">
+              <Field.Label
+                htmlFor="field-bearer-token"
+                className="text-sm font-medium text-foreground"
+              >
+                Bearer Token
+                <span className="ml-0.5 text-red-500">*</span>
+              </Field.Label>
+              <PasswordInput
+                id="field-bearer-token"
                 value={bearerToken}
-                onChange={setBearerToken}
-                type="password"
+                onChange={(e) => setBearerToken(e.target.value)}
                 placeholder="Enter token..."
               />
-            </FormField>
+            </Field.Root>
           )}
 
           {/* Conditional: mTLS */}
@@ -401,6 +343,7 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
                 hint=".crt or .pem"
                 accept=".pem,.crt,.cert"
                 value={certFile}
+                inputId="pem-cert-input"
                 error={
                   certFile &&
                   !["certificate", "ca-bundle"].includes(
@@ -416,6 +359,7 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
                 hint=".key or .pem"
                 accept=".pem,.key"
                 value={keyFile}
+                inputId="pem-key-input"
                 error={
                   keyFile && classifyPemFile(keyFile.content) !== "private-key"
                     ? "This file does not look like a private key"
@@ -428,20 +372,27 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
                 hint="Optional — only needed for private/self-signed CAs"
                 accept=".pem,.crt,.cert"
                 value={caFile}
+                inputId="pem-ca-input"
                 onChange={setCaFile}
               />
 
-              <FormField
-                label="Key Passphrase"
-                hint="Leave blank if the private key is not encrypted."
-              >
-                <TextInput
+              <Field.Root className="flex flex-col gap-1.5">
+                <Field.Label
+                  htmlFor="field-passphrase"
+                  className="text-sm font-medium text-foreground"
+                >
+                  Key Passphrase
+                </Field.Label>
+                <PasswordInput
+                  id="field-passphrase"
                   value={passphrase}
-                  onChange={setPassphrase}
-                  type="password"
+                  onChange={(e) => setPassphrase(e.target.value)}
                   placeholder="Optional passphrase..."
                 />
-              </FormField>
+                <Field.Description className="text-xs text-muted-foreground">
+                  Leave blank if the private key is not encrypted.
+                </Field.Description>
+              </Field.Root>
             </div>
           )}
 
@@ -458,28 +409,27 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
             <Link
               to={existing ? "/connections/$id" : "/connections"}
               params={existing ? { id: existing.id } : undefined}
-              className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
+              className={buttonVariants({ variant: "outline" })}
             >
               Cancel
             </Link>
 
             <div className="flex gap-2">
-              <button
+              <Button
                 type="button"
+                variant="outline"
                 onClick={handleTestAndSave}
                 disabled={isSubmitting}
-                className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50"
               >
                 Test connection
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 onClick={handleSave}
                 disabled={isSubmitting}
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
                 Save
-              </button>
+              </Button>
             </div>
           </div>
         </div>
