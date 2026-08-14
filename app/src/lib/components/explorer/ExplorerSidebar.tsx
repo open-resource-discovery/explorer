@@ -30,6 +30,7 @@ import type { Selection } from "./useNavState";
 import type { ResourceTypeGroup } from "./explorerTypes";
 import { useResourceSearch } from "./useResourceSearch";
 import type { ResourceBase } from "./useResourceSearch";
+import { Button, Input } from "@open-resource-discovery/ui-components";
 
 interface SidebarSectionProps {
   type: ResourceTypeGroup;
@@ -65,7 +66,7 @@ function SidebarSection({
 
   return (
     <div className="border-b border-border/60 last:border-0">
-      <button
+      <Button
         className="flex w-full items-center bg-muted/50 hover:bg-muted/70 pl-6 pr-3 py-2"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
@@ -80,14 +81,14 @@ function SidebarSection({
         ) : (
           <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
         )}
-      </button>
+      </Button>
 
       {open && (
         <div className="pb-1">
           {filteredResources.slice(0, 50).map((r) => {
             const isSelected = selectedOrdId === r.ordId;
             return (
-              <button
+              <Button
                 key={r.ordId}
                 className={`flex w-full items-baseline gap-1.5 px-6 py-1 text-left hover:bg-muted/50 transition-colors ${isSelected ? "bg-primary/8" : ""}`}
                 onClick={() =>
@@ -108,18 +109,18 @@ function SidebarSection({
                     v{r.version.split(".")[0]}
                   </span>
                 )}
-              </button>
+              </Button>
             );
           })}
           {filteredResources.length > 50 && (
-            <button
+            <Button
               className="w-full px-6 py-1 text-left text-xs text-primary hover:underline"
               onClick={() =>
                 onSelect({ id: "resourceList", resourceType: type })
               }
             >
               + {filteredResources.length - 50} more…
-            </button>
+            </Button>
           )}
         </div>
       )}
@@ -157,7 +158,7 @@ function FlatListSection({
 
   return (
     <div className="border-b border-border/60 last:border-0">
-      <button
+      <Button
         className="flex w-full items-center bg-muted/50 hover:bg-muted/70 pl-6 pr-3 py-2"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
@@ -173,14 +174,14 @@ function FlatListSection({
         ) : (
           <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
         )}
-      </button>
+      </Button>
 
       {open && (
         <div className="pb-1">
           {items.slice(0, 50).map((item) => {
             const isSelected = selectedId === item.id;
             return (
-              <button
+              <Button
                 key={item.id}
                 className={`flex w-full items-baseline gap-1.5 px-6 py-1 text-left hover:bg-muted/50 transition-colors ${isSelected ? "bg-primary/8" : ""}`}
                 onClick={() => onSelect(buildDetailSelection(item.id))}
@@ -195,16 +196,16 @@ function FlatListSection({
                     v{item.version.split(".")[0]}
                   </span>
                 )}
-              </button>
+              </Button>
             );
           })}
           {items.length > 50 && (
-            <button
+            <Button
               className="w-full px-6 py-1 text-left text-xs text-primary hover:underline"
               onClick={() => onSelect({ id: listId })}
             >
               + {items.length - 50} more…
-            </button>
+            </Button>
           )}
         </div>
       )}
@@ -283,7 +284,7 @@ export function ExplorerSidebar({
         <div className="border-b border-border p-3">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-            <input
+            <Input
               type="text"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}

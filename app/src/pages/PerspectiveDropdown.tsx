@@ -4,6 +4,7 @@ import { ChevronDown, Layers } from "lucide-react";
 import { getConnection } from "@lib/connection/store";
 import { usePerspectives } from "@lib/hooks/usePerspectives";
 import { useClickOutside } from "@lib/hooks/useClickOutside";
+import { Button } from "@open-resource-discovery/ui-components";
 
 interface Props {
   connectionId: string;
@@ -43,13 +44,13 @@ export function PerspectiveDropdown({
     const isActive = !hasResourceDetail;
     if (hasResourceDetail) {
       return (
-        <button
+        <Button
           onClick={onReset}
           className="flex items-center gap-1 border-b-2 border-transparent px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           <Layers className="h-3.5 w-3.5 shrink-0" />
           {displayName}
-        </button>
+        </Button>
       );
     }
     return (
@@ -71,7 +72,7 @@ export function PerspectiveDropdown({
             : "border-primary text-primary"
         }`}
       >
-        <button
+        <Button
           onClick={() => {
             setOpen(false);
             if (hasResourceDetail) onReset();
@@ -80,20 +81,20 @@ export function PerspectiveDropdown({
         >
           <Layers className="h-3.5 w-3.5 shrink-0" />
           {displayName}
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setOpen((o) => !o)}
           className="px-1 py-3 pr-3"
           aria-label="Switch perspective"
         >
           <ChevronDown className="h-3.5 w-3.5" />
-        </button>
+        </Button>
       </div>
 
       {open && (
         <div className="absolute left-0 top-full z-50 mt-1 min-w-48 rounded-lg border border-border/60 bg-background shadow-lg">
           {perspectives.map((p, i) => (
-            <button
+            <Button
               key={p.id}
               className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent ${
                 i === 0 ? "rounded-t-lg" : ""
@@ -117,7 +118,7 @@ export function PerspectiveDropdown({
               <span className="truncate text-foreground">
                 {p.label ?? p.id}
               </span>
-            </button>
+            </Button>
           ))}
         </div>
       )}

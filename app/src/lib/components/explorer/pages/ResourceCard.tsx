@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { Badge } from "@open-resource-discovery/ui-components";
+import { Badge, Button } from "@open-resource-discovery/ui-components";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
@@ -381,7 +381,7 @@ export function ResourceCard({
               {description}
             </p>
           )}
-          <button
+          <Button
             onClick={() => setDescExpanded((v) => !v)}
             aria-expanded={descExpanded}
             aria-label={`${descExpanded ? "Collapse" : "Expand"} description for ${resource.title}`}
@@ -391,7 +391,7 @@ export function ResourceCard({
               className={`h-3 w-3 transition-transform ${descExpanded ? "rotate-180" : ""}`}
             />
             {descExpanded ? "Less" : "More"}
-          </button>
+          </Button>
         </div>
       )}
       {resourceDefinitions && resourceDefinitions.length > 0 && (

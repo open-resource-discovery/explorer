@@ -9,6 +9,7 @@ import { normalizeTestId } from "@lib/utils/normalize-test-id";
 import { useResourceSearch } from "../useResourceSearch";
 import type { ResourceBase } from "../useResourceSearch";
 import { RESOURCE_TYPE_CONFIG } from "../resourceTypeConfig";
+import { Button } from "@open-resource-discovery/ui-components";
 
 interface DashboardCardProps {
   icon: ReactNode;
@@ -77,7 +78,7 @@ function DashboardCard({
 
   if (onClick) {
     return (
-      <button
+      <Button
         onClick={onClick}
         disabled={isEmpty}
         aria-pressed={selected}
@@ -89,7 +90,7 @@ function DashboardCard({
         }`}
       >
         {content}
-      </button>
+      </Button>
     );
   }
 

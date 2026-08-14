@@ -4,6 +4,7 @@ import { ChevronDown, Server } from "lucide-react";
 import { getConnections } from "@lib/connection/store";
 import type { Connection } from "@lib/connection/types";
 import { useClickOutside } from "@lib/hooks/useClickOutside";
+import { Button } from "@open-resource-discovery/ui-components";
 
 interface Props {
   currentConnectionId: string;
@@ -56,7 +57,7 @@ export function ConnectionDropdown({
             : "border-transparent text-muted-foreground hover:text-foreground"
         }`}
       >
-        <button
+        <Button
           onClick={() => {
             setOpen(false);
             if (hasResourceDetail) onReset();
@@ -64,14 +65,14 @@ export function ConnectionDropdown({
           className="py-3 pl-3 text-sm font-medium"
         >
           {current?.name ?? currentConnectionId}
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setOpen((o) => !o)}
           className="px-1 py-3 pr-3"
           aria-label="Switch connection"
         >
           <ChevronDown className="h-3.5 w-3.5" />
-        </button>
+        </Button>
       </div>
 
       {open && (
@@ -83,7 +84,7 @@ export function ConnectionDropdown({
                 i === 0 ? "rounded-t-lg" : ""
               }`}
             >
-              <button
+              <Button
                 className="flex min-w-0 flex-1 items-center gap-2 text-left text-sm"
                 onClick={() => switchTo(conn)}
               >
@@ -91,8 +92,8 @@ export function ConnectionDropdown({
                   className={`h-3.5 w-3.5 shrink-0 ${conn.id === currentConnectionId ? "text-primary" : "text-muted-foreground"}`}
                 />
                 <span className="truncate text-foreground">{conn.name}</span>
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => {
                   setOpen(false);
                   void navigate({
@@ -103,7 +104,7 @@ export function ConnectionDropdown({
                 className="shrink-0 text-xs text-primary hover:underline"
               >
                 Details
-              </button>
+              </Button>
             </div>
           ))}
         </div>

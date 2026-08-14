@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { getConnections, deleteConnection } from "../lib/connection/store";
 import type { Connection } from "../lib/connection/types";
+import { Button } from "@open-resource-discovery/ui-components";
 
 function ConnectionCard({
   conn,
@@ -53,15 +54,15 @@ function ConnectionCard({
           </div>
         </div>
         <div className="relative" ref={menuRef}>
-          <button
+          <Button
             onClick={() => setMenuOpen((o) => !o)}
             className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <MoreHorizontal className="h-4 w-4" />
-          </button>
+          </Button>
           {menuOpen && (
             <div className="absolute right-0 top-full z-50 mt-1 w-36 rounded-lg border border-border bg-background shadow-md">
-              <button
+              <Button
                 onClick={() => {
                   setMenuOpen(false);
                   void navigate({
@@ -73,8 +74,8 @@ function ConnectionCard({
               >
                 <Pencil className="h-3.5 w-3.5" />
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => {
                   setMenuOpen(false);
                   try {
@@ -88,7 +89,7 @@ function ConnectionCard({
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 Delete
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -137,13 +138,13 @@ export function ConnectionsPage() {
               resources it exposes.
             </p>
           </div>
-          <button
+          <Button
             onClick={() => void navigate({ to: "/connections/new" })}
             className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" />
             Add connection
-          </button>
+          </Button>
         </div>
 
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
