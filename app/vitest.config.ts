@@ -16,7 +16,11 @@ export default defineConfig({
       include: ["src/**"],
       exclude: [
         "src/lib/index.ts",
+        "src/lib/status.ts",
         "src/lib/data/**",
+        "src/lib/components/ConnectionDetailPage.tsx",
+        "src/lib/components/ExplorerPage.tsx",
+        "src/lib/components/ServerStatusPanel.tsx",
         "src/lib/components/explorer/pages/**",
         "src/lib/components/auth/**",
         "src/lib/components/ThemeRoot.tsx",

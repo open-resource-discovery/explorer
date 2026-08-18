@@ -179,7 +179,7 @@ export function useDefinitionFetch(
     const useProxyForFetch = proxy.available && isCrossOrigin;
 
     const load = useProxyForFetch
-      ? fetchTextViaProxy(connectionId, url)
+      ? fetchTextViaProxy(proxy.proxyBaseUrl, connectionId, url)
       : fetch(url).then((res) => {
           if (
             !res.ok ||

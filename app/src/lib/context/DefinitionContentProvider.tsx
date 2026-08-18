@@ -41,6 +41,7 @@ async function fetchInBatches(
   signal: AbortSignal,
   connectionId: string,
   proxyAvailable: boolean,
+  proxyBaseUrl: string,
   onResult: (
     url: string,
     state: { status: "done"; content: string } | { status: "error" },
@@ -55,7 +56,7 @@ async function fetchInBatches(
           const isCrossOrigin = new URL(url).origin !== window.location.origin;
           const useProxy = proxyAvailable && isCrossOrigin;
           const text = useProxy
-            ? await fetchTextViaProxy(connectionId, url)
+            ? await fetchTextViaProxy(proxyBaseUrl, connectionId, url)
             : await fetch(url, { signal }).then((res) => {
                 if (
                   !res.ok ||
@@ -78,6 +79,7 @@ interface DefinitionContentProviderProps {
   prefetch: boolean;
   connectionId: string;
   proxyAvailable: boolean;
+  proxyBaseUrl: string;
   children: ReactNode;
 }
 
@@ -86,6 +88,7 @@ export function DefinitionContentProvider({
   prefetch,
   connectionId,
   proxyAvailable,
+  proxyBaseUrl,
   children,
 }: DefinitionContentProviderProps) {
   const [map, setMap] = useState<DefinitionContentMap>(() => {
@@ -104,19 +107,26 @@ export function DefinitionContentProvider({
     abortRef.current = new AbortController();
     const { signal } = abortRef.current;
 
-    fetchInBatches(urls, signal, connectionId, proxyAvailable, (url, state) => {
-      if (signal.aborted) return;
-      setMap((prev) => {
-        const next = new Map(prev);
-        next.set(url, state);
-        return next;
-      });
-    });
+    fetchInBatches(
+      urls,
+      signal,
+      connectionId,
+      proxyAvailable,
+      proxyBaseUrl,
+      (url, state) => {
+        if (signal.aborted) return;
+        setMap((prev) => {
+          const next = new Map(prev);
+          next.set(url, state);
+          return next;
+        });
+      },
+    );
 
     return () => {
       abortRef.current?.abort();
     };
-  }, [document, prefetch, connectionId, proxyAvailable]);
+  }, [document, prefetch, connectionId, proxyAvailable, proxyBaseUrl]);
 
   return (
     <DefinitionContentContext.Provider value={map}>

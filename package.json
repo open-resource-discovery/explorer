@@ -10,6 +10,13 @@
     "dist",
     "README.md"
   ],
+  "exports": {
+    "./components": {
+      "types": "./dist/lib/index.d.ts",
+      "import": "./dist/lib/index.js"
+    },
+    "./components/styles": "./dist/lib/index.css"
+  },
   "homepage": "https://github.com/open-resource-discovery/explorer",
   "repository": {
     "type": "git",
@@ -40,6 +47,7 @@
     "dev": "vite --config app/vite.config.ts",
     "generate:sample": "node --experimental-strip-types scripts/generate-sample-doc.ts",
     "build": "npm run generate:sample && tsc -b && vite build --config app/vite.config.ts",
+    "build:lib": "vite build --config app/vite.config.lib.ts && tsc --project app/tsconfig.lib.json",
     "typecheck": "node node_modules/typescript/bin/tsc -b --noEmit",
     "lint": "npm run eslint:ci",
     "eslint": "eslint . --fix",

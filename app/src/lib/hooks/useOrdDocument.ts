@@ -80,7 +80,7 @@ export function useOrdDocument(
   connectionId: string,
   perspectiveId: string,
 ): UseOrdDocumentResult {
-  const { available, sessionId, recheckSession } = useProxy();
+  const { available, sessionId, recheckSession, proxyBaseUrl } = useProxy();
   const [document, setDocument] = useState<OrdDocument | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -128,6 +128,7 @@ export function useOrdDocument(
 
         const config = useProxyForAuth
           ? await fetchViaProxy<OrdConfiguration>(
+              proxyBaseUrl,
               connectionId,
               wellKnownUrl,
               forwardHeaders,
@@ -158,6 +159,7 @@ export function useOrdDocument(
           docUrls.map(async (url) => {
             const doc = useProxyForAuth
               ? await fetchViaProxy<OrdDocument>(
+                  proxyBaseUrl,
                   connectionId,
                   url,
                   forwardHeaders,
