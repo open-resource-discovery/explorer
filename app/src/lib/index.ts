@@ -1,8 +1,5 @@
 import "./styles.css";
 
-export { ORDExplorer } from "./components/explorer/ORDExplorer";
-export type { ORDExplorerProps } from "./components/explorer/ORDExplorer";
-
 export { ConnectionDetailPage } from "./components/ConnectionDetailPage";
 export type { ConnectionDetailPageProps } from "./components/ConnectionDetailPage";
 

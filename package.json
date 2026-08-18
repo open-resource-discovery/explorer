@@ -13,7 +13,7 @@
   "exports": {
     "./components": {
       "types": "./dist/lib/index.d.ts",
-      "import": "./dist/lib/index.js"
+      "import": "./dist/lib/index.mjs"
     },
     "./components/styles": "./dist/lib/index.css"
   },
