@@ -18,8 +18,34 @@ export default defineConfig({
     rollupOptions: {
       external: ["react", "react-dom", "react/jsx-runtime"],
     },
+    rolldownOptions: {
+      external: (id: string) =>
+        id === "react" ||
+        id === "react-dom" ||
+        id.startsWith("react/") ||
+        id.startsWith("react-dom/") ||
+        id.startsWith("use-sync-external-store") ||
+        id.includes("/node_modules/react/") ||
+        id.includes("/node_modules/react-dom/") ||
+        id.includes("/node_modules/use-sync-external-store/"),
+      output: {
+        interop: "esModule",
+      },
+    },
   },
   resolve: {
-    alias: [{ find: "@lib", replacement: resolve(__dirname, "./src/lib") }],
+    alias: [
+      { find: "@lib", replacement: resolve(__dirname, "./src/lib") },
+      // @open-resource-discovery/metadata-renderer imports the pre-built UMD browser
+      // bundle of @asyncapi/react-component, which has a CJS require("react") shim.
+      // Redirect to the proper ESM entry so rolldown never generates the CJS shim.
+      {
+        find: "@asyncapi/react-component/browser/index.js",
+        replacement: resolve(
+          __dirname,
+          "../node_modules/@asyncapi/react-component/lib/esm/index.js",
+        ),
+      },
+    ],
   },
 });
