@@ -22,6 +22,14 @@ export default defineConfig({
       external: (id: string) =>
         id === "react" ||
         id === "react-dom" ||
+        // avsc (via @asyncapi/parser) calls require('buffer').Buffer. Rolldown stubs
+        // Node.js built-ins with {} in browser builds, leaving Buffer undefined at
+        // runtime. Externalizing 'buffer' emits a real ESM import in the pre-built
+        // lib so the consuming app (e.g. provider-server) can supply the npm polyfill.
+        id === "buffer" ||
+        id === "util" ||
+        id === "events" ||
+        id === "stream" ||
         id.startsWith("react/") ||
         id.startsWith("react-dom/") ||
         id.startsWith("use-sync-external-store") ||
