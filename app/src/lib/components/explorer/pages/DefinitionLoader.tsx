@@ -202,7 +202,7 @@ export function useDefinitionFetch(
     return () => {
       cancelled = true;
     };
-  }, [url, connectionId, proxy.available]);
+  }, [url, connectionId, proxy.available, proxy.proxyBaseUrl]);
 
   return state;
 }

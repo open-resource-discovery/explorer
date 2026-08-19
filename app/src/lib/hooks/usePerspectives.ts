@@ -110,6 +110,7 @@ export function usePerspectives(
     connection.auth,
     connection.bearerToken,
     available,
+    proxyBaseUrl,
     sessionId,
     recheckSession,
     retryCount,

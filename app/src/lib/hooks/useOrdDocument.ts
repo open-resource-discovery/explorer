@@ -209,6 +209,7 @@ export function useOrdDocument(
     connectionId,
     perspectiveId,
     available,
+    proxyBaseUrl,
     sessionId,
     recheckSession,
     retryCount,

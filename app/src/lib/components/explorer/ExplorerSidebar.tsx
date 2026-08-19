@@ -260,9 +260,8 @@ export function ExplorerSidebar({
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp);
       e.preventDefault();
-      // width is captured into startWidth.current at mousedown, so it is not a stale-closure risk
     },
-    [onWidthChange],
+    [onWidthChange, width],
   );
 
   const visibilities: VisibilityFilter[] = ["public", "internal", "private"];
