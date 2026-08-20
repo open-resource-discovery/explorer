@@ -70,6 +70,19 @@ function formatBytes(bytes: number): string {
   return `${(bytes / Math.pow(k, safeIndex)).toFixed(1)} ${unit}`;
 }
 
+function getGitHubBaseUrl(githubUrl: string | undefined): string {
+  if (githubUrl === undefined || githubUrl === "https://api.github.com") {
+    return "https://github.com";
+  }
+  if (githubUrl.includes("/api/v3")) {
+    return githubUrl.replace("/api/v3", "");
+  }
+  if (githubUrl.includes("api.")) {
+    return githubUrl.replace("api.", "");
+  }
+  return githubUrl.replace(/\/api$/, "");
+}
+
 function UsageBar({ used, total }: { used: number; total: number }): ReactNode {
   const pct = total > 0 ? Math.min(100, Math.round((used / total) * 100)) : 0;
   const color =
@@ -196,9 +209,22 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
                     value={
                       <span className="flex items-center gap-1">
                         <GitCommit className="h-3.5 w-3.5 text-muted-foreground" />
-                        <code className="font-mono text-sm">
-                          {content.commitHash.slice(0, 7)}
-                        </code>
+                        {settings?.githubRepository !== undefined &&
+                        settings.githubRepository !== "" &&
+                        content.commitHash !== "current" ? (
+                          <a
+                            href={`${getGitHubBaseUrl(settings.githubUrl)}/${settings.githubRepository}/tree/${content.commitHash}/data`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="font-mono text-sm hover:underline"
+                          >
+                            {content.commitHash.slice(0, 7)}
+                          </a>
+                        ) : (
+                          <code className="font-mono text-sm">
+                            {content.commitHash.slice(0, 7)}
+                          </code>
+                        )}
                       </span>
                     }
                   />
@@ -212,6 +238,15 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
                   />
                 </div>
               )}
+              {content.lastWebhookTime !== null &&
+                content.lastWebhookTime !== undefined && (
+                  <div className="px-5 py-4">
+                    <DataRow
+                      label="Last webhook"
+                      value={new Date(content.lastWebhookTime).toLocaleString()}
+                    />
+                  </div>
+                )}
               {content.scheduledUpdateTime !== null &&
                 content.scheduledUpdateTime !== undefined && (
                   <div className="px-5 py-4">

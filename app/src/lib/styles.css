@@ -229,6 +229,10 @@
     vertical-align: middle;
   }
 
+  .ord-root :where(img, video) {
+    max-width: 100%;
+  }
+
   .ord-root :where(button, input, select, optgroup, textarea) {
     font: inherit;
     font-feature-settings: inherit;
