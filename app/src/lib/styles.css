@@ -239,6 +239,391 @@
     display: none;
   }
 
+  /* Scalar's Vue scoped-style hashes in the distributed CSS do not match the
+     rendered DOM hashes, so every [data-v-XXXX]-scoped rule silently never
+     fires.  The blocks below replicate each broken rule without the hash.
+     See docs/css-embedding-interop.md §2 for the root cause analysis. */
+
+  /* ── Top-level --refs-* custom properties ─────────────────────────────── */
+  /* These drive every size/offset calculation inside the Scalar layout tree.  */
+
+  .ord-root .scalar-api-reference {
+    --refs-header-height: calc(
+      var(--scalar-custom-header-height, 0px) + var(--scalar-header-height, 0px)
+    );
+    --refs-viewport-offset: calc(
+      var(--refs-header-height, 0px) + var(--refs-content-offset, 0px)
+    );
+    --refs-viewport-height: calc(
+      var(--full-height, 100dvh) - var(--refs-viewport-offset, 0px)
+    );
+    --refs-sidebar-width: var(--scalar-sidebar-width, 288px);
+    --refs-sidebar-height: calc(
+      var(--full-height, 100dvh) - var(--refs-header-height, 0px)
+    );
+    --refs-content-max-width: var(--scalar-content-max-width, 1540px);
+  }
+
+  .ord-root .scalar-api-reference.references-classic {
+    --refs-content-max-width: var(--scalar-content-max-width, 1420px);
+    --refs-sidebar-width: 0;
+  }
+
+  /* ── Grid layout: .references-layout and direct children ──────────────── */
+
+  .ord-root .references-layout {
+    display: grid !important;
+    grid-template-rows: var(--scalar-header-height, 0px) repeat(2, auto);
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "header header"
+      "navigation rendered"
+      "footer footer";
+    flex: 1;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .ord-root .references-editor {
+    grid-area: editor;
+    display: flex;
+    min-width: 0;
+  }
+
+  .ord-root .references-rendered {
+    grid-area: rendered;
+    min-width: 0;
+    position: relative;
+  }
+
+  .ord-root .references-footer {
+    grid-area: footer;
+  }
+
+  @media (width < 1000px) {
+    .ord-root .references-layout {
+      --refs-sidebar-height: calc(
+        var(--full-height, 100dvh) - var(--scalar-custom-header-height, 0px)
+      );
+      grid-template-columns: 100%;
+      grid-template-rows: var(--scalar-header-height, 0px) 0px auto auto;
+      grid-template-areas:
+        "header"
+        "navigation"
+        "rendered"
+        "footer";
+    }
+
+    .ord-root .references-rendered {
+      position: static;
+    }
+
+    .ord-root .references-developer-tools {
+      display: none;
+    }
+  }
+
+  /* ── Section structure ─────────────────────────────────────────────────── */
+
+  .ord-root .section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: var(--refs-content-max-width);
+    margin: auto;
+    padding: 90px 0;
+    scroll-margin-top: var(--refs-viewport-offset);
+  }
+
+  .ord-root .references-classic .section {
+    padding: 48px 0;
+  }
+
+  @media (width < 1000px) {
+    .ord-root .section {
+      padding: 48px 24px;
+    }
+  }
+
+  .ord-root .section-container {
+    position: relative;
+    padding: 0 60px;
+    width: 100%;
+  }
+
+  @media (width < 1000px) {
+    .ord-root .section-container {
+      padding: 0;
+    }
+  }
+
+  .ord-root .section-accordion-wrapper {
+    padding: 0 60px;
+  }
+
+  .ord-root .section-accordion {
+    position: relative;
+    width: 100%;
+    max-width: var(--refs-content-max-width);
+    margin: auto;
+  }
+
+  .ord-root .section-accordion-content {
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+  }
+
+  @media (width < 1000px) {
+    .ord-root .section-accordion-wrapper {
+      padding: calc(var(--refs-viewport-offset)) 24px 0 24px;
+    }
+  }
+
+  .ord-root .section-columns {
+    display: flex;
+  }
+
+  @media (width < 1000px) {
+    .ord-root .section-columns {
+      flex-direction: column;
+    }
+  }
+
+  .ord-root .section-column {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ── Operation layout: two-column grid ────────────────────────────────── */
+
+  .ord-root .operation-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "heading badge"
+      "description examples"
+      "details examples";
+    column-gap: 48px;
+  }
+
+  .ord-root .operation-layout .operation-title {
+    grid-area: heading;
+    margin-bottom: 12px;
+  }
+
+  .ord-root .operation-auth {
+    grid-area: badge;
+    justify-self: end;
+    align-self: start;
+  }
+
+  .ord-root .operation-description {
+    grid-area: description;
+    min-width: 0;
+  }
+
+  .ord-root .operation-details {
+    grid-area: details;
+    min-width: 0;
+  }
+
+  .ord-root .examples {
+    grid-area: examples;
+    align-self: start;
+    min-width: 0;
+    position: sticky;
+    top: calc(var(--refs-viewport-offset) + 24px);
+  }
+
+  .ord-root .examples > * {
+    max-height: calc((var(--refs-viewport-height) - 60px) / 2);
+  }
+
+  .ord-root .examples > *:first-of-type:last-of-type {
+    max-height: calc(var(--refs-viewport-height) - 60px);
+  }
+
+  @media (max-width: 600px) {
+    .ord-root .examples > * {
+      max-height: unset;
+    }
+  }
+
+  @container narrow-references-container (max-width: 900px) {
+    .ord-root .operation-layout {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "badge"
+        "heading"
+        "description"
+        "examples"
+        "details";
+      column-gap: 0;
+    }
+
+    .ord-root .operation-auth {
+      justify-self: start;
+      margin-bottom: 4px;
+    }
+
+    .ord-root .operation-description {
+      margin-bottom: 24px;
+    }
+
+    .ord-root .examples {
+      position: static;
+    }
+  }
+
+  /* ── Collapsible panels: grid-rows expand/collapse pattern ────────────── */
+  /* .open class toggled by Vue — without these the panels stay collapsed.   */
+
+  .ord-root .authContent {
+    grid-template-rows: 0fr;
+    width: 100%;
+    max-width: 520px;
+    min-height: 0;
+    margin: auto;
+    display: grid;
+    overflow: hidden;
+  }
+
+  .ord-root .askForAuthentication.open .authContent {
+    grid-template-rows: 1fr;
+  }
+
+  .ord-root .authContentInner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .ord-root .requestContent {
+    grid-template-rows: 0fr;
+    min-height: 0;
+    display: grid;
+    overflow: hidden;
+  }
+
+  .ord-root .requestPreview.open .requestContent {
+    grid-template-rows: 1fr;
+  }
+
+  .ord-root .requestContentInner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ── Client catalog grid ──────────────────────────────────────────────── */
+
+  .ord-root .catalog {
+    font-size: var(--scalar-font-size-3);
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    display: grid;
+    overflow-y: scroll;
+  }
+
+  .ord-root .catalog .item {
+    background-color: var(--scalar-background-2);
+    border-radius: var(--scalar-radius-lg);
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    transition: background-color 0.16s;
+    display: flex;
+  }
+
+  .ord-root .catalog .item-top {
+    gap: 10px;
+    display: flex;
+  }
+
+  /* ── Client library language selector ────────────────────────────────── */
+  /* Tab bar above code examples; icons constrained to 14 px box            */
+
+  .ord-root .client-libraries-content {
+    container: client-libraries-content / inline-size;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0 12px;
+  }
+
+  .ord-root .client-libraries {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 8px 2px;
+    gap: 6px;
+    border-bottom: 1px solid transparent;
+    user-select: none;
+  }
+
+  .ord-root .client-libraries__active {
+    border-bottom: 1px solid var(--scalar-color-1);
+  }
+
+  .ord-root .client-libraries .client-libraries-text {
+    font-size: var(--scalar-small);
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .ord-root .client-libraries-icon {
+    max-width: 14px !important;
+    max-height: 14px !important;
+    min-width: 14px;
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .ord-root .client-libraries-icon svg,
+  .ord-root .client-libraries-icon img {
+    width: 14px !important;
+    height: 14px !important;
+    max-width: 14px !important;
+    max-height: 14px !important;
+  }
+
+  /* ── Icon/logo sizing (SVG presentation-attr overrides) ──────────────── */
+
+  .ord-root .scalar-mcp-layer .mcp-logo {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .ord-root .scalar-api-reference .logo {
+    width: 25px !important;
+    height: 25px !important;
+    max-width: 25px !important;
+    max-height: 25px !important;
+  }
+
+  /* ── Accessibility utility ────────────────────────────────────────────── */
+
+  .ord-root .screenreader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    border: 0;
+  }
+
   .ord-root :where(button, input, select, optgroup, textarea) {
     font: inherit;
     font-feature-settings: inherit;
