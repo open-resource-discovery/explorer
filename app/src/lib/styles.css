@@ -229,8 +229,14 @@
     vertical-align: middle;
   }
 
-  .ord-root :where(img, video) {
+  .ord-root :where(img, video, svg) {
     max-width: 100%;
+  }
+
+  /* Scalar's .section-flare is position:fixed top-right — it overlaps a modal
+     that spans most of the viewport. Hide it; it is purely decorative. */
+  .ord-root .section-flare {
+    display: none;
   }
 
   .ord-root :where(button, input, select, optgroup, textarea) {
