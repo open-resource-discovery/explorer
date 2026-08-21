@@ -44,4 +44,4 @@ jobs:
           pages-base-url: https://open-resource-discovery.github.io/pr-preview
           umbrella-dir: explorer
           token: ${{ secrets.PR_PREVIEW_TOKEN }}
-          build-dir: dist
+          build-dir: dist/app

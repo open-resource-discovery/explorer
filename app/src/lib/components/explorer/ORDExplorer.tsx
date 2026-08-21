@@ -95,6 +95,7 @@ export function ORDExplorer({
           prefetch={prefetchDefinitions}
           connectionId={connectionId}
           proxyAvailable={proxy.available}
+          proxyBaseUrl={proxy.proxyBaseUrl}
         >
           <ThemeRootContent className={className}>
             <div className="flex h-full overflow-hidden">

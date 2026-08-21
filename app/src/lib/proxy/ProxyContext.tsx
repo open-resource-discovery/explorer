@@ -19,6 +19,7 @@ export interface ProxyHealth {
 }
 
 export interface ProxyState extends ProxyHealth {
+  proxyBaseUrl: string;
   recheckSession: () => Promise<ProxyHealth>;
 }
 
@@ -26,7 +27,7 @@ interface HealthResponse {
   session?: string;
 }
 
-async function checkProxyHealth(): Promise<ProxyHealth> {
+async function checkProxyHealth(baseUrl: string): Promise<ProxyHealth> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(
@@ -34,7 +35,7 @@ async function checkProxyHealth(): Promise<ProxyHealth> {
       HEALTH_CHECK_TIMEOUT_MS,
     );
 
-    const response = await fetch(`${PROXY_BASE_URL}/health`, {
+    const response = await fetch(`${baseUrl}/health`, {
       signal: controller.signal,
     });
 
@@ -56,6 +57,7 @@ async function checkProxyHealth(): Promise<ProxyHealth> {
 
 interface ProxyProviderProps {
   children: ReactNode;
+  proxyBaseUrl?: string;
 }
 
 const noopRecheck = async (): Promise<ProxyHealth> => ({
@@ -66,16 +68,20 @@ const noopRecheck = async (): Promise<ProxyHealth> => ({
 const ProxyContext = createContext<ProxyState>({
   available: false,
   sessionId: null,
+  proxyBaseUrl: "/proxy-api",
   recheckSession: noopRecheck,
 });
 
-export function ProxyProvider({ children }: ProxyProviderProps) {
+export function ProxyProvider({
+  children,
+  proxyBaseUrl = PROXY_BASE_URL,
+}: ProxyProviderProps) {
   const [health, setHealth] = useState<ProxyHealth>({
     available: false,
     sessionId: null,
   });
 
-  const applyHealthResult = useCallback((result: ProxyHealth) => {
+  const applyHealthResult = useCallback((result: ProxyHealth): ProxyHealth => {
     setHealth((prev) =>
       prev.available === result.available && prev.sessionId === result.sessionId
         ? prev
@@ -86,22 +92,22 @@ export function ProxyProvider({ children }: ProxyProviderProps) {
 
   useEffect(() => {
     let cancelled = false;
-    void checkProxyHealth().then((result) => {
+    void checkProxyHealth(proxyBaseUrl).then((result) => {
       if (!cancelled) applyHealthResult(result);
     });
     return () => {
       cancelled = true;
     };
-  }, [applyHealthResult]);
+  }, [applyHealthResult, proxyBaseUrl]);
 
   const recheckSession = useCallback(async (): Promise<ProxyHealth> => {
-    const result = await checkProxyHealth();
+    const result = await checkProxyHealth(proxyBaseUrl);
     return applyHealthResult(result);
-  }, [applyHealthResult]);
+  }, [applyHealthResult, proxyBaseUrl]);
 
   const state = useMemo(
-    () => ({ ...health, recheckSession }),
-    [health, recheckSession],
+    () => ({ ...health, proxyBaseUrl, recheckSession }),
+    [health, proxyBaseUrl, recheckSession],
   );
 
   return (
