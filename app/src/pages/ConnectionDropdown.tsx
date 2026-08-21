@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronDown, Server, SlidersHorizontal } from "lucide-react";
+import { ChevronDown, Server } from "lucide-react";
 import { getConnections } from "@lib/connection/store";
 import type { Connection } from "@lib/connection/types";
 import { useClickOutside } from "@lib/hooks/useClickOutside";
+import { Button } from "@open-resource-discovery/ui-components";
 
 interface Props {
   currentConnectionId: string;
@@ -56,22 +57,24 @@ export function ConnectionDropdown({
             : "border-transparent text-muted-foreground hover:text-foreground"
         }`}
       >
-        <button
+        <Button
+          variant="ghost"
           onClick={() => {
             setOpen(false);
             if (hasResourceDetail) onReset();
           }}
-          className="py-3 pl-3 text-sm font-medium"
+          className="h-auto py-3 pl-3 text-sm font-medium"
         >
           {current?.name ?? currentConnectionId}
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => setOpen((o) => !o)}
-          className="px-1 py-3 pr-3"
+          className="h-auto px-1 py-3 pr-3"
           aria-label="Switch connection"
         >
           <ChevronDown className="h-3.5 w-3.5" />
-        </button>
+        </Button>
       </div>
 
       {open && (
@@ -83,16 +86,18 @@ export function ConnectionDropdown({
                 i === 0 ? "rounded-t-lg" : ""
               }`}
             >
-              <button
-                className="flex min-w-0 flex-1 items-center gap-2 text-left text-sm"
+              <Button
+                variant="ghost"
+                className="h-auto flex min-w-0 flex-1 items-center gap-2 text-left text-sm"
                 onClick={() => switchTo(conn)}
               >
                 <Server
                   className={`h-3.5 w-3.5 shrink-0 ${conn.id === currentConnectionId ? "text-primary" : "text-muted-foreground"}`}
                 />
                 <span className="truncate text-foreground">{conn.name}</span>
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setOpen(false);
                   void navigate({
@@ -100,24 +105,12 @@ export function ConnectionDropdown({
                     params: { id: conn.id },
                   });
                 }}
-                className="shrink-0 text-xs text-primary hover:underline"
+                className="h-auto shrink-0 text-xs text-primary hover:underline"
               >
                 Details
-              </button>
+              </Button>
             </div>
           ))}
-          <div className="border-t border-border/60">
-            <button
-              onClick={() => {
-                setOpen(false);
-                void navigate({ to: "/connections" });
-              }}
-              className="flex w-full items-center gap-2 rounded-b-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5 shrink-0" />
-              Manage connections
-            </button>
-          </div>
         </div>
       )}
     </div>

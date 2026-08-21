@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { Badge } from "@open-resource-discovery/ui-components";
+import { Badge, Button } from "@open-resource-discovery/ui-components";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
@@ -381,17 +381,18 @@ export function ResourceCard({
               {description}
             </p>
           )}
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setDescExpanded((v) => !v)}
             aria-expanded={descExpanded}
             aria-label={`${descExpanded ? "Collapse" : "Expand"} description for ${resource.title}`}
-            className="inline-flex items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="h-auto inline-flex items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <ChevronDown
               className={`h-3 w-3 transition-transform ${descExpanded ? "rotate-180" : ""}`}
             />
             {descExpanded ? "Less" : "More"}
-          </button>
+          </Button>
         </div>
       )}
       {resourceDefinitions && resourceDefinitions.length > 0 && (

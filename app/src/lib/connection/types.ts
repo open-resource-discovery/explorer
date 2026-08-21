@@ -1,4 +1,9 @@
 export type AuthType = "none" | "bearer" | "mtls";
+export const AUTH_TYPES = [
+  "none",
+  "bearer",
+  "mtls",
+] as const satisfies readonly AuthType[];
 
 export interface PerspectiveDocument {
   url: string;
