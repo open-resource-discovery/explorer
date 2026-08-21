@@ -36,8 +36,12 @@ function ConnectionDetailContent({
   const perspectives =
     perspectivesState.status === "ready" ? perspectivesState.perspectives : [];
 
-  const authLabel =
-    auth === "none" ? "No auth" : auth === "bearer" ? "Bearer token" : "mTLS";
+  const AUTH_LABELS: Record<AuthType, string> = {
+    none: "No auth",
+    bearer: "Bearer token",
+    mtls: "mTLS",
+  };
+  const authLabel = AUTH_LABELS[auth];
 
   const statusBadge =
     perspectivesState.status === "ready" ? (

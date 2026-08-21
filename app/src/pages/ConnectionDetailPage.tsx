@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { LayoutGrid, AlertTriangle } from "lucide-react";
 import { connectionDetailRoute } from "../router";
 import { getConnection } from "../lib/connection/store";
@@ -29,7 +30,7 @@ function ConnectionDetail({ connection }: { connection: Connection }) {
     );
   }
 
-  function renderPerspectiveAction(perspective: Perspective) {
+  function renderPerspectiveAction(perspective: Perspective): ReactNode {
     return (
       <Link
         to="/connections/$id/documents/$docId"

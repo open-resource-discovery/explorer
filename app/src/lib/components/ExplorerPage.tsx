@@ -1,15 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import type {
-  OrdDocument,
-  OrdConfiguration,
-} from "@open-resource-discovery/specification";
-import {
-  fetchOrdConfiguration,
-  mergeDocuments,
-  getFetchUrl,
-  getBaseUrl,
-} from "@lib/fetcher";
+import type { OrdDocument } from "@open-resource-discovery/specification";
+import { fetchOrdDocumentForPerspective } from "@lib/fetcher";
 import { ORDExplorer } from "@lib/components/explorer/ORDExplorer";
 import { ThemeProvider } from "@lib/hooks/useTheme.tsx";
 import { Loader2, AlertTriangle } from "lucide-react";
@@ -21,72 +13,39 @@ export interface ExplorerPageProps {
   prefetchDefinitions?: boolean;
 }
 
-interface UseOrdDocumentResult {
-  document: OrdDocument | null;
-  loading: boolean;
-  error: string | null;
-  retry: () => void;
-}
-
-const DEFAULT_PERSPECTIVE = "system-instance";
-
-function useOrdDocumentFromUrl(
-  ordConfigUrl: string,
-  perspectiveId: string,
-): UseOrdDocumentResult {
-  const [document, setDocument] = useState<OrdDocument | null>(null);
+function ExplorerPageContent({
+  ordConfigUrl,
+  perspectiveId,
+  className,
+  prefetchDefinitions = false,
+}: ExplorerPageProps): ReactNode {
+  const [document, setDocument] = useState<OrdDocument | undefined>(undefined);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [retryCount, setRetryCount] = useState(0);
 
   const retry = useCallback((): void => {
     setRetryCount((c) => c + 1);
   }, []);
 
-  useEffect(() => {
+  useEffect((): (() => void) => {
     let cancelled = false;
+    const controller = new AbortController();
 
     async function load(): Promise<void> {
       setLoading(true);
-      setError(null);
-      setDocument(null);
+      setError(undefined);
+      setDocument(undefined);
 
       try {
-        const config: OrdConfiguration =
-          await fetchOrdConfiguration(ordConfigUrl);
-        const baseUrl = getBaseUrl(ordConfigUrl, config.baseUrl);
-        const allEntries = config.openResourceDiscoveryV1?.documents ?? [];
-
-        const entries = allEntries.filter(
-          (e) =>
-            ((e as { perspective?: string }).perspective ??
-              DEFAULT_PERSPECTIVE) === perspectiveId,
+        const { document: doc } = await fetchOrdDocumentForPerspective(
+          ordConfigUrl,
+          perspectiveId,
+          undefined,
+          controller.signal,
         );
-
-        const docUrls = entries
-          .filter((e) => e.url?.trim())
-          .map((e) => getFetchUrl(baseUrl, e.url!));
-
-        if (docUrls.length === 0) {
-          throw new Error(
-            `No document URLs for perspective "${perspectiveId}"`,
-          );
-        }
-
-        const fetched = await Promise.all(
-          docUrls.map(async (url): Promise<OrdDocument> => {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
-            return (await res.json()) as OrdDocument;
-          }),
-        );
-
-        const merged = mergeDocuments(fetched);
-        const result =
-          merged.find((d) => d.perspective === perspectiveId) ?? merged[0];
-
-        if (!cancelled) setDocument(result ?? null);
-      } catch (err) {
+        if (!cancelled) setDocument(doc);
+      } catch (err: unknown) {
         if (!cancelled)
           setError(err instanceof Error ? err.message : String(err));
       } finally {
@@ -95,24 +54,11 @@ function useOrdDocumentFromUrl(
     }
 
     void load();
-    return () => {
+    return (): void => {
       cancelled = true;
+      controller.abort();
     };
   }, [ordConfigUrl, perspectiveId, retryCount]);
-
-  return { document, loading, error, retry };
-}
-
-function ExplorerPageContent({
-  ordConfigUrl,
-  perspectiveId,
-  className,
-  prefetchDefinitions = false,
-}: ExplorerPageProps): ReactNode {
-  const { document, loading, error, retry } = useOrdDocumentFromUrl(
-    ordConfigUrl,
-    perspectiveId,
-  );
 
   if (loading) {
     return (

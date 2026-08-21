@@ -13,7 +13,7 @@ import {
   Info,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import type { StatusResponse } from "@lib/status";
+import type { StatusResponse, UpdateStatus } from "@lib/status";
 import { ThemeRoot } from "@lib/components/ThemeRoot";
 
 export type { StatusResponse };
@@ -21,8 +21,6 @@ export type { StatusResponse };
 export interface ServerStatusPanelProps {
   status: StatusResponse;
 }
-
-type UpdateStatus = NonNullable<StatusResponse["content"]>["updateStatus"];
 
 const UPDATE_STATUS_CONFIG: Record<
   UpdateStatus,
@@ -238,26 +236,24 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
                   />
                 </div>
               )}
-              {content.lastWebhookTime !== null &&
-                content.lastWebhookTime !== undefined && (
-                  <div className="px-5 py-4">
-                    <DataRow
-                      label="Last webhook"
-                      value={new Date(content.lastWebhookTime).toLocaleString()}
-                    />
-                  </div>
-                )}
-              {content.scheduledUpdateTime !== null &&
-                content.scheduledUpdateTime !== undefined && (
-                  <div className="px-5 py-4">
-                    <DataRow
-                      label="Next update"
-                      value={new Date(
-                        content.scheduledUpdateTime,
-                      ).toLocaleString()}
-                    />
-                  </div>
-                )}
+              {content.lastWebhookTime !== undefined && (
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Last webhook"
+                    value={new Date(content.lastWebhookTime).toLocaleString()}
+                  />
+                </div>
+              )}
+              {content.scheduledUpdateTime !== undefined && (
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Next update"
+                    value={new Date(
+                      content.scheduledUpdateTime,
+                    ).toLocaleString()}
+                  />
+                </div>
+              )}
               {content.failedUpdates > 0 && (
                 <div className="px-5 py-4">
                   <DataRow
