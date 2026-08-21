@@ -19,7 +19,7 @@ export function localOrdPlugin(): Plugin {
                 },
                 {
                   url: "open-resource-discovery/v1/documents/sample-operator",
-                  perspective: "operator",
+                  perspective: "system-instance",
                   accessStrategies: [{ type: "open" }],
                 },
               ],

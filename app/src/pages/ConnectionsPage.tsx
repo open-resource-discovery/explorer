@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { getConnections, deleteConnection } from "../lib/connection/store";
 import type { Connection } from "../lib/connection/types";
+import { Button } from "@open-resource-discovery/ui-components";
 
 function ConnectionCard({
   conn,
@@ -53,15 +54,17 @@ function ConnectionCard({
           </div>
         </div>
         <div className="relative" ref={menuRef}>
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setMenuOpen((o) => !o)}
-            className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="h-auto rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <MoreHorizontal className="h-4 w-4" />
-          </button>
+          </Button>
           {menuOpen && (
             <div className="absolute right-0 top-full z-50 mt-1 w-36 rounded-lg border border-border bg-background shadow-md">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setMenuOpen(false);
                   void navigate({
@@ -69,12 +72,13 @@ function ConnectionCard({
                     params: { id: conn.id },
                   });
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-t-lg"
+                className="h-auto flex w-full items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-t-lg"
               >
                 <Pencil className="h-3.5 w-3.5" />
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setMenuOpen(false);
                   try {
@@ -84,11 +88,11 @@ function ConnectionCard({
                     // localStorage write failed; state unchanged
                   }
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-accent rounded-b-lg"
+                className="h-auto flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-accent rounded-b-lg"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 Delete
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -137,13 +141,10 @@ export function ConnectionsPage() {
               resources it exposes.
             </p>
           </div>
-          <button
-            onClick={() => void navigate({ to: "/connections/new" })}
-            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-          >
+          <Button onClick={() => void navigate({ to: "/connections/new" })}>
             <Plus className="h-4 w-4" />
             Add connection
-          </button>
+          </Button>
         </div>
 
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
