@@ -1,6 +1,6 @@
 import {
   Server,
-  RefreshCw,
+  Database,
   Clock,
   HardDrive,
   Cpu,
@@ -145,7 +145,7 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
     : undefined;
 
   return (
-    <div className="min-h-full bg-background">
+    <div className="h-full overflow-auto bg-background">
       <div className="mx-auto max-w-[1080px] space-y-6 px-8 py-8">
         {/* Header */}
         <div className="flex items-center gap-4">
@@ -183,7 +183,7 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
           <div className="overflow-hidden rounded-xl border border-border bg-background">
             <div className="border-b border-border px-5 py-3">
               <SectionHeader
-                icon={<RefreshCw className="h-3.5 w-3.5" />}
+                icon={<Database className="h-3.5 w-3.5" />}
                 title="Content"
               />
             </div>

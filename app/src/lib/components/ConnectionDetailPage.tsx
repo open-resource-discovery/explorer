@@ -62,7 +62,7 @@ function ConnectionDetailContent({
     );
 
   return (
-    <div className="min-h-full bg-background">
+    <div className="h-full overflow-auto bg-background">
       <div className="mx-auto max-w-[1080px] space-y-6 px-8 py-8">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-4">

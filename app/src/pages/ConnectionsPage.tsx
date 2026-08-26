@@ -127,7 +127,7 @@ export function ConnectionsPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-full bg-background">
+    <div className="h-full overflow-auto bg-background">
       <div className="mx-auto max-w-[1080px] px-8 py-8">
         <div className="mb-6 flex items-start justify-between">
           <div>
