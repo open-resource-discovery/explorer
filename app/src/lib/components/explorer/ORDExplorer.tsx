@@ -5,13 +5,9 @@ import { DefinitionContentProvider } from "@lib/context/DefinitionContentProvide
 import { NavExtensionContext } from "@lib/context/NavExtensionContext";
 import { ThemeRootContent } from "@lib/components/ThemeRoot";
 import { DashboardPage } from "./pages/DashboardPage";
-import { PackagesPage } from "./pages/PackagesPage";
-import { ConsumptionBundlesPage } from "./pages/ConsumptionBundlesPage";
 import { PackageDetailPage } from "./pages/PackageDetailPage";
 import { ConsumptionBundleDetailPage } from "./pages/ConsumptionBundleDetailPage";
-import { ProductsPage } from "./pages/ProductsPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
-import { GroupsPage } from "./pages/GroupsPage";
 import { GroupDetailPage } from "./pages/GroupDetailPage";
 import { ResourceDetailPage } from "./pages/ResourceDetailPage";
 import { ExplorerSidebar } from "./ExplorerSidebar";
@@ -118,7 +114,11 @@ export function ORDExplorer({
               >
                 <div className="w-full max-w-[1080px] mx-auto">
                   {(selection.id === "dashboard" ||
-                    selection.id === "resourceList") && (
+                    selection.id === "resourceList" ||
+                    selection.id === "packages" ||
+                    selection.id === "consumptionBundles" ||
+                    selection.id === "products" ||
+                    selection.id === "groups") && (
                     <DashboardPage
                       query={query}
                       filters={deferredFilters}
@@ -141,17 +141,11 @@ export function ORDExplorer({
                       onSelect={setSelection}
                     />
                   )}
-                  {selection.id === "packages" && (
-                    <PackagesPage onSelect={setSelection} />
-                  )}
                   {selection.id === "packageDetail" && (
                     <PackageDetailPage
                       ordId={selection.ordId}
                       onSelect={setSelection}
                     />
-                  )}
-                  {selection.id === "consumptionBundles" && (
-                    <ConsumptionBundlesPage onSelect={setSelection} />
                   )}
                   {selection.id === "consumptionBundleDetail" && (
                     <ConsumptionBundleDetailPage
@@ -159,17 +153,11 @@ export function ORDExplorer({
                       onSelect={setSelection}
                     />
                   )}
-                  {selection.id === "products" && (
-                    <ProductsPage onSelect={setSelection} />
-                  )}
                   {selection.id === "productDetail" && (
                     <ProductDetailPage
                       ordId={selection.ordId}
                       onSelect={setSelection}
                     />
-                  )}
-                  {selection.id === "groups" && (
-                    <GroupsPage onSelect={setSelection} />
                   )}
                   {selection.id === "groupDetail" && (
                     <GroupDetailPage

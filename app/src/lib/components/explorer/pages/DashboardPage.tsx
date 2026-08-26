@@ -2,6 +2,10 @@ import { useOrdDocument } from "@lib/context/OrdDocumentContext";
 import { Box, Package, ShoppingBag, Users, Building2 } from "lucide-react";
 import type { ResourceTypeGroup } from "../ORDExplorer";
 import { ResourceListPage } from "./ResourceListPage";
+import { PackagesPage } from "./PackagesPage";
+import { ConsumptionBundlesPage } from "./ConsumptionBundlesPage";
+import { ProductsPage } from "./ProductsPage";
+import { GroupsPage } from "./GroupsPage";
 import type { SearchFilters } from "../SearchBar";
 import type { Selection } from "../useNavState";
 import type { ReactNode } from "react";
@@ -84,7 +88,7 @@ function DashboardCard({
         disabled={isEmpty}
         aria-pressed={selected}
         data-testid={testId}
-        className={`group h-auto flex flex-col gap-2 rounded-[var(--ord-radius)] border p-3 text-left shadow-sm transition-colors disabled:pointer-events-none disabled:opacity-40 ${
+        className={`group h-auto w-full items-start whitespace-normal flex flex-col gap-2 rounded-[var(--ord-radius)] border p-3 text-left shadow-sm transition-colors disabled:pointer-events-none disabled:opacity-40 ${
           selected
             ? "border-primary bg-primary/5 ring-1 ring-primary"
             : "border-card-border bg-card-bg hover:bg-muted/50"
@@ -285,6 +289,12 @@ export function DashboardPage({
             onSelect={(ordId) => onSelectDetail(selection.resourceType, ordId)}
           />
         )}
+        {selection.id === "packages" && <PackagesPage onSelect={onSelect} />}
+        {selection.id === "consumptionBundles" && (
+          <ConsumptionBundlesPage onSelect={onSelect} />
+        )}
+        {selection.id === "products" && <ProductsPage onSelect={onSelect} />}
+        {selection.id === "groups" && <GroupsPage onSelect={onSelect} />}
       </div>
     </div>
   );
