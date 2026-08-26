@@ -4,6 +4,7 @@ import type { OrdDocument } from "@open-resource-discovery/specification";
 import { fetchOrdDocumentForPerspective } from "@lib/fetcher";
 import { ORDExplorer } from "@lib/components/explorer/ORDExplorer";
 import { ThemeProvider } from "@lib/hooks/useTheme.tsx";
+import { cn } from "@lib/utils/cn";
 import { Loader2, AlertTriangle } from "lucide-react";
 
 export interface ExplorerPageProps {
@@ -90,7 +91,7 @@ function ExplorerPageContent({
   return (
     <ORDExplorer
       document={document}
-      className={className}
+      className={cn("h-full", className)}
       prefetchDefinitions={prefetchDefinitions}
     />
   );
