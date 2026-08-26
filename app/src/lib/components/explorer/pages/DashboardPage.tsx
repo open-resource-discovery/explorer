@@ -88,7 +88,7 @@ function DashboardCard({
         disabled={isEmpty}
         aria-pressed={selected}
         data-testid={testId}
-        className={`group h-auto w-full items-start whitespace-normal flex flex-col gap-2 rounded-[var(--ord-radius)] border p-3 text-left shadow-sm transition-colors disabled:pointer-events-none disabled:opacity-40 ${
+        className={`group h-auto w-full items-start justify-start whitespace-normal flex flex-col gap-2 rounded-[var(--ord-radius)] border p-3 text-left shadow-sm transition-colors disabled:pointer-events-none disabled:opacity-40 ${
           selected
             ? "border-primary bg-primary/5 ring-1 ring-primary"
             : "border-card-border bg-card-bg hover:bg-muted/50"
