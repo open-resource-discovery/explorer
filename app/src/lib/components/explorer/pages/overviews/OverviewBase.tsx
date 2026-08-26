@@ -102,6 +102,7 @@ export function OverviewBase({
           <SimpleDialog
             open={previewOpen}
             onOpenChange={setPreviewOpen}
+            trigger={null}
             title={`Preview — ${primaryDef.type}`}
             className="w-[95vw] max-w-[95vw] h-[90vh] flex flex-col"
           >
