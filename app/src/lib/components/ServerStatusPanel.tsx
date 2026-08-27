@@ -11,10 +11,13 @@ import {
   Loader2,
   Settings,
   Info,
+  Moon,
+  Sun,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import type { StatusResponse, UpdateStatus } from "@lib/status";
 import { ThemeRoot } from "@lib/components/ThemeRoot";
+import { useTheme } from "@lib/hooks/useTheme";
 
 export type { StatusResponse };
 
@@ -139,6 +142,7 @@ function DataRow({
 
 function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
   const { content, settings, systemMetrics } = status;
+  const { resolvedTheme, setTheme } = useTheme();
 
   const updateStatusConfig = content
     ? UPDATE_STATUS_CONFIG[content.updateStatus]
@@ -148,34 +152,49 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
     <div className="h-full overflow-auto bg-background">
       <div className="mx-auto max-w-[1080px] space-y-6 px-8 py-8">
         {/* Header */}
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-primary/10">
-            <Server className="h-6 w-6 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Provider Server
-            </h1>
-            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
-                v{status.version}
-              </span>
-              {status.versionInfo.isOutdated && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400">
-                  <AlertTriangle className="h-3 w-3" />
-                  Update available: v{status.versionInfo.latest}
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-primary/10">
+              <Server className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">
+                Provider Server
+              </h1>
+              <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
+                  v{status.version}
                 </span>
-              )}
-              {updateStatusConfig !== undefined && (
-                <span
-                  className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${updateStatusConfig.className}`}
-                >
-                  {updateStatusConfig.icon}
-                  {updateStatusConfig.label}
-                </span>
-              )}
+                {status.versionInfo.isOutdated && (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400">
+                    <AlertTriangle className="h-3 w-3" />
+                    Update available: v{status.versionInfo.latest}
+                  </span>
+                )}
+                {updateStatusConfig !== undefined && (
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${updateStatusConfig.className}`}
+                  >
+                    {updateStatusConfig.icon}
+                    {updateStatusConfig.label}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
+          <button
+            onClick={(): void =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
+            aria-label="Toggle theme"
+            className="shrink-0 rounded p-1.5 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
+          >
+            {resolvedTheme === "dark" ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
+          </button>
         </div>
 
         {/* Content status */}
