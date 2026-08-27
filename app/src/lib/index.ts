@@ -1,6 +1,9 @@
 import "./styles.css";
 
-export { ConnectionDetailPage } from "./components/ConnectionDetailPage";
+export {
+  ConnectionDetailPage,
+  ConnectionDetailSection,
+} from "./components/ConnectionDetailPage";
 export type { ConnectionDetailPageProps } from "./components/ConnectionDetailPage";
 
 export { ExplorerPage } from "./components/ExplorerPage";

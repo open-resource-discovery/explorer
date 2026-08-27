@@ -23,6 +23,7 @@ export type { StatusResponse };
 
 export interface ServerStatusPanelProps {
   status: StatusResponse;
+  afterContent?: ReactNode;
 }
 
 const UPDATE_STATUS_CONFIG: Record<
@@ -140,7 +141,10 @@ function DataRow({
   );
 }
 
-function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
+function ServerStatusContent({
+  status,
+  afterContent,
+}: ServerStatusPanelProps): ReactNode {
   const { content, settings, systemMetrics } = status;
   const { resolvedTheme, setTheme } = useTheme();
 
@@ -302,6 +306,8 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
             )}
           </div>
         )}
+
+        {afterContent}
 
         {/* Settings */}
         {settings !== undefined && (
