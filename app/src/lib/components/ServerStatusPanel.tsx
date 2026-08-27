@@ -303,6 +303,40 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
           </div>
         )}
 
+        {/* System metrics */}
+        {systemMetrics !== undefined && (
+          <div className="overflow-hidden rounded-xl border border-border bg-background">
+            <div className="border-b border-border px-5 py-3">
+              <SectionHeader
+                icon={<Info className="h-3.5 w-3.5" />}
+                title="System"
+              />
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              <div className="px-5 py-4">
+                <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <Cpu className="h-3.5 w-3.5" />
+                  Memory
+                </div>
+                <UsageBar
+                  used={systemMetrics.memory.used}
+                  total={systemMetrics.memory.total}
+                />
+              </div>
+              <div className="px-5 py-4">
+                <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <HardDrive className="h-3.5 w-3.5" />
+                  Disk
+                </div>
+                <UsageBar
+                  used={systemMetrics.disk.used}
+                  total={systemMetrics.disk.total}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Settings */}
         {settings !== undefined && (
           <div className="overflow-hidden rounded-xl border border-border bg-background">
@@ -362,40 +396,6 @@ function ServerStatusContent({ status }: ServerStatusPanelProps): ReactNode {
                 <DataRow
                   label="Server started"
                   value={new Date(settings.serverStartupTime).toLocaleString()}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* System metrics */}
-        {systemMetrics !== undefined && (
-          <div className="overflow-hidden rounded-xl border border-border bg-background">
-            <div className="border-b border-border px-5 py-3">
-              <SectionHeader
-                icon={<Info className="h-3.5 w-3.5" />}
-                title="System"
-              />
-            </div>
-            <div className="grid grid-cols-2 divide-x divide-border">
-              <div className="px-5 py-4">
-                <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <Cpu className="h-3.5 w-3.5" />
-                  Memory
-                </div>
-                <UsageBar
-                  used={systemMetrics.memory.used}
-                  total={systemMetrics.memory.total}
-                />
-              </div>
-              <div className="px-5 py-4">
-                <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <HardDrive className="h-3.5 w-3.5" />
-                  Disk
-                </div>
-                <UsageBar
-                  used={systemMetrics.disk.used}
-                  total={systemMetrics.disk.total}
                 />
               </div>
             </div>
