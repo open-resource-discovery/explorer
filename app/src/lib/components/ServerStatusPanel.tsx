@@ -24,6 +24,7 @@ export type { StatusResponse };
 export interface ServerStatusPanelProps {
   status: StatusResponse;
   afterContent?: ReactNode;
+  headerActions?: ReactNode;
 }
 
 const UPDATE_STATUS_CONFIG: Record<
@@ -144,6 +145,7 @@ function DataRow({
 function ServerStatusContent({
   status,
   afterContent,
+  headerActions,
 }: ServerStatusPanelProps): ReactNode {
   const { content, settings, systemMetrics } = status;
   const { resolvedTheme, setTheme } = useTheme();
@@ -186,19 +188,22 @@ function ServerStatusContent({
               </div>
             </div>
           </div>
-          <button
-            onClick={(): void =>
-              setTheme(resolvedTheme === "dark" ? "light" : "dark")
-            }
-            aria-label="Toggle theme"
-            className="shrink-0 rounded p-1.5 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
-          >
-            {resolvedTheme === "dark" ? (
-              <Sun className="h-4 w-4" />
-            ) : (
-              <Moon className="h-4 w-4" />
-            )}
-          </button>
+          <div className="flex shrink-0 items-center gap-2">
+            {headerActions}
+            <button
+              onClick={(): void =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              aria-label="Toggle theme"
+              className="rounded p-1.5 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              {resolvedTheme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Content status */}
