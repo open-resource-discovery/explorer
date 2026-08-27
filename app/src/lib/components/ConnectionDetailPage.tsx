@@ -9,13 +9,10 @@ import {
   Layers,
   XCircle,
   Loader2,
-  Moon,
-  Sun,
 } from "lucide-react";
 import type { Perspective, AuthType } from "@lib/connection/types";
 import type { PerspectivesState } from "@lib/hooks/usePerspectives";
 import { ThemeRoot } from "@lib/components/ThemeRoot";
-import { useTheme } from "@lib/hooks/useTheme";
 
 export interface ConnectionDetailPageProps {
   ordConfigUrl: string;
@@ -38,7 +35,6 @@ function ConnectionDetailContent({
 }: ConnectionDetailPageProps): ReactNode {
   const perspectives =
     perspectivesState.status === "ready" ? perspectivesState.perspectives : [];
-  const { resolvedTheme, setTheme } = useTheme();
 
   const AUTH_LABELS: Record<AuthType, string> = {
     none: "No auth",
@@ -91,19 +87,6 @@ function ConnectionDetailContent({
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-2">
-            <button
-              onClick={(): void =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
-              aria-label="Toggle theme"
-              className="rounded p-1.5 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
-            >
-              {resolvedTheme === "dark" ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </button>
             <button
               onClick={onRefresh}
               disabled={perspectivesState.status === "loading"}
