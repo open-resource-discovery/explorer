@@ -24,7 +24,9 @@ export type { StatusResponse };
 export interface ServerStatusPanelProps {
   status: StatusResponse;
   afterContent?: ReactNode;
+  footerContent?: ReactNode;
   headerActions?: ReactNode;
+  collapsibleSettings?: boolean;
 }
 
 const UPDATE_STATUS_CONFIG: Record<
@@ -145,7 +147,9 @@ function DataRow({
 function ServerStatusContent({
   status,
   afterContent,
+  footerContent,
   headerActions,
+  collapsibleSettings,
 }: ServerStatusPanelProps): ReactNode {
   const { content, settings, systemMetrics } = status;
   const { resolvedTheme, setTheme } = useTheme();
@@ -312,73 +316,6 @@ function ServerStatusContent({
           </div>
         )}
 
-        {afterContent}
-
-        {/* Settings */}
-        {settings !== undefined && (
-          <div className="overflow-hidden rounded-xl border border-border bg-background">
-            <div className="border-b border-border px-5 py-3">
-              <SectionHeader
-                icon={<Settings className="h-3.5 w-3.5" />}
-                title="Settings"
-              />
-            </div>
-            <div className="grid grid-cols-2 divide-x divide-y divide-border">
-              <div className="px-5 py-4">
-                <DataRow label="Source type" value={settings.sourceType} />
-              </div>
-              <div className="px-5 py-4">
-                <DataRow label="Base URL" value={settings.baseUrl || "—"} />
-              </div>
-              <div className="px-5 py-4">
-                <DataRow
-                  label="Directory"
-                  value={
-                    <code className="break-all font-mono text-sm">
-                      {settings.directory}
-                    </code>
-                  }
-                />
-              </div>
-              <div className="px-5 py-4">
-                <DataRow
-                  label="Auth methods"
-                  value={settings.authMethods || "—"}
-                />
-              </div>
-              {settings.githubRepository !== undefined &&
-                settings.githubRepository !== "" && (
-                  <div className="px-5 py-4">
-                    <DataRow
-                      label="GitHub repository"
-                      value={settings.githubRepository}
-                    />
-                  </div>
-                )}
-              {settings.githubBranch !== undefined &&
-                settings.githubBranch !== "" && (
-                  <div className="px-5 py-4">
-                    <DataRow label="Branch" value={settings.githubBranch} />
-                  </div>
-                )}
-              {settings.updateDelay !== undefined && (
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Update delay"
-                    value={`${settings.updateDelay}s`}
-                  />
-                </div>
-              )}
-              <div className="px-5 py-4">
-                <DataRow
-                  label="Server started"
-                  value={new Date(settings.serverStartupTime).toLocaleString()}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* System metrics */}
         {systemMetrics !== undefined && (
           <div className="overflow-hidden rounded-xl border border-border bg-background">
@@ -412,6 +349,142 @@ function ServerStatusContent({
             </div>
           </div>
         )}
+
+        {afterContent}
+
+        {/* Settings */}
+        {settings !== undefined &&
+          (collapsibleSettings === true ? (
+            <details className="overflow-hidden rounded-xl border border-border bg-background">
+              <summary className="flex cursor-pointer list-none items-center gap-2 border-b border-border px-5 py-3 [&::-webkit-details-marker]:hidden">
+                <Settings className="h-3.5 w-3.5" />
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Details
+                </span>
+              </summary>
+              <div className="grid grid-cols-2 divide-x divide-y divide-border">
+                <div className="px-5 py-4">
+                  <DataRow label="Source type" value={settings.sourceType} />
+                </div>
+                <div className="px-5 py-4">
+                  <DataRow label="Base URL" value={settings.baseUrl || "—"} />
+                </div>
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Directory"
+                    value={
+                      <code className="break-all font-mono text-sm">
+                        {settings.directory}
+                      </code>
+                    }
+                  />
+                </div>
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Auth methods"
+                    value={settings.authMethods || "—"}
+                  />
+                </div>
+                {settings.githubRepository !== undefined &&
+                  settings.githubRepository !== "" && (
+                    <div className="px-5 py-4">
+                      <DataRow
+                        label="GitHub repository"
+                        value={settings.githubRepository}
+                      />
+                    </div>
+                  )}
+                {settings.githubBranch !== undefined &&
+                  settings.githubBranch !== "" && (
+                    <div className="px-5 py-4">
+                      <DataRow label="Branch" value={settings.githubBranch} />
+                    </div>
+                  )}
+                {settings.updateDelay !== undefined && (
+                  <div className="px-5 py-4">
+                    <DataRow
+                      label="Update delay"
+                      value={`${settings.updateDelay}s`}
+                    />
+                  </div>
+                )}
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Server started"
+                    value={new Date(
+                      settings.serverStartupTime,
+                    ).toLocaleString()}
+                  />
+                </div>
+              </div>
+            </details>
+          ) : (
+            <div className="overflow-hidden rounded-xl border border-border bg-background">
+              <div className="border-b border-border px-5 py-3">
+                <SectionHeader
+                  icon={<Settings className="h-3.5 w-3.5" />}
+                  title="Settings"
+                />
+              </div>
+              <div className="grid grid-cols-2 divide-x divide-y divide-border">
+                <div className="px-5 py-4">
+                  <DataRow label="Source type" value={settings.sourceType} />
+                </div>
+                <div className="px-5 py-4">
+                  <DataRow label="Base URL" value={settings.baseUrl || "—"} />
+                </div>
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Directory"
+                    value={
+                      <code className="break-all font-mono text-sm">
+                        {settings.directory}
+                      </code>
+                    }
+                  />
+                </div>
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Auth methods"
+                    value={settings.authMethods || "—"}
+                  />
+                </div>
+                {settings.githubRepository !== undefined &&
+                  settings.githubRepository !== "" && (
+                    <div className="px-5 py-4">
+                      <DataRow
+                        label="GitHub repository"
+                        value={settings.githubRepository}
+                      />
+                    </div>
+                  )}
+                {settings.githubBranch !== undefined &&
+                  settings.githubBranch !== "" && (
+                    <div className="px-5 py-4">
+                      <DataRow label="Branch" value={settings.githubBranch} />
+                    </div>
+                  )}
+                {settings.updateDelay !== undefined && (
+                  <div className="px-5 py-4">
+                    <DataRow
+                      label="Update delay"
+                      value={`${settings.updateDelay}s`}
+                    />
+                  </div>
+                )}
+                <div className="px-5 py-4">
+                  <DataRow
+                    label="Server started"
+                    value={new Date(
+                      settings.serverStartupTime,
+                    ).toLocaleString()}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+
+        {footerContent}
       </div>
     </div>
   );
