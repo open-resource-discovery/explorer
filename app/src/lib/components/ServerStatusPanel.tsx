@@ -62,6 +62,12 @@ const UPDATE_STATUS_CONFIG: Record<
   },
 };
 
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).getTime() > 0
+    ? new Date(dateStr).toLocaleString()
+    : "—";
+}
+
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
   const k = 1024;
@@ -198,7 +204,7 @@ function ServerStatusContent({
               <div className="px-5 py-4">
                 <DataRow
                   label="Updated"
-                  value={new Date(content.lastFetchTime).toLocaleString()}
+                  value={formatDate(content.lastFetchTime)}
                 />
               </div>
             )}
@@ -234,7 +240,7 @@ function ServerStatusContent({
               <div className="px-5 py-4">
                 <DataRow
                   label="Last webhook"
-                  value={new Date(content.lastWebhookTime).toLocaleString()}
+                  value={formatDate(content.lastWebhookTime)}
                 />
               </div>
             )}
@@ -243,9 +249,7 @@ function ServerStatusContent({
                 <div className="px-5 py-4">
                   <DataRow
                     label="Next update"
-                    value={new Date(
-                      content.scheduledUpdateTime,
-                    ).toLocaleString()}
+                    value={formatDate(content.scheduledUpdateTime)}
                   />
                 </div>
               )}
