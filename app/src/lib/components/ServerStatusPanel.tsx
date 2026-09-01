@@ -1,6 +1,5 @@
 import {
   Server,
-  Database,
   Clock,
   HardDrive,
   Cpu,
@@ -10,7 +9,6 @@ import {
   GitCommit,
   Loader2,
   Settings,
-  Info,
   Moon,
   Sun,
 } from "lucide-react";
@@ -26,7 +24,6 @@ export interface ServerStatusPanelProps {
   afterContent?: ReactNode;
   footerContent?: ReactNode;
   headerActions?: ReactNode;
-  collapsibleSettings?: boolean;
 }
 
 const UPDATE_STATUS_CONFIG: Record<
@@ -112,21 +109,6 @@ function UsageBar({ used, total }: { used: number; total: number }): ReactNode {
   );
 }
 
-function SectionHeader({
-  icon,
-  title,
-}: {
-  icon: ReactNode;
-  title: string;
-}): ReactNode {
-  return (
-    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-      {icon}
-      {title}
-    </div>
-  );
-}
-
 function DataRow({
   label,
   value,
@@ -149,7 +131,6 @@ function ServerStatusContent({
   afterContent,
   footerContent,
   headerActions,
-  collapsibleSettings,
 }: ServerStatusPanelProps): ReactNode {
   const { content, settings, systemMetrics } = status;
   const { resolvedTheme, setTheme } = useTheme();
@@ -210,73 +191,55 @@ function ServerStatusContent({
           </div>
         </div>
 
-        {/* Content status */}
-        {content !== undefined && (
-          <div className="overflow-hidden rounded-xl border border-border bg-background">
-            <div className="border-b border-border px-5 py-3">
-              <SectionHeader
-                icon={<Database className="h-3.5 w-3.5" />}
-                title="Content"
-              />
-            </div>
-            <div className="grid grid-cols-2 divide-x divide-y divide-border">
-              {content.currentVersion !== null && (
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Current version"
-                    value={
-                      <code className="font-mono text-sm">
-                        {content.currentVersion}
-                      </code>
-                    }
-                  />
-                </div>
-              )}
-              {content.commitHash !== null && (
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Commit"
-                    value={
-                      <span className="flex items-center gap-1">
-                        <GitCommit className="h-3.5 w-3.5 text-muted-foreground" />
-                        {settings?.githubRepository !== undefined &&
-                        settings.githubRepository !== "" &&
-                        content.commitHash !== "current" ? (
-                          <a
-                            href={`${getGitHubBaseUrl(settings.githubUrl)}/${settings.githubRepository}/tree/${content.commitHash}/data`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="font-mono text-sm hover:underline"
-                          >
-                            {content.commitHash.slice(0, 7)}
-                          </a>
-                        ) : (
-                          <code className="font-mono text-sm">
-                            {content.commitHash.slice(0, 7)}
-                          </code>
-                        )}
-                      </span>
-                    }
-                  />
-                </div>
-              )}
-              {content.lastFetchTime !== null && (
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Last fetch"
-                    value={new Date(content.lastFetchTime).toLocaleString()}
-                  />
-                </div>
-              )}
-              {content.lastWebhookTime !== undefined && (
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Last webhook"
-                    value={new Date(content.lastWebhookTime).toLocaleString()}
-                  />
-                </div>
-              )}
-              {content.scheduledUpdateTime !== undefined && (
+        {/* Unified info card */}
+        <div className="overflow-hidden rounded-xl border border-border bg-background">
+          <div className="grid grid-cols-2 divide-x divide-y divide-border">
+            {content !== undefined && content.lastFetchTime !== null && (
+              <div className="px-5 py-4">
+                <DataRow
+                  label="Updated"
+                  value={new Date(content.lastFetchTime).toLocaleString()}
+                />
+              </div>
+            )}
+            {content !== undefined && content.commitHash !== null && (
+              <div className="px-5 py-4">
+                <DataRow
+                  label="Commit"
+                  value={
+                    <span className="flex items-center gap-1">
+                      <GitCommit className="h-3.5 w-3.5 text-muted-foreground" />
+                      {settings?.githubRepository !== undefined &&
+                      settings.githubRepository !== "" &&
+                      content.commitHash !== "current" ? (
+                        <a
+                          href={`${getGitHubBaseUrl(settings.githubUrl)}/${settings.githubRepository}/tree/${content.commitHash}/data`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-mono text-sm hover:underline"
+                        >
+                          {content.commitHash.slice(0, 7)}
+                        </a>
+                      ) : (
+                        <code className="font-mono text-sm">
+                          {content.commitHash.slice(0, 7)}
+                        </code>
+                      )}
+                    </span>
+                  }
+                />
+              </div>
+            )}
+            {content !== undefined && content.lastWebhookTime !== undefined && (
+              <div className="px-5 py-4">
+                <DataRow
+                  label="Last webhook"
+                  value={new Date(content.lastWebhookTime).toLocaleString()}
+                />
+              </div>
+            )}
+            {content !== undefined &&
+              content.scheduledUpdateTime !== undefined && (
                 <div className="px-5 py-4">
                   <DataRow
                     label="Next update"
@@ -286,83 +249,80 @@ function ServerStatusContent({
                   />
                 </div>
               )}
-              {content.failedUpdates > 0 && (
+            {systemMetrics !== undefined && (
+              <>
                 <div className="px-5 py-4">
-                  <DataRow
-                    label="Failed updates"
-                    value={
-                      <span className="text-destructive">
-                        {content.failedUpdates}
-                      </span>
-                    }
+                  <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Cpu className="h-3.5 w-3.5" />
+                    Memory
+                  </div>
+                  <UsageBar
+                    used={systemMetrics.memory.used}
+                    total={systemMetrics.memory.total}
                   />
                 </div>
-              )}
-            </div>
-            {content.lastError !== undefined && (
-              <div className="flex items-start gap-2 border-t border-border bg-destructive/5 p-4">
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
-                <div>
-                  <p className="text-sm font-medium text-destructive">
-                    Last error ({content.lastError.httpStatusCode}{" "}
-                    {content.lastError.httpStatusText})
-                  </p>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    {content.lastError.item.message}
-                  </p>
+                <div className="px-5 py-4">
+                  <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <HardDrive className="h-3.5 w-3.5" />
+                    Disk
+                  </div>
+                  <UsageBar
+                    used={systemMetrics.disk.used}
+                    total={systemMetrics.disk.total}
+                  />
                 </div>
+              </>
+            )}
+            {content !== undefined && content.failedUpdates > 0 && (
+              <div className="px-5 py-4">
+                <DataRow
+                  label="Failed updates"
+                  value={
+                    <span className="text-destructive">
+                      {content.failedUpdates}
+                    </span>
+                  }
+                />
               </div>
             )}
           </div>
-        )}
 
-        {/* System metrics */}
-        {systemMetrics !== undefined && (
-          <div className="overflow-hidden rounded-xl border border-border bg-background">
-            <div className="border-b border-border px-5 py-3">
-              <SectionHeader
-                icon={<Info className="h-3.5 w-3.5" />}
-                title="System"
-              />
-            </div>
-            <div className="grid grid-cols-2 divide-x divide-border">
-              <div className="px-5 py-4">
-                <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <Cpu className="h-3.5 w-3.5" />
-                  Memory
-                </div>
-                <UsageBar
-                  used={systemMetrics.memory.used}
-                  total={systemMetrics.memory.total}
-                />
-              </div>
-              <div className="px-5 py-4">
-                <div className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <HardDrive className="h-3.5 w-3.5" />
-                  Disk
-                </div>
-                <UsageBar
-                  used={systemMetrics.disk.used}
-                  total={systemMetrics.disk.total}
-                />
+          {content !== undefined && content.lastError !== undefined && (
+            <div className="flex items-start gap-2 border-t border-border bg-destructive/5 p-4">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+              <div>
+                <p className="text-sm font-medium text-destructive">
+                  Last error ({content.lastError.httpStatusCode}{" "}
+                  {content.lastError.httpStatusText})
+                </p>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {content.lastError.item.message}
+                </p>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {afterContent}
-
-        {/* Settings */}
-        {settings !== undefined &&
-          (collapsibleSettings === true ? (
-            <details className="overflow-hidden rounded-xl border border-border bg-background">
-              <summary className="flex cursor-pointer list-none items-center gap-2 border-b border-border px-5 py-3 [&::-webkit-details-marker]:hidden">
-                <Settings className="h-3.5 w-3.5" />
+          {settings !== undefined && (
+            <details className="border-t border-border">
+              <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3 [&::-webkit-details-marker]:hidden">
+                <Settings className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Details
                 </span>
               </summary>
-              <div className="grid grid-cols-2 divide-x divide-y divide-border">
+              <div className="grid grid-cols-2 divide-x divide-y divide-border border-t border-border">
+                {content !== undefined && content.currentVersion !== null && (
+                  <div className="px-5 py-4">
+                    <DataRow
+                      label="Content version"
+                      value={
+                        <code className="font-mono text-sm">
+                          {content.currentVersion}
+                        </code>
+                      }
+                    />
+                  </div>
+                )}
                 <div className="px-5 py-4">
                   <DataRow label="Source type" value={settings.sourceType} />
                 </div>
@@ -418,71 +378,10 @@ function ServerStatusContent({
                 </div>
               </div>
             </details>
-          ) : (
-            <div className="overflow-hidden rounded-xl border border-border bg-background">
-              <div className="border-b border-border px-5 py-3">
-                <SectionHeader
-                  icon={<Settings className="h-3.5 w-3.5" />}
-                  title="Settings"
-                />
-              </div>
-              <div className="grid grid-cols-2 divide-x divide-y divide-border">
-                <div className="px-5 py-4">
-                  <DataRow label="Source type" value={settings.sourceType} />
-                </div>
-                <div className="px-5 py-4">
-                  <DataRow label="Base URL" value={settings.baseUrl || "—"} />
-                </div>
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Directory"
-                    value={
-                      <code className="break-all font-mono text-sm">
-                        {settings.directory}
-                      </code>
-                    }
-                  />
-                </div>
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Auth methods"
-                    value={settings.authMethods || "—"}
-                  />
-                </div>
-                {settings.githubRepository !== undefined &&
-                  settings.githubRepository !== "" && (
-                    <div className="px-5 py-4">
-                      <DataRow
-                        label="GitHub repository"
-                        value={settings.githubRepository}
-                      />
-                    </div>
-                  )}
-                {settings.githubBranch !== undefined &&
-                  settings.githubBranch !== "" && (
-                    <div className="px-5 py-4">
-                      <DataRow label="Branch" value={settings.githubBranch} />
-                    </div>
-                  )}
-                {settings.updateDelay !== undefined && (
-                  <div className="px-5 py-4">
-                    <DataRow
-                      label="Update delay"
-                      value={`${settings.updateDelay}s`}
-                    />
-                  </div>
-                )}
-                <div className="px-5 py-4">
-                  <DataRow
-                    label="Server started"
-                    value={new Date(
-                      settings.serverStartupTime,
-                    ).toLocaleString()}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
+          )}
+        </div>
+
+        {afterContent}
 
         {footerContent}
       </div>
