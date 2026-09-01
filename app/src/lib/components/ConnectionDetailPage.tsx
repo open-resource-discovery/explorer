@@ -19,9 +19,10 @@ export interface ConnectionDetailPageProps {
   connectionName: string;
   auth: AuthType;
   perspectivesState: PerspectivesState;
-  onRefresh: () => void;
+  onRefresh?: () => void;
   onEdit?: () => void;
   renderPerspectiveAction: (perspective: Perspective) => ReactNode;
+  showHeader?: boolean;
 }
 
 /** Renders the connection detail content without a scroll/page wrapper.
@@ -34,6 +35,7 @@ export function ConnectionDetailSection({
   onRefresh,
   onEdit,
   renderPerspectiveAction,
+  showHeader = true,
 }: ConnectionDetailPageProps): ReactNode {
   const perspectives =
     perspectivesState.status === "ready" ? perspectivesState.perspectives : [];
@@ -67,13 +69,17 @@ export function ConnectionDetailSection({
     <>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-primary/10">
-            <PlugZap className="h-6 w-6 text-primary" />
-          </div>
+          {showHeader && (
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-primary/10">
+              <PlugZap className="h-6 w-6 text-primary" />
+            </div>
+          )}
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              {connectionName}
-            </h1>
+            {showHeader && (
+              <h1 className="text-2xl font-bold text-foreground">
+                {connectionName}
+              </h1>
+            )}
             <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
               {statusBadge}
               <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
@@ -88,18 +94,20 @@ export function ConnectionDetailSection({
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <button
-            onClick={onRefresh}
-            disabled={perspectivesState.status === "loading"}
-            className="flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            {perspectivesState.status === "loading" ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : (
-              <RefreshCw className="h-3.5 w-3.5" />
-            )}
-            {perspectivesState.status === "loading" ? "Loading…" : "Refresh"}
-          </button>
+          {onRefresh !== undefined && (
+            <button
+              onClick={onRefresh}
+              disabled={perspectivesState.status === "loading"}
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm text-foreground hover:bg-accent disabled:opacity-50"
+            >
+              {perspectivesState.status === "loading" ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <RefreshCw className="h-3.5 w-3.5" />
+              )}
+              {perspectivesState.status === "loading" ? "Loading…" : "Refresh"}
+            </button>
+          )}
           {onEdit !== undefined && (
             <button
               onClick={onEdit}
