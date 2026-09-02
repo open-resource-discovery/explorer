@@ -17,7 +17,7 @@ import { ThemeRoot } from "@lib/components/ThemeRoot";
 export interface ConnectionDetailPageProps {
   ordConfigUrl: string;
   connectionName: string;
-  auth: AuthType;
+  auth?: AuthType;
   perspectivesState: PerspectivesState;
   onRefresh?: () => void;
   onEdit?: () => void;
@@ -45,7 +45,7 @@ export function ConnectionDetailSection({
     bearer: "Bearer token",
     mtls: "mTLS",
   };
-  const authLabel = AUTH_LABELS[auth];
+  const authLabel = auth !== undefined ? AUTH_LABELS[auth] : undefined;
 
   const statusBadge =
     perspectivesState.status === "ready" ? (
@@ -86,10 +86,12 @@ export function ConnectionDetailSection({
                 <Globe className="h-3 w-3" />
                 System endpoint
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
-                <Globe className="h-3 w-3" />
-                {authLabel}
-              </span>
+              {authLabel !== undefined && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
+                  <Globe className="h-3 w-3" />
+                  {authLabel}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -153,12 +155,14 @@ export function ConnectionDetailSection({
               {ordConfigUrl}
             </a>
           </div>
-          <div className="px-5 py-4">
-            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Authentication
-            </p>
-            <span className="text-sm text-foreground">{authLabel}</span>
-          </div>
+          {authLabel !== undefined && (
+            <div className="px-5 py-4">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Authentication
+              </p>
+              <span className="text-sm text-foreground">{authLabel}</span>
+            </div>
+          )}
           <div className="px-5 py-4">
             <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               Perspectives
