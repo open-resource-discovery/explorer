@@ -5,7 +5,9 @@ import {
   RefreshCw,
   Pencil,
   AlertTriangle,
+  CheckCircle,
   Layers,
+  XCircle,
   Loader2,
 } from "lucide-react";
 import type { Perspective, AuthType } from "@lib/connection/types";
@@ -21,6 +23,7 @@ export interface ConnectionDetailPageProps {
   onEdit?: () => void;
   renderPerspectiveAction: (perspective: Perspective) => ReactNode;
   showHeader?: boolean;
+  showStatusBadge?: boolean;
 }
 
 /** Renders the connection detail content without a scroll/page wrapper.
@@ -34,6 +37,7 @@ export function ConnectionDetailSection({
   onEdit,
   renderPerspectiveAction,
   showHeader = true,
+  showStatusBadge = true,
 }: ConnectionDetailPageProps): ReactNode {
   const perspectives =
     perspectivesState.status === "ready" ? perspectivesState.perspectives : [];
@@ -44,6 +48,25 @@ export function ConnectionDetailSection({
     mtls: "mTLS",
   };
   const authLabel = auth !== undefined ? AUTH_LABELS[auth] : undefined;
+
+  const statusBadge = showStatusBadge ? (
+    perspectivesState.status === "ready" ? (
+      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-400">
+        <CheckCircle className="h-3.5 w-3.5" />
+        Connected
+      </span>
+    ) : perspectivesState.status === "error" ? (
+      <span className="inline-flex items-center gap-1 rounded-full border border-destructive-foreground bg-destructive px-2 py-0.5 text-xs font-medium text-destructive-foreground">
+        <XCircle className="h-3.5 w-3.5" />
+        Error
+      </span>
+    ) : (
+      <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
+        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        Loading
+      </span>
+    )
+  ) : null;
 
   return (
     <>
@@ -60,12 +83,15 @@ export function ConnectionDetailSection({
                 {connectionName}
               </h1>
             )}
-            {authLabel !== undefined && (
+            {(statusBadge !== null || authLabel !== undefined) && (
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
-                  <Globe className="h-3 w-3" />
-                  {authLabel}
-                </span>
+                {statusBadge}
+                {authLabel !== undefined && (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
+                    <Globe className="h-3 w-3" />
+                    {authLabel}
+                  </span>
+                )}
               </div>
             )}
           </div>
