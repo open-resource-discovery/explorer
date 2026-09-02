@@ -12,7 +12,11 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import {
+  useState,
+  type ReactNode,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
 import type { StatusResponse, UpdateStatus } from "@lib/status";
 import { ThemeRoot } from "@lib/components/ThemeRoot";
 import { useTheme } from "@lib/hooks/useTheme";
@@ -118,16 +122,74 @@ function UsageBar({ used, total }: { used: number; total: number }): ReactNode {
 function DataRow({
   label,
   value,
+  copyValue,
 }: {
   label: string;
   value: ReactNode;
+  copyValue?: string;
 }): ReactNode {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (): void => {
+    if (copyValue === undefined) return;
+    navigator.clipboard
+      .writeText(copyValue)
+      .then((): void => {
+        setCopied(true);
+        setTimeout((): void => setCopied(false), 1500);
+      })
+      .catch((): void => {});
+  };
+
   return (
-    <div className="flex flex-col gap-0.5">
+    <div
+      className={
+        copyValue !== undefined
+          ? `group relative flex flex-col gap-0.5 -mx-5 -my-4 px-5 py-4 rounded transition-colors cursor-pointer ${
+              copied ? "bg-emerald-500/10" : "hover:bg-emerald-500/[0.05]"
+            }`
+          : "flex flex-col gap-0.5"
+      }
+      onClick={copyValue !== undefined ? handleCopy : undefined}
+    >
       <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
         {label}
       </span>
       <span className="text-sm text-foreground">{value}</span>
+      {copyValue !== undefined && (
+        <button
+          onClick={(e: ReactMouseEvent<HTMLButtonElement>): void => {
+            e.stopPropagation();
+            handleCopy();
+          }}
+          className="absolute top-4 right-5 z-10 cursor-pointer text-xs font-medium"
+          aria-label="Copy to clipboard"
+        >
+          <span
+            className={`whitespace-nowrap text-muted-foreground transition-opacity duration-150 ${
+              copied ? "opacity-0" : "opacity-0 group-hover:opacity-100"
+            }`}
+          >
+            copy
+          </span>
+          <span
+            className={`absolute right-0 top-0 flex items-center gap-1 whitespace-nowrap text-emerald-500 transition-opacity duration-150 ${
+              copied ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <svg
+              className="h-3 w-3"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <polyline points="3,8 6,11 13,4" />
+            </svg>
+            copied
+          </span>
+        </button>
+      )}
     </div>
   );
 }
@@ -223,6 +285,9 @@ function ServerStatusContent({
                           target="_blank"
                           rel="noreferrer"
                           className="font-mono text-sm hover:underline"
+                          onClick={(
+                            e: ReactMouseEvent<HTMLAnchorElement>,
+                          ): void => e.stopPropagation()}
                         >
                           {content.commitHash.slice(0, 7)}
                         </a>
@@ -233,6 +298,7 @@ function ServerStatusContent({
                       )}
                     </span>
                   }
+                  copyValue={content.commitHash}
                 />
               </div>
             )}
@@ -331,7 +397,11 @@ function ServerStatusContent({
                   <DataRow label="Source type" value={settings.sourceType} />
                 </div>
                 <div className="px-5 py-4">
-                  <DataRow label="Base URL" value={settings.baseUrl || "—"} />
+                  <DataRow
+                    label="Base URL"
+                    value={settings.baseUrl || "—"}
+                    copyValue={settings.baseUrl || undefined}
+                  />
                 </div>
                 <div className="px-5 py-4">
                   <DataRow
@@ -341,6 +411,7 @@ function ServerStatusContent({
                         {settings.directory}
                       </code>
                     }
+                    copyValue={settings.directory}
                   />
                 </div>
                 <div className="px-5 py-4">
@@ -355,13 +426,18 @@ function ServerStatusContent({
                       <DataRow
                         label="GitHub repository"
                         value={settings.githubRepository}
+                        copyValue={settings.githubRepository}
                       />
                     </div>
                   )}
                 {settings.githubBranch !== undefined &&
                   settings.githubBranch !== "" && (
                     <div className="px-5 py-4">
-                      <DataRow label="Branch" value={settings.githubBranch} />
+                      <DataRow
+                        label="Branch"
+                        value={settings.githubBranch}
+                        copyValue={settings.githubBranch}
+                      />
                     </div>
                   )}
                 {settings.updateDelay !== undefined && (
