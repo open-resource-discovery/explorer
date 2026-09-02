@@ -82,10 +82,6 @@ export function ConnectionDetailSection({
             )}
             <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
               {statusBadge}
-              <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
-                <Globe className="h-3 w-3" />
-                System endpoint
-              </span>
               {authLabel !== undefined && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
                   <Globe className="h-3 w-3" />
