@@ -1,17 +1,25 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 
-export function CopyButton({ text }: { text: string }) {
+export function CopyButton({
+  text,
+  onCopied,
+}: {
+  text: string;
+  onCopied?: () => void;
+}): ReactNode {
   const [copied, setCopied] = useState(false);
   return (
     <button
-      onClick={() => {
+      onClick={(): void => {
         navigator.clipboard
           .writeText(text)
-          .then(() => {
+          .then((): void => {
             setCopied(true);
-            setTimeout(() => setCopied(false), 1500);
+            onCopied?.();
+            setTimeout((): void => setCopied(false), 1500);
           })
-          .catch(() => {});
+          .catch((): void => {});
       }}
       className="inline-flex items-center rounded p-1 text-muted-foreground hover:text-foreground transition-colors"
       aria-label="Copy to clipboard"
