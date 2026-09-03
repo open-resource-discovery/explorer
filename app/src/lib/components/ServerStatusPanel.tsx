@@ -9,6 +9,7 @@ import {
   GitCommit,
   Loader2,
   Settings,
+  ChevronDown,
   Moon,
   Sun,
 } from "lucide-react";
@@ -230,19 +231,19 @@ function ServerStatusContent({
                     Update available: v{status.versionInfo.latest}
                   </span>
                 )}
-                {updateStatusConfig !== undefined && (
-                  <span
-                    className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${updateStatusConfig.className}`}
-                  >
-                    {updateStatusConfig.icon}
-                    {updateStatusConfig.label}
-                  </span>
-                )}
+                {updateStatusConfig !== undefined &&
+                  settings?.sourceType !== "local" && (
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${updateStatusConfig.className}`}
+                    >
+                      {updateStatusConfig.icon}
+                      {updateStatusConfig.label}
+                    </span>
+                  )}
               </div>
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-2">
-            {headerActions}
             <button
               onClick={(): void =>
                 setTheme(resolvedTheme === "dark" ? "light" : "dark")
@@ -256,6 +257,7 @@ function ServerStatusContent({
                 <Moon className="h-4 w-4" />
               )}
             </button>
+            {headerActions}
           </div>
         </div>
 
@@ -373,26 +375,29 @@ function ServerStatusContent({
           )}
 
           {settings !== undefined && (
-            <details className="border-t border-border">
+            <details className="group border-t border-border">
               <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3 [&::-webkit-details-marker]:hidden">
                 <Settings className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Details
                 </span>
+                <ChevronDown className="ml-auto h-3.5 w-3.5 -rotate-90 text-muted-foreground transition-transform group-open:rotate-0" />
               </summary>
               <div className="grid grid-cols-2 divide-x divide-y divide-border border-t border-border">
-                {content !== undefined && content.currentVersion !== null && (
-                  <div className="px-5 py-4">
-                    <DataRow
-                      label="Content version"
-                      value={
-                        <code className="font-mono text-sm">
-                          {content.currentVersion}
-                        </code>
-                      }
-                    />
-                  </div>
-                )}
+                {content !== undefined &&
+                  content.currentVersion !== null &&
+                  settings.sourceType === "local" && (
+                    <div className="px-5 py-4">
+                      <DataRow
+                        label="Content version"
+                        value={
+                          <code className="font-mono text-sm">
+                            {content.currentVersion}
+                          </code>
+                        }
+                      />
+                    </div>
+                  )}
                 <div className="px-5 py-4">
                   <DataRow label="Source type" value={settings.sourceType} />
                 </div>
@@ -471,7 +476,7 @@ function ServerStatusContent({
 
 export function ServerStatusPanel(props: ServerStatusPanelProps): ReactNode {
   return (
-    <ThemeRoot>
+    <ThemeRoot className="h-screen">
       <ServerStatusContent {...props} />
     </ThemeRoot>
   );
