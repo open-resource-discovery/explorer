@@ -44,26 +44,24 @@ function DashboardCard({
 
   const content = (
     <>
-      <div className="flex items-start justify-between">
-        <div className={`rounded-md p-1.5 w-fit ${bg} ${fg}`}>{icon}</div>
-        {onClick && !isEmpty && (
-          <span className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-            <svg
-              className="h-3.5 w-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </span>
-        )}
-      </div>
+      <div className={`rounded-md p-1.5 w-fit ${bg} ${fg}`}>{icon}</div>
+      {onClick && !isEmpty && (
+        <span className="absolute top-3 right-3 text-muted-foreground">
+          <svg
+            className="h-3.5 w-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </span>
+      )}
       <div className="flex items-baseline gap-1">
         <span className="text-xl font-bold text-card-fg leading-none">
           {count}
@@ -88,7 +86,7 @@ function DashboardCard({
         disabled={isEmpty}
         aria-pressed={selected}
         data-testid={testId}
-        className={`group h-auto w-full items-start justify-start whitespace-normal flex flex-col gap-2 rounded-[var(--ord-radius)] border p-3 text-left shadow-sm transition-colors disabled:pointer-events-none disabled:opacity-40 ${
+        className={`relative group h-auto w-full items-start justify-start whitespace-normal flex flex-col gap-2 rounded-[var(--ord-radius)] border p-3 text-left shadow-sm transition-colors disabled:pointer-events-none disabled:opacity-40 ${
           selected
             ? "border-primary bg-primary/5 ring-1 ring-primary"
             : "border-card-border bg-card-bg hover:bg-muted/50"
