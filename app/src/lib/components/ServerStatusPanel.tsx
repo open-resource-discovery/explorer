@@ -425,7 +425,8 @@ function ServerStatusContent({
                     value={settings.authMethods || "—"}
                   />
                 </div>
-                {settings.githubRepository !== undefined &&
+                {settings.sourceType !== "local" &&
+                  settings.githubRepository !== undefined &&
                   settings.githubRepository !== "" && (
                     <div className="px-5 py-4">
                       <DataRow
@@ -435,7 +436,8 @@ function ServerStatusContent({
                       />
                     </div>
                   )}
-                {settings.githubBranch !== undefined &&
+                {settings.sourceType !== "local" &&
+                  settings.githubBranch !== undefined &&
                   settings.githubBranch !== "" && (
                     <div className="px-5 py-4">
                       <DataRow
