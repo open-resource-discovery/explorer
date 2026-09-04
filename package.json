@@ -1,7 +1,7 @@
 {
   "name": "@open-resource-discovery/explorer",
   "version": "0.1.0",
-  "description": "A UI for exploring ORD (Open Resource Discovery) documents — browse, fetch, and merge resources.",
+  "description": "A UI for exploring ORD (Open Resource Discovery) documents \u2014 browse, fetch, and merge resources.",
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public"
@@ -72,7 +72,8 @@
     "uuid": "14.0.2"
   },
   "overrides": {
-    "dompurify": "3.4.13",
+    "dompurify": "3.4.14",
+    "fast-uri": ">=3.1.6 <4.0.0",
     "postcss": {
       "nanoid": "3.3.18"
     }
@@ -88,6 +89,7 @@
     "@playwright/test": "1.62.1",
     "@tailwindcss/vite": "4.3.3",
     "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/dom": "10.4.1",
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.7",
     "@types/node": "25.9.5",
