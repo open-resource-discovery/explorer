@@ -34,7 +34,7 @@ export default defineConfig({
     ],
   },
   build: {
-    outDir: resolve(__dirname, "../dist"),
+    outDir: resolve(__dirname, "../dist/app"),
     emptyOutDir: true,
     rolldownOptions: {
       output: {

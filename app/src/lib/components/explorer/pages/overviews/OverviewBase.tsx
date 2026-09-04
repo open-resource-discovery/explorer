@@ -27,6 +27,7 @@ import type { ResourceTypeGroup } from "../../explorerTypes";
 import type { Selection } from "../../useNavState";
 import { ordIdToResourceTypeGroup } from "../../ordIdUtils";
 import type { OrdDocument } from "@open-resource-discovery/specification";
+import { ThemeRootContent } from "@lib/components/ThemeRoot";
 
 export interface RelationshipItem {
   id: string;
@@ -101,10 +102,13 @@ export function OverviewBase({
           <SimpleDialog
             open={previewOpen}
             onOpenChange={setPreviewOpen}
+            trigger={null}
             title={`Preview — ${primaryDef.type}`}
             className="w-[95vw] max-w-[95vw] h-[90vh] flex flex-col"
           >
-            <MetadataPreview def={primaryDef} />
+            <ThemeRootContent className="flex-1 flex flex-col min-h-0">
+              <MetadataPreview def={primaryDef} />
+            </ThemeRootContent>
           </SimpleDialog>
         </div>
       )}

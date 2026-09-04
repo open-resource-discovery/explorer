@@ -1,8 +1,4 @@
 set -e
-npx prettier --write "**/*.{ts,tsx,json,yml,yaml,md,html,css}"
-npx eslint --fix .
-git add -u
-npm run prettier:ci
-npm run eslint:ci
+npx lint-staged
 npm run typecheck
 npm test
