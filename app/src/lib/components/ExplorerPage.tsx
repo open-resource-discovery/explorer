@@ -12,6 +12,7 @@ export interface ExplorerPageProps {
   perspectiveId: string;
   className?: string;
   prefetchDefinitions?: boolean;
+  enableUrlSync?: boolean;
 }
 
 function ExplorerPageContent({
@@ -19,6 +20,7 @@ function ExplorerPageContent({
   perspectiveId,
   className,
   prefetchDefinitions = false,
+  enableUrlSync = false,
 }: ExplorerPageProps): ReactNode {
   const [document, setDocument] = useState<OrdDocument | undefined>(undefined);
   const [loading, setLoading] = useState(true);
@@ -93,6 +95,7 @@ function ExplorerPageContent({
       document={document}
       className={cn("h-full", className)}
       prefetchDefinitions={prefetchDefinitions}
+      enableUrlSync={enableUrlSync}
     />
   );
 }
