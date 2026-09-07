@@ -47,10 +47,10 @@ function resolveDefinitionUrls(doc: OrdDocument, baseUrl: string): OrdDocument {
 }
 
 export interface UseOrdDocumentResult {
-  document: OrdDocument | null;
+  document: OrdDocument | undefined;
   loading: boolean;
-  error: string | null;
-  authError: AuthErrorKind | null;
+  error: string | undefined;
+  authError: AuthErrorKind | undefined;
   retry: () => void;
 }
 
@@ -59,10 +59,12 @@ export function useOrdDocument(
   perspectiveId: string,
 ): UseOrdDocumentResult {
   const { available, sessionId, recheckSession, proxyBaseUrl } = useProxy();
-  const [document, setDocument] = useState<OrdDocument | null>(null);
+  const [document, setDocument] = useState<OrdDocument | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [authError, setAuthError] = useState<AuthErrorKind | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [authError, setAuthError] = useState<AuthErrorKind | undefined>(
+    undefined,
+  );
   const [retryCount, setRetryCount] = useState(0);
 
   const retry = useCallback((): void => {
@@ -74,9 +76,9 @@ export function useOrdDocument(
 
     async function load(): Promise<void> {
       setLoading(true);
-      setError(null);
-      setAuthError(null);
-      setDocument(null);
+      setError(undefined);
+      setAuthError(undefined);
+      setDocument(undefined);
 
       const connection = getConnection(connectionId);
 
