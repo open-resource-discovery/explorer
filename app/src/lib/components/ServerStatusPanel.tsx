@@ -120,19 +120,49 @@ function UsageBar({ used, total }: { used: number; total: number }): ReactNode {
   );
 }
 
+function DataRowContent({
+  label,
+  value,
+}: {
+  label: string;
+  value: ReactNode;
+}): ReactNode {
+  return (
+    <>
+      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </span>
+      <span className="text-sm text-foreground">{value}</span>
+    </>
+  );
+}
+
 function DataRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: ReactNode;
+}): ReactNode {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <DataRowContent label={label} value={value} />
+    </div>
+  );
+}
+
+function CopyableDataRow({
   label,
   value,
   copyValue,
 }: {
   label: string;
   value: ReactNode;
-  copyValue?: string;
+  copyValue: string;
 }): ReactNode {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (): void => {
-    if (copyValue === undefined) return;
     navigator.clipboard
       .writeText(copyValue)
       .then((): void => {
@@ -144,53 +174,44 @@ function DataRow({
 
   return (
     <div
-      className={
-        copyValue !== undefined
-          ? `group relative flex flex-col gap-0.5 -mx-5 -my-4 px-5 py-4 rounded transition-colors cursor-pointer ${
-              copied ? "bg-emerald-500/10" : "hover:bg-emerald-500/[0.05]"
-            }`
-          : "flex flex-col gap-0.5"
-      }
-      onClick={copyValue !== undefined ? handleCopy : undefined}
+      className={`group relative flex flex-col gap-0.5 -mx-5 -my-4 px-5 py-4 rounded transition-colors cursor-pointer ${
+        copied ? "bg-emerald-500/10" : "hover:bg-emerald-500/[0.05]"
+      }`}
+      onClick={handleCopy}
     >
-      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-        {label}
-      </span>
-      <span className="text-sm text-foreground">{value}</span>
-      {copyValue !== undefined && (
-        <button
-          onClick={(e: ReactMouseEvent<HTMLButtonElement>): void => {
-            e.stopPropagation();
-            handleCopy();
-          }}
-          className="absolute top-4 right-5 z-10 cursor-pointer text-xs font-medium"
-          aria-label="Copy to clipboard"
+      <DataRowContent label={label} value={value} />
+      <button
+        onClick={(e: ReactMouseEvent<HTMLButtonElement>): void => {
+          e.stopPropagation();
+          handleCopy();
+        }}
+        className="absolute top-4 right-5 z-10 cursor-pointer text-xs font-medium"
+        aria-label="Copy to clipboard"
+      >
+        <span
+          className={`whitespace-nowrap text-muted-foreground transition-opacity duration-150 ${
+            copied ? "opacity-0" : "opacity-0 group-hover:opacity-100"
+          }`}
         >
-          <span
-            className={`whitespace-nowrap text-muted-foreground transition-opacity duration-150 ${
-              copied ? "opacity-0" : "opacity-0 group-hover:opacity-100"
-            }`}
+          copy
+        </span>
+        <span
+          className={`absolute right-0 top-0 flex items-center gap-1 whitespace-nowrap text-emerald-500 transition-opacity duration-150 ${
+            copied ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <svg
+            className="h-3 w-3"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
           >
-            copy
-          </span>
-          <span
-            className={`absolute right-0 top-0 flex items-center gap-1 whitespace-nowrap text-emerald-500 transition-opacity duration-150 ${
-              copied ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <svg
-              className="h-3 w-3"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <polyline points="3,8 6,11 13,4" />
-            </svg>
-            copied
-          </span>
-        </button>
-      )}
+            <polyline points="3,8 6,11 13,4" />
+          </svg>
+          copied
+        </span>
+      </button>
     </div>
   );
 }
@@ -274,7 +295,7 @@ function ServerStatusContent({
             )}
             {content !== undefined && content.commitHash !== null && (
               <div className="px-5 py-4">
-                <DataRow
+                <CopyableDataRow
                   label="Commit"
                   value={
                     <span className="flex items-center gap-1">
@@ -402,14 +423,18 @@ function ServerStatusContent({
                   <DataRow label="Source type" value={settings.sourceType} />
                 </div>
                 <div className="px-5 py-4">
-                  <DataRow
-                    label="Base URL"
-                    value={settings.baseUrl || "—"}
-                    copyValue={settings.baseUrl || undefined}
-                  />
+                  {settings.baseUrl ? (
+                    <CopyableDataRow
+                      label="Base URL"
+                      value={settings.baseUrl}
+                      copyValue={settings.baseUrl}
+                    />
+                  ) : (
+                    <DataRow label="Base URL" value="—" />
+                  )}
                 </div>
                 <div className="px-5 py-4">
-                  <DataRow
+                  <CopyableDataRow
                     label="Directory"
                     value={
                       <code className="break-all font-mono text-sm">
@@ -429,7 +454,7 @@ function ServerStatusContent({
                   settings.githubRepository !== undefined &&
                   settings.githubRepository !== "" && (
                     <div className="px-5 py-4">
-                      <DataRow
+                      <CopyableDataRow
                         label="GitHub repository"
                         value={settings.githubRepository}
                         copyValue={settings.githubRepository}
@@ -440,7 +465,7 @@ function ServerStatusContent({
                   settings.githubBranch !== undefined &&
                   settings.githubBranch !== "" && (
                     <div className="px-5 py-4">
-                      <DataRow
+                      <CopyableDataRow
                         label="Branch"
                         value={settings.githubBranch}
                         copyValue={settings.githubBranch}
