@@ -9,7 +9,11 @@ import { AuthErrorCard } from "../lib/components/auth/AuthRecovery";
 import { ConnectionDetailPage as ConnectionDetailPageLib } from "../lib/components/ConnectionDetailPage";
 import type { Perspective } from "../lib/connection/types";
 
-function ConnectionDetail({ connection }: { connection: Connection }) {
+function ConnectionDetail({
+  connection,
+}: {
+  connection: Connection;
+}): ReactNode {
   const [perspectivesState, retryPerspectives] = usePerspectives(connection);
   const navigate = useNavigate();
 
@@ -61,7 +65,7 @@ function ConnectionDetail({ connection }: { connection: Connection }) {
   );
 }
 
-export function ConnectionDetailPage() {
+export function ConnectionDetailPage(): ReactNode {
   const { id } = connectionDetailRoute.useParams();
   const connection = getConnection(id);
 

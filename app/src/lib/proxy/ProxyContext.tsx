@@ -75,7 +75,7 @@ const ProxyContext = createContext<ProxyState>({
 export function ProxyProvider({
   children,
   proxyBaseUrl = PROXY_BASE_URL,
-}: ProxyProviderProps) {
+}: ProxyProviderProps): ReactNode {
   const [health, setHealth] = useState<ProxyHealth>({
     available: false,
     sessionId: null,
