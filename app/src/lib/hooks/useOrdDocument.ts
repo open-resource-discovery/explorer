@@ -12,6 +12,15 @@ import type { AuthErrorKind } from "@lib/proxy";
 
 export const PROXY_PORT = 44123;
 
+/**
+ * Rewrites relative definition URLs on an ORD document's resources to absolute
+ * URLs against `baseUrl`.
+ *
+ * NOTE: this mutates `doc` in place and returns the same reference — the returned
+ * value and the passed-in `doc` are the same object. Callers must pass a document
+ * they exclusively own (e.g. a freshly fetched document), never a shared/cached
+ * instance, or other consumers would observe the rewritten URLs.
+ */
 function resolveDefinitionUrls(doc: OrdDocument, baseUrl: string): OrdDocument {
   const resourceLists = [
     doc.apiResources,
@@ -30,6 +39,10 @@ function resolveDefinitionUrls(doc: OrdDocument, baseUrl: string): OrdDocument {
   for (const list of resourceLists) {
     if (!list) continue;
     for (const resource of list) {
+      // SAFETY: ORD resource types optionally carry `resourceDefinitions` and
+      // `definitions` arrays whose entries may have a `url`. We only read and
+      // rewrite those two optional fields, so narrowing to exactly this readable
+      // surface is sound regardless of the concrete resource type.
       const withDefs = resource as {
         resourceDefinitions?: { url?: string }[];
         definitions?: { url?: string }[];
