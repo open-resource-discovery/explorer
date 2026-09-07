@@ -68,9 +68,8 @@ const UPDATE_STATUS_CONFIG: Record<
 };
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).getTime() > 0
-    ? new Date(dateStr).toLocaleString()
-    : "—";
+  const d = new Date(dateStr);
+  return d.getTime() > 0 ? d.toLocaleString() : "—";
 }
 
 function formatBytes(bytes: number): string {
