@@ -1,7 +1,7 @@
 {
   "name": "@open-resource-discovery/explorer",
   "version": "0.1.0",
-  "description": "A UI for exploring ORD (Open Resource Discovery) documents \u2014 browse, fetch, and merge resources.",
+  "description": "A UI for exploring ORD (Open Resource Discovery) documents - browse, fetch, and merge resources.",
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public"
