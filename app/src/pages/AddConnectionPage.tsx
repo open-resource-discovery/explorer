@@ -191,7 +191,7 @@ export function AddConnectionPage({ editId }: { editId?: string } = {}) {
   }
 
   return (
-    <div className="min-h-full bg-background">
+    <div className="h-full overflow-auto bg-background">
       <div className="mx-auto max-w-2xl px-8 py-8">
         {/* Page header */}
         <div className="mb-8">

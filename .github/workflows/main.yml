@@ -66,6 +66,47 @@ jobs:
 
       - run: npm run build
 
+  build-preview-validate:
+    name: Validate asset paths under VITE_BASE prefixes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Build with /explorer/ base and verify asset paths
+        run: |
+          set -euo pipefail
+          npm run build
+          grep -E 'src="|href="' dist/app/index.html | grep -v 'src=""' | while read -r line; do
+            if ! echo "$line" | grep -qE 'src="/explorer/|href="/explorer/'; then
+              echo "ERROR: asset path does not start with /explorer/ — $line" >&2
+              exit 1
+            fi
+          done
+        env:
+          VITE_BASE: /explorer/
+
+      - name: Build with /pr-preview/explorer/pr-99/ base and verify asset paths
+        run: |
+          set -euo pipefail
+          npm run build
+          grep -E 'src="|href="' dist/app/index.html | grep -v 'src=""' | while read -r line; do
+            if ! echo "$line" | grep -qE 'src="/pr-preview/explorer/pr-99/|href="/pr-preview/explorer/pr-99/'; then
+              echo "ERROR: asset path does not start with /pr-preview/explorer/pr-99/ — $line" >&2
+              exit 1
+            fi
+          done
+        env:
+          VITE_BASE: /pr-preview/explorer/pr-99/
+
   e2e:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest

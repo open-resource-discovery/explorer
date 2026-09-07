@@ -4,14 +4,12 @@ import { OrdDocumentContext } from "@lib/context/OrdDocumentContext";
 import { DefinitionContentProvider } from "@lib/context/DefinitionContentProvider";
 import { NavExtensionContext } from "@lib/context/NavExtensionContext";
 import { ThemeRootContent } from "@lib/components/ThemeRoot";
+import { useTheme } from "@lib/hooks/useTheme";
+import { Moon, Sun } from "lucide-react";
 import { DashboardPage } from "./pages/DashboardPage";
-import { PackagesPage } from "./pages/PackagesPage";
-import { ConsumptionBundlesPage } from "./pages/ConsumptionBundlesPage";
 import { PackageDetailPage } from "./pages/PackageDetailPage";
 import { ConsumptionBundleDetailPage } from "./pages/ConsumptionBundleDetailPage";
-import { ProductsPage } from "./pages/ProductsPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
-import { GroupsPage } from "./pages/GroupsPage";
 import { GroupDetailPage } from "./pages/GroupDetailPage";
 import { ResourceDetailPage } from "./pages/ResourceDetailPage";
 import { ExplorerSidebar } from "./ExplorerSidebar";
@@ -59,6 +57,7 @@ export function ORDExplorer({
   const [sidebarWidth, setSidebarWidth] = useState(256);
   const scrollRef = useRef<HTMLDivElement>(null);
   const proxy = useProxy();
+  const { resolvedTheme, setTheme } = useTheme();
   const { setResourceDetailLabel, setResetExplorer } =
     useContext(NavExtensionContext);
 
@@ -95,6 +94,7 @@ export function ORDExplorer({
           prefetch={prefetchDefinitions}
           connectionId={connectionId}
           proxyAvailable={proxy.available}
+          proxyBaseUrl={proxy.proxyBaseUrl}
         >
           <ThemeRootContent className={className}>
             <div className="flex h-full overflow-hidden">
@@ -115,9 +115,28 @@ export function ORDExplorer({
                 className="flex min-w-0 flex-1 flex-col overflow-auto"
                 ref={scrollRef}
               >
+                <div className="flex justify-end px-4 pt-2">
+                  <button
+                    onClick={() =>
+                      setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                    }
+                    aria-label="Toggle theme"
+                    className="rounded p-1.5 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
+                  >
+                    {resolvedTheme === "dark" ? (
+                      <Sun className="h-4 w-4" />
+                    ) : (
+                      <Moon className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
                 <div className="w-full max-w-[1080px] mx-auto">
                   {(selection.id === "dashboard" ||
-                    selection.id === "resourceList") && (
+                    selection.id === "resourceList" ||
+                    selection.id === "packages" ||
+                    selection.id === "consumptionBundles" ||
+                    selection.id === "products" ||
+                    selection.id === "groups") && (
                     <DashboardPage
                       query={query}
                       filters={deferredFilters}
@@ -140,17 +159,11 @@ export function ORDExplorer({
                       onSelect={setSelection}
                     />
                   )}
-                  {selection.id === "packages" && (
-                    <PackagesPage onSelect={setSelection} />
-                  )}
                   {selection.id === "packageDetail" && (
                     <PackageDetailPage
                       ordId={selection.ordId}
                       onSelect={setSelection}
                     />
-                  )}
-                  {selection.id === "consumptionBundles" && (
-                    <ConsumptionBundlesPage onSelect={setSelection} />
                   )}
                   {selection.id === "consumptionBundleDetail" && (
                     <ConsumptionBundleDetailPage
@@ -158,17 +171,11 @@ export function ORDExplorer({
                       onSelect={setSelection}
                     />
                   )}
-                  {selection.id === "products" && (
-                    <ProductsPage onSelect={setSelection} />
-                  )}
                   {selection.id === "productDetail" && (
                     <ProductDetailPage
                       ordId={selection.ordId}
                       onSelect={setSelection}
                     />
-                  )}
-                  {selection.id === "groups" && (
-                    <GroupsPage onSelect={setSelection} />
                   )}
                   {selection.id === "groupDetail" && (
                     <GroupDetailPage

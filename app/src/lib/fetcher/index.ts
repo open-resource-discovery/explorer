@@ -1,6 +1,10 @@
 // Adapted from @open-resource-discovery/crawler
 export { fetchOrdConfiguration, fetchOrdDocuments } from "./fetchOrd.ts";
 export {
+  fetchOrdDocumentForPerspective,
+  type FetchOrdDocumentResult,
+} from "./fetchOrdDocumentForPerspective.ts";
+export {
   mergeDocuments,
   mergeDocumentsWithOptions,
   type MergeOptions,
@@ -13,6 +17,7 @@ export {
   isOrdDocument,
   isRemoteUrl,
   extractPerspectives,
+  DEFAULT_PERSPECTIVE,
 } from "./ordUtils.ts";
 export {
   customFetch,

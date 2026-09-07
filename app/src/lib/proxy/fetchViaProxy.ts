@@ -1,12 +1,12 @@
-import { PROXY_BASE_URL } from "./ProxyContext";
 import { AuthFailedError, ProxyFetchError } from "./errors";
 
 async function proxyFetch(
+  proxyBaseUrl: string,
   connectionId: string,
   url: string,
   headers?: Record<string, string>,
 ): Promise<Response> {
-  const response = await fetch(`${PROXY_BASE_URL}/fetch`, {
+  const response = await fetch(`${proxyBaseUrl}/fetch`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -37,19 +37,21 @@ async function proxyFetch(
 }
 
 export async function fetchViaProxy<T>(
+  proxyBaseUrl: string,
   connectionId: string,
   url: string,
   headers?: Record<string, string>,
 ): Promise<T> {
-  const response = await proxyFetch(connectionId, url, headers);
+  const response = await proxyFetch(proxyBaseUrl, connectionId, url, headers);
   return (await response.json()) as T;
 }
 
 export async function fetchTextViaProxy(
+  proxyBaseUrl: string,
   connectionId: string,
   url: string,
   headers?: Record<string, string>,
 ): Promise<string> {
-  const response = await proxyFetch(connectionId, url, headers);
+  const response = await proxyFetch(proxyBaseUrl, connectionId, url, headers);
   return response.text();
 }

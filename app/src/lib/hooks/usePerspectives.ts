@@ -23,7 +23,7 @@ export type PerspectivesState =
 export function usePerspectives(
   connection: Connection,
 ): [PerspectivesState, () => void] {
-  const { available, sessionId, recheckSession } = useProxy();
+  const { available, sessionId, recheckSession, proxyBaseUrl } = useProxy();
   const [state, setState] = useState<PerspectivesState>({ status: "loading" });
   const [retryCount, setRetryCount] = useState(0);
 
@@ -55,6 +55,7 @@ export function usePerspectives(
 
         const config = useProxyForFetch
           ? await fetchViaProxy<OrdConfiguration>(
+              proxyBaseUrl,
               connection.id,
               wellKnownUrl,
               forwardHeaders,
@@ -109,6 +110,7 @@ export function usePerspectives(
     connection.auth,
     connection.bearerToken,
     available,
+    proxyBaseUrl,
     sessionId,
     recheckSession,
     retryCount,

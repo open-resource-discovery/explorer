@@ -28,6 +28,7 @@ import type {
 } from "@open-resource-discovery/specification";
 import { useResourceSearch, type MatchInfo } from "../useResourceSearch";
 import { RESOURCE_TYPE_CONFIG } from "../resourceTypeConfig";
+import { CopyButton } from "./shared";
 
 const PROTOCOL_LABEL: Record<string, string> = {
   rest: "REST",
@@ -258,61 +259,69 @@ function ResourceCard({
           </p>
         )}
 
-      {/* Footer: colored status/visibility pills + plain protocol tag */}
-      <div className="flex items-center gap-1.5 flex-wrap mt-auto">
-        {disabled && (
-          <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium border-border text-muted-foreground">
-            <BanIcon className="h-3 w-3" />
-            disabled
-          </span>
-        )}
-        {visPill && (
-          <span
-            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${visPill.pill}`}
-          >
-            {visPill.icon}
-            {visibility}
-          </span>
-        )}
-        {statusCfg && (
-          <span
-            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${statusCfg.pill}`}
-          >
-            {statusCfg.icon}
-            {statusCfg.label}
-          </span>
-        )}
-        {protocol && (
-          <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-            {PROTOCOL_LABEL[protocol] ?? protocol}
-          </span>
-        )}
-        {direction && DIRECTION_ICON[direction] && (
-          <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-            {DIRECTION_ICON[direction]}
-            {direction}
-          </span>
-        )}
-        {level && (
-          <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-            {ENTITY_LEVEL_LABEL[level] ?? level}
-          </span>
-        )}
-        {capabilityType && (
-          <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-            {capabilityType.split(":").pop() ?? capabilityType}
-          </span>
-        )}
-        {mandatory === true && (
-          <span className="inline-flex items-center rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[11px] font-medium text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-400">
-            mandatory
-          </span>
-        )}
-        {mandatory === false && (
-          <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-            optional
-          </span>
-        )}
+      {/* Footer: pills + ordId */}
+      <div className="flex flex-col gap-1.5 mt-auto">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {disabled && (
+            <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium border-border text-muted-foreground">
+              <BanIcon className="h-3 w-3" />
+              disabled
+            </span>
+          )}
+          {visPill && (
+            <span
+              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${visPill.pill}`}
+            >
+              {visPill.icon}
+              {visibility}
+            </span>
+          )}
+          {statusCfg && (
+            <span
+              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${statusCfg.pill}`}
+            >
+              {statusCfg.icon}
+              {statusCfg.label}
+            </span>
+          )}
+          {protocol && (
+            <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+              {PROTOCOL_LABEL[protocol] ?? protocol}
+            </span>
+          )}
+          {direction && DIRECTION_ICON[direction] && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+              {DIRECTION_ICON[direction]}
+              {direction}
+            </span>
+          )}
+          {level && (
+            <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+              {ENTITY_LEVEL_LABEL[level] ?? level}
+            </span>
+          )}
+          {capabilityType && (
+            <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+              {capabilityType.split(":").pop() ?? capabilityType}
+            </span>
+          )}
+          {mandatory === true && (
+            <span className="inline-flex items-center rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[11px] font-medium text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-400">
+              mandatory
+            </span>
+          )}
+          {mandatory === false && (
+            <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+              optional
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-1 min-w-0">
+          <code className="text-[10px] font-mono text-muted-foreground truncate flex-1">
+            {ordId}
+          </code>
+          <CopyButton text={ordId} />
+        </div>
       </div>
     </div>
   );

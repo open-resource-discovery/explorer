@@ -5,10 +5,14 @@ import type {
   OrdV1DocumentDescription,
 } from "@open-resource-discovery/specification";
 import { customFetch, HttpError, responseValidationError } from "./fetch.ts";
-import { getFetchUrl, isOrdConfiguration, isOrdDocument } from "./ordUtils.ts";
+import {
+  getFetchUrl,
+  isOrdConfiguration,
+  isOrdDocument,
+  DEFAULT_PERSPECTIVE,
+} from "./ordUtils.ts";
 import { mergeDocuments } from "./ordMerge.ts";
 
-const DEFAULT_SYSTEM_PERSPECTIVE = "system-instance";
 const MAX_PARALLEL_REQUESTS = 10;
 
 /**
@@ -58,7 +62,7 @@ export async function fetchOrdDocuments(
 
   // Filter to the requested perspective
   const entries = allEntries.filter((entry: OrdV1DocumentDescription) => {
-    const entryPerspective = entry.perspective || DEFAULT_SYSTEM_PERSPECTIVE;
+    const entryPerspective = entry.perspective || DEFAULT_PERSPECTIVE;
     return entryPerspective === perspectiveId;
   });
 
@@ -71,7 +75,7 @@ export async function fetchOrdDocuments(
     tasks.push({
       url: getFetchUrl(baseUrl, entry.url),
       requestInit,
-      configPerspective: entry.perspective || DEFAULT_SYSTEM_PERSPECTIVE,
+      configPerspective: entry.perspective || DEFAULT_PERSPECTIVE,
     });
   }
 
@@ -97,7 +101,7 @@ export async function fetchOrdDocuments(
             task.requestInit,
           );
           if (!doc.perspective) {
-            doc.perspective = DEFAULT_SYSTEM_PERSPECTIVE;
+            doc.perspective = DEFAULT_PERSPECTIVE;
           }
           return { success: true as const, doc };
         } catch (err) {
@@ -133,7 +137,7 @@ export async function fetchOrdDocuments(
 
   // Return the document matching the requested perspective (mergeDocuments groups by perspective)
   const result = merged.find(
-    (doc) => (doc.perspective || DEFAULT_SYSTEM_PERSPECTIVE) === perspectiveId,
+    (doc) => (doc.perspective || DEFAULT_PERSPECTIVE) === perspectiveId,
   );
 
   if (!result) {

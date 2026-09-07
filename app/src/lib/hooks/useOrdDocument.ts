@@ -1,15 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import type {
-  OrdDocument,
-  OrdConfiguration,
-} from "@open-resource-discovery/specification";
+import type { OrdDocument } from "@open-resource-discovery/specification";
 import { getConnection } from "@lib/connection/store";
-import {
-  mergeDocuments,
-  fetchOrdConfiguration,
-  getFetchUrl,
-  getBaseUrl,
-} from "@lib/fetcher";
+import { getFetchUrl, fetchOrdDocumentForPerspective } from "@lib/fetcher";
 import {
   useProxy,
   fetchViaProxy,
@@ -20,6 +12,15 @@ import type { AuthErrorKind } from "@lib/proxy";
 
 export const PROXY_PORT = 44123;
 
+/**
+ * Rewrites relative definition URLs on an ORD document's resources to absolute
+ * URLs against `baseUrl`.
+ *
+ * NOTE: this mutates `doc` in place and returns the same reference — the returned
+ * value and the passed-in `doc` are the same object. Callers must pass a document
+ * they exclusively own (e.g. a freshly fetched document), never a shared/cached
+ * instance, or other consumers would observe the rewritten URLs.
+ */
 function resolveDefinitionUrls(doc: OrdDocument, baseUrl: string): OrdDocument {
   const resourceLists = [
     doc.apiResources,
@@ -38,6 +39,10 @@ function resolveDefinitionUrls(doc: OrdDocument, baseUrl: string): OrdDocument {
   for (const list of resourceLists) {
     if (!list) continue;
     for (const resource of list) {
+      // SAFETY: ORD resource types optionally carry `resourceDefinitions` and
+      // `definitions` arrays whose entries may have a `url`. We only read and
+      // rewrite those two optional fields, so narrowing to exactly this readable
+      // surface is sound regardless of the concrete resource type.
       const withDefs = resource as {
         resourceDefinitions?: { url?: string }[];
         definitions?: { url?: string }[];
@@ -55,50 +60,38 @@ function resolveDefinitionUrls(doc: OrdDocument, baseUrl: string): OrdDocument {
 }
 
 export interface UseOrdDocumentResult {
-  document: OrdDocument | null;
+  document: OrdDocument | undefined;
   loading: boolean;
-  error: string | null;
-  authError: AuthErrorKind | null;
+  error: string | undefined;
+  authError: AuthErrorKind | undefined;
   retry: () => void;
-}
-
-async function fetchDirect(
-  url: string,
-  headers?: Headers,
-): Promise<OrdDocument> {
-  const init: RequestInit = headers ? { headers } : {};
-  const response = await fetch(url, init);
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status} fetching ${url}`);
-  }
-
-  return (await response.json()) as OrdDocument;
 }
 
 export function useOrdDocument(
   connectionId: string,
   perspectiveId: string,
 ): UseOrdDocumentResult {
-  const { available, sessionId, recheckSession } = useProxy();
-  const [document, setDocument] = useState<OrdDocument | null>(null);
+  const { available, sessionId, recheckSession, proxyBaseUrl } = useProxy();
+  const [document, setDocument] = useState<OrdDocument | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [authError, setAuthError] = useState<AuthErrorKind | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [authError, setAuthError] = useState<AuthErrorKind | undefined>(
+    undefined,
+  );
   const [retryCount, setRetryCount] = useState(0);
 
-  const retry = useCallback(() => {
+  const retry = useCallback((): void => {
     setRetryCount((c) => c + 1);
   }, []);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function load() {
+    async function load(): Promise<void> {
       setLoading(true);
-      setError(null);
-      setAuthError(null);
-      setDocument(null);
+      setError(undefined);
+      setAuthError(undefined);
+      setDocument(undefined);
 
       const connection = getConnection(connectionId);
 
@@ -117,65 +110,43 @@ export function useOrdDocument(
           isBearer && connection.bearerToken
             ? { Authorization: `Bearer ${connection.bearerToken}` }
             : undefined;
-        const authHeaders = forwardHeaders
-          ? new Headers(forwardHeaders)
-          : undefined;
 
         const wellKnownUrl = connection.ordConfigUrl;
         const isCrossOrigin =
           new URL(wellKnownUrl).origin !== window.location.origin;
         const useProxyForAuth = isMtls || (available && isCrossOrigin);
 
-        const config = useProxyForAuth
-          ? await fetchViaProxy<OrdConfiguration>(
-              connectionId,
-              wellKnownUrl,
-              forwardHeaders,
-            )
-          : await fetchOrdConfiguration(wellKnownUrl, authHeaders);
-        const allEntries = config.openResourceDiscoveryV1?.documents ?? [];
-        const DEFAULT_PERSPECTIVE = "system-instance";
+        const fetchFn = useProxyForAuth
+          ? (url: string): Promise<unknown> =>
+              fetchViaProxy<unknown>(
+                proxyBaseUrl,
+                connectionId,
+                url,
+                forwardHeaders,
+              )
+          : async (url: string): Promise<unknown> => {
+              const init: RequestInit = forwardHeaders
+                ? { headers: forwardHeaders }
+                : {};
+              const res = await fetch(url, init);
+              if (!res.ok)
+                throw new Error(`HTTP ${res.status} fetching ${url}`);
+              return res.json();
+            };
 
-        const entries = allEntries.filter(
-          (e) =>
-            ((e as { perspective?: string }).perspective ??
-              DEFAULT_PERSPECTIVE) === perspectiveId,
-        );
-
-        const baseUrl = getBaseUrl(wellKnownUrl, config.baseUrl);
-
-        const docUrls = entries
-          .filter((e) => e.url?.trim())
-          .map((e) => getFetchUrl(baseUrl, e.url!));
-
-        if (docUrls.length === 0) {
-          throw new Error(
-            `No document URLs for perspective "${perspectiveId}"`,
+        const { document: rawDoc, baseUrl } =
+          await fetchOrdDocumentForPerspective(
+            wellKnownUrl,
+            perspectiveId,
+            fetchFn,
           );
-        }
 
-        const fetched: OrdDocument[] = await Promise.all(
-          docUrls.map(async (url) => {
-            const doc = useProxyForAuth
-              ? await fetchViaProxy<OrdDocument>(
-                  connectionId,
-                  url,
-                  forwardHeaders,
-                )
-              : await fetchDirect(url, authHeaders);
-            return resolveDefinitionUrls(doc, baseUrl);
-          }),
-        );
-
-        const merged = mergeDocuments(fetched);
-
-        const result =
-          merged.find((d) => d.perspective === perspectiveId) ?? merged[0];
+        const result = resolveDefinitionUrls(rawDoc, baseUrl);
 
         if (!cancelled) {
-          setDocument(result ?? null);
+          setDocument(result);
         }
-      } catch (err) {
+      } catch (err: unknown) {
         if (cancelled) return;
 
         if (err instanceof AuthFailedError) {
@@ -185,7 +156,7 @@ export function useOrdDocument(
             recheckSession,
             sessionId,
           );
-          setError(err.message);
+          setError(err instanceof Error ? err.message : String(err));
           setAuthError(kind);
           return;
         }
@@ -207,6 +178,7 @@ export function useOrdDocument(
     connectionId,
     perspectiveId,
     available,
+    proxyBaseUrl,
     sessionId,
     recheckSession,
     retryCount,

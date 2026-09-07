@@ -101,7 +101,7 @@ export function RootLayout() {
               setTheme(resolvedTheme === "dark" ? "light" : "dark")
             }
             aria-label="Toggle theme"
-            className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded p-2 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             {resolvedTheme === "dark" ? (
               <Sun className="h-4 w-4" />
@@ -111,7 +111,7 @@ export function RootLayout() {
           </button>
         </div>
       </header>
-      <main className="min-h-0 flex-1 overflow-auto">
+      <main className="min-h-0 flex-1 overflow-hidden">
         <Outlet />
       </main>
     </div>

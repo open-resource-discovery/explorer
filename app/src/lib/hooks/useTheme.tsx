@@ -37,7 +37,7 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
+function ThemeProviderInner({ children }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(getInitialTheme);
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() =>
     resolveTheme(getInitialTheme()),
@@ -62,6 +62,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       {children}
     </ThemeContext.Provider>
   );
+}
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const existing = useContext(ThemeContext);
+  if (existing) return <>{children}</>;
+  return <ThemeProviderInner>{children}</ThemeProviderInner>;
 }
 
 export function useTheme(): ThemeContextValue {

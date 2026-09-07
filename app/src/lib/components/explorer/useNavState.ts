@@ -188,9 +188,9 @@ export function useNavState(
     const hash = buildHash(page, query, filters);
     if (!hasMounted.current) {
       hasMounted.current = true;
-      window.history.replaceState(null, "", `#${hash}`);
+      window.history.replaceState({ ...window.history.state }, "", `#${hash}`);
     } else {
-      window.history.pushState(null, "", `#${hash}`);
+      window.history.pushState({ ...window.history.state }, "", `#${hash}`);
     }
   }, [page, query, filters, enableUrlSync]);
 

@@ -6,6 +6,8 @@ import type {
 
 const ORD_CONFIGURATION_POSTFIX = "/.well-known/open-resource-discovery";
 
+export const DEFAULT_PERSPECTIVE = "system-instance";
+
 export function isRemoteUrl(url: string): boolean {
   return url.startsWith("http://") || url.startsWith("https://");
 }
@@ -65,7 +67,6 @@ export function getFetchUrl(baseUrl: string, resourceUrl: string): string {
  * Documents without an explicit perspective default to "system-instance".
  */
 export function extractPerspectives(config: OrdConfiguration): string[] {
-  const DEFAULT_PERSPECTIVE = "system-instance";
   const entries = config.openResourceDiscoveryV1?.documents ?? [];
   const seen = new Set<string>();
   for (const entry of entries) {
