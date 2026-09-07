@@ -17,24 +17,26 @@ export interface FetchOrdDocumentResult {
   baseUrl: string;
 }
 
-type FetchFn = (
-  url: string,
-  headers?: Record<string, string>,
-) => Promise<unknown>;
+type FetchFn = (url: string) => Promise<unknown>;
 
-async function defaultFetch(url: string): Promise<unknown> {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
-  return res.json();
+function makeDefaultFetch(signal?: AbortSignal): FetchFn {
+  return async (url: string): Promise<unknown> => {
+    const res = await fetch(url, signal ? { signal } : {});
+    if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
+    return res.json();
+  };
 }
 
 export async function fetchOrdDocumentForPerspective(
   ordConfigUrl: string,
   perspectiveId: string,
-  fetchFn: FetchFn = defaultFetch,
+  fetchFn?: FetchFn,
   signal?: AbortSignal,
 ): Promise<FetchOrdDocumentResult> {
-  const rawConfig = await fetchFn(ordConfigUrl);
+  const doFetch: FetchFn = fetchFn ?? makeDefaultFetch(signal);
+
+  signal?.throwIfAborted();
+  const rawConfig = await doFetch(ordConfigUrl);
   if (!isOrdConfiguration(rawConfig)) {
     throw new Error(`Unrecognized ORD configuration at ${ordConfigUrl}`);
   }
@@ -61,7 +63,7 @@ export async function fetchOrdDocumentForPerspective(
   const fetched = await Promise.all(
     docUrls.map(async (url: string): Promise<OrdDocument> => {
       signal?.throwIfAborted();
-      const raw = await fetchFn(url);
+      const raw = await doFetch(url);
       if (!isOrdDocument(raw)) {
         throw new Error(`Unrecognized ORD document format at ${url}`);
       }
