@@ -80,8 +80,8 @@
     "uuid": "14.0.2"
   },
   "overrides": {
-    "dompurify": "3.4.15",
-    "fast-uri": "3.1.7"
+    "@ai-sdk/provider-utils": "4.0.50",
+    "dompurify": "3.4.15"
   },
   "engines": {
     "node": ">=22.19.0"
