@@ -1,6 +1,6 @@
 @layer theme, base, components, utilities;
 
-@import "@open-resource-discovery/ui-components/styles";
+@import "@open-resource-discovery/ui-components/styles" layer(components);
 @import "@open-resource-discovery/metadata-renderer/styles";
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
