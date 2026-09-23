@@ -4,6 +4,8 @@ import { OrdDocumentContext } from "@lib/context/OrdDocumentContext";
 import { DefinitionContentProvider } from "@lib/context/DefinitionContentProvider";
 import { NavExtensionContext } from "@lib/context/NavExtensionContext";
 import { ThemeRootContent } from "@lib/components/ThemeRoot";
+import { useTheme } from "@lib/hooks/useTheme";
+import { Moon, Sun } from "lucide-react";
 import { DashboardPage } from "./pages/DashboardPage";
 import { PackageDetailPage } from "./pages/PackageDetailPage";
 import { ConsumptionBundleDetailPage } from "./pages/ConsumptionBundleDetailPage";
@@ -39,6 +41,11 @@ export interface ORDExplorerProps {
    *  views are deep-linkable and survive reload. Leave false (default) when
    *  embedding in a host app that manages its own routing. */
   enableUrlSync?: boolean;
+  /** Renders a theme toggle in the top-right of the content area. Defaults to
+   *  true for embedders that have no chrome of their own (e.g. provider-server).
+   *  Set false when the host already provides a theme toggle so it isn't
+   *  duplicated (the explorer app's own RootLayout header does). */
+  showThemeToggle?: boolean;
 }
 
 export function ORDExplorer({
@@ -47,6 +54,7 @@ export function ORDExplorer({
   connectionId = "",
   prefetchDefinitions = false,
   enableUrlSync = false,
+  showThemeToggle = true,
 }: ORDExplorerProps) {
   const [defaultSelection] = useState(() => firstNonEmptySelection(document));
   const { selection, query, filters, setSelection, setQuery, setFilters } =
@@ -55,6 +63,7 @@ export function ORDExplorer({
   const [sidebarWidth, setSidebarWidth] = useState(256);
   const scrollRef = useRef<HTMLDivElement>(null);
   const proxy = useProxy();
+  const { resolvedTheme, setTheme } = useTheme();
   const { setResourceDetailLabel, setResetExplorer } =
     useContext(NavExtensionContext);
 
@@ -112,6 +121,23 @@ export function ORDExplorer({
                 className="flex min-w-0 flex-1 flex-col overflow-auto"
                 ref={scrollRef}
               >
+                {showThemeToggle && (
+                  <div className="flex justify-end px-4 pt-2">
+                    <button
+                      onClick={() =>
+                        setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                      }
+                      aria-label="Toggle theme"
+                      className="rounded p-1.5 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground"
+                    >
+                      {resolvedTheme === "dark" ? (
+                        <Sun className="h-4 w-4" />
+                      ) : (
+                        <Moon className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                )}
                 <div className="w-full max-w-[1080px] mx-auto">
                   {(selection.id === "dashboard" ||
                     selection.id === "resourceList" ||
