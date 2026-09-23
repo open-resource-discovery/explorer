@@ -194,12 +194,18 @@ app.post("/fetch", async (c) => {
   const corporateProxy = getCorporateProxyUrl();
   try {
     if (creds) {
-      const mtlsConfig = buildMtlsConfig({
-        cert: creds.cert,
-        key: creds.key,
-        passphrase: creds.passphrase,
-        ca: creds.caCert,
-      });
+      const mtlsConfig = buildMtlsConfig(
+        {
+          cert: creds.cert,
+          key: creds.key,
+          passphrase: creds.passphrase,
+          ca: creds.caCert,
+        },
+        // Credentials arrive over the network (POST /connections/:id), so never
+        // let cert/key/ca strings be dereferenced as filesystem paths — inline
+        // PEM/base64 only. (Audit finding F3.)
+        false,
+      );
       const connectOptions = createConnectOptions(
         REJECT_UNAUTHORIZED,
         mtlsConfig,
@@ -226,9 +232,12 @@ app.post("/fetch", async (c) => {
       response = await undiciFetch(url, { ...requestInit, dispatcher });
     }
   } catch (err) {
-    const cause =
-      err instanceof Error && err.cause ? String(err.cause) : undefined;
-    return c.json({ error: "fetch_failed", message: String(err), cause }, 502);
+    // Log the detail for the operator (this is a local proxy running on the
+    // user's own machine) but return a generic message: echoing String(err) /
+    // err.cause back to the caller discloses internal hostnames, URLs and
+    // filesystem paths. (Audit finding F3.)
+    console.error("[auth-proxy] /fetch failed:", err);
+    return c.json({ error: "fetch_failed" }, 502);
   }
 
   if (response.status === 401 || response.status === 403) {
