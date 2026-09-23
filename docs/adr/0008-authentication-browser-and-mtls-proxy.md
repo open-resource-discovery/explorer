@@ -21,18 +21,24 @@ The proxy is optional and progressive: the app functions fully for no-auth and b
 - GitHub Pages deployment is preserved with no changes to the static hosting model.
 - mTLS users must run `npm run proxy` alongside the app. This is consistent with how developer tools like Bruno, mitmproxy, and Charles Proxy work.
 - Private keys never touch browser storage. They transit `localhost` once on registration and are held in the proxy's process memory.
-- The proxy runs on a fixed port in the 40000s (configurable via `--port`). CORS is restricted to a hardcoded allowlist of known deployment origins (GH Pages URLs + localhost variants) with an `--allow-origin` escape hatch.
-- The proxy is never deployed to any hosted environment — it is local-only.
+- The proxy runs on a fixed port in the 40000s (configurable via `--port`). CORS is restricted to a hardcoded allowlist of local origins only — the Vite dev/preview ports (`localhost:5173`–`5175`, `4173`) and the docker app's nginx origin (`localhost:8080`) — with an `--allow-origin` / `ALLOW_ORIGIN` escape hatch for bespoke local setups. No hosted/public origin is in the allowlist.
+- The proxy is never deployed to any hosted environment — it is local-only. It binds to `127.0.0.1` by default; the docker image overrides this to `0.0.0.0` (safe because the container publishes no host port — the app reaches it over the internal compose network only).
 - A startup warning is emitted: the proxy requires Chrome 94+ or Firefox 90+ (browsers that allow HTTPS pages to call `http://localhost` without mixed-content blocking, per the W3C Secure Contexts spec treating localhost as a trustworthy origin).
 
 ## TLS validation in the proxy (rejectUnauthorized)
 
 When the proxy makes outbound connections via undici it must decide whether to validate the server's TLS certificate.
 
-**Local deployments (default):** The proxy binds to `127.0.0.1`. The user controls their own machine and its certificate trust store. All connections use `rejectUnauthorized: true` — undici validates the server certificate against the system/Node trust store. Users connecting to servers with private-CA certificates must supply the CA bundle via the mTLS connection's "CA Certificate" field; undici then validates against that CA.
+The proxy binds to `127.0.0.1` by default. The user controls their own machine and its certificate trust store. **All connections use `rejectUnauthorized: true`** — undici always validates the server certificate against the system/Node trust store; there is no opt-out. Users connecting to servers with private-CA certificates must supply the CA bundle via the mTLS connection's "CA Certificate" field; undici then validates against that CA.
 
-**CloudFoundry / hosted deployments (`TRUST_ALL_CERTS=true`):** The CF-deployed proxy must reach SAP-internal ORD endpoints whose TLS certificates are issued by SAP's corporate PKI — a CA present in corporate browsers (Chrome, Edge) but absent from Node.js's bundled OpenSSL trust store. Rather than bundling the corporate CA chain (which changes over time) or requiring operators to inject `NODE_EXTRA_CA_CERTS`, the proxy accepts an opt-in `TRUST_ALL_CERTS=true` environment variable that disables certificate validation for all outbound connections. This variable is set in `manifest.yml` for the CF deployment.
+## The allowlist is real access control, not just CORS
 
-**Why not `NODE_EXTRA_CA_CERTS`?** The CF deployment uses the standard nodejs buildpack and the SAP corporate CA bundle is not reliably available as a file at a known path inside the buildpack container. `TRUST_ALL_CERTS=true` is a documented, explicit opt-in — not a silent default.
+Because the proxy holds live client certificates and drives arbitrary outbound fetches, its origin allowlist is enforced as access control, not merely as CORS advisory headers:
 
-**Security note:** `TRUST_ALL_CERTS=true` disables server certificate validation globally for all proxy connections. This is acceptable in the CF scenario because: (a) the proxy is an internal SAP tool not exposed to untrusted networks, (b) the CORS allowlist restricts which browser origins may call it, and (c) the threat model for a shared corporate proxy is different from a local-machine proxy where the user is the only party. Operators running the proxy in any environment where MITM is a realistic threat must NOT set `TRUST_ALL_CERTS=true`.
+- A state-changing request (`POST`/`DELETE`) whose `Origin` header is _present but not allowlisted_ is rejected with `403`, closing the CORS "simple request" CSRF hole (a `text/plain` POST triggers no preflight, so header-only CORS would let a cross-origin page drive side effects it can't read).
+- Body-carrying `POST`s must send `Content-Type: application/json` or are rejected with `415`, forcing any cross-origin JSON through the already-gated preflight.
+- A request with _no_ `Origin` is still allowed — same-origin browser fetches (docker's nginx, loopback) and local tooling (curl) carry none, and the loopback bind already scopes who can reach the port.
+
+## History
+
+An earlier iteration deployed this proxy as a CloudFoundry side-car (`ord-explorer-auth-proxy.cfapps...`) so the hosted gh-pages/pr-preview builds could use mTLS. That side-car ran with `TRUST_ALL_CERTS=true` (disabling all outbound TLS validation) and accepted client certs/private keys transmitted from the public app to a shared host. It was **deliberately decommissioned** — a hosted proxy inevitably transmits and holds users' mTLS credentials on infrastructure outside their control, a credential-leak exposure that the local-only model does not have. The hosted deployment, its `manifest.yml`, and the `TRUST_ALL_CERTS` code path have all been removed. If a hosted mTLS proxy is ever wanted again, it is a fresh design effort that must solve credential custody first — not a re-enable of this one.
