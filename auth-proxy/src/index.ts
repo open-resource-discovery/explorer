@@ -73,12 +73,16 @@ function getAllArgValues(name: string): string[] {
   return values;
 }
 
+// Only local origins are legitimate now that no hosted/public build talks to
+// the proxy (the CF side-car is decommissioned): the Vite dev/preview ports and
+// the docker app's nginx origin. Extra origins can still be added via
+// --allow-origin / ALLOW_ORIGIN for bespoke local setups.
 const ALLOWED_ORIGINS = new Set([
-  "https://open-resource-discovery.github.io",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5175",
   "http://localhost:4173",
+  "http://localhost:8080",
   ...getAllArgValues("--allow-origin"),
   ...(process.env.ALLOW_ORIGIN?.split(",")
     .map((o) => o.trim())
@@ -91,23 +95,48 @@ const ALLOWED_ORIGINS = new Set([
 
 const app = new Hono();
 
-// CORS middleware
+// CORS + CSRF middleware
 app.use("*", async (c, next) => {
   const origin = c.req.header("Origin");
+  const isAllowedOrigin = origin !== undefined && ALLOWED_ORIGINS.has(origin);
 
-  if (origin && ALLOWED_ORIGINS.has(origin)) {
+  if (isAllowedOrigin) {
     c.header("Access-Control-Allow-Origin", origin);
     c.header("Vary", "Origin");
     c.header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
     c.header("Access-Control-Allow-Headers", "Content-Type");
   }
 
-  // Handle preflight
+  // Preflight: only allowed origins may proceed.
   if (c.req.method === "OPTIONS") {
-    if (origin && ALLOWED_ORIGINS.has(origin)) {
-      return c.body(null, 204);
-    }
+    return isAllowedOrigin ? c.body(null, 204) : c.text("Forbidden", 403);
+  }
+
+  // Enforce the allowlist as real access control on state-changing methods.
+  // A CORS "simple request" (e.g. Content-Type: text/plain) triggers no
+  // preflight, so without this a cross-origin page could drive POST/DELETE
+  // side effects (CSRF / confused-deputy) even though it can't read the reply.
+  // A cross-origin request always carries an Origin, so reject any
+  // state-changing request whose Origin is present but not allowlisted. A
+  // missing Origin means same-origin (docker app → nginx → proxy) or local
+  // tooling; the proxy is loopback-bound (ADR-0008), so that is not a
+  // cross-site vector.
+  const isStateChanging = c.req.method !== "GET" && c.req.method !== "HEAD";
+  if (isStateChanging && origin !== undefined && !isAllowedOrigin) {
     return c.text("Forbidden", 403);
+  }
+
+  // Body-carrying routes call c.req.json() regardless of Content-Type, so a
+  // text/plain "simple request" could smuggle a JSON body cross-origin without
+  // a preflight. Require application/json: a cross-origin application/json POST
+  // is not a "simple request", so the browser must send a preflight that the
+  // allowlist above already gates — turning the allowlist into real access
+  // control on the action itself.
+  if (c.req.method === "POST") {
+    const contentType = c.req.header("Content-Type")?.toLowerCase() ?? "";
+    if (!contentType.includes("application/json")) {
+      return c.json({ error: "unsupported_media_type" }, 415);
+    }
   }
 
   await next();
