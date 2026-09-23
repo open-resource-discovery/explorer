@@ -34,7 +34,6 @@ jobs:
         run: npm run build
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
-          VITE_PROXY_BASE_URL: https://ord-explorer-auth-proxy.cfapps.sap.hana.ondemand.com
 
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
 
