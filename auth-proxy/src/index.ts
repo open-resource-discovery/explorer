@@ -42,21 +42,14 @@ function getCorporateProxyUrl(): string | undefined {
 }
 
 // ---------------------------------------------------------------------------
-// TLS validation opt-out for hosted (CF) deployments
+// TLS validation
 //
-// Local deployments bind to 127.0.0.1 — the user controls their machine and
-// its trust store, so rejectUnauthorized is true by default.
-//
-// CF deployments must reach SAP-internal endpoints whose certs are issued by
-// SAP's corporate PKI — present in corporate browsers but not in Node's
-// bundled OpenSSL. Set TRUST_ALL_CERTS=true in the CF environment (see
-// manifest.yml) to opt out of TLS validation for those deployments.
-//
-// Never set TRUST_ALL_CERTS=true in local or production environments where
-// MITM attacks are a realistic threat. See ADR-0008 for full rationale.
+// The proxy is local-only (bound to loopback — see ADR-0008): the user controls
+// their machine and its trust store, so outbound server certificates are always
+// validated. There is no hosted deployment and no opt-out.
 // ---------------------------------------------------------------------------
 
-const REJECT_UNAUTHORIZED = process.env.TRUST_ALL_CERTS !== "true";
+const REJECT_UNAUTHORIZED = true;
 
 // ---------------------------------------------------------------------------
 // CLI args
