@@ -253,7 +253,17 @@ function nodeRequestToFetchRequest(
 // HTTP server
 // ---------------------------------------------------------------------------
 
-export function start(port: number): Promise<() => Promise<void>> {
+// Bind to loopback by default so the proxy — which holds the user's mTLS
+// client cert/key — is never reachable from other hosts on the LAN (see
+// ADR-0008 and the TLS-validation note above). Configurable via HOST / --host
+// only so the docker image can set HOST=0.0.0.0 for the in-compose app→proxy
+// hop (no host port is published there, so all-interfaces stays private).
+const DEFAULT_HOST = "127.0.0.1";
+
+export function start(
+  port: number,
+  host: string = DEFAULT_HOST,
+): Promise<() => Promise<void>> {
   return new Promise((resolve, reject) => {
     const baseUrl = `http://localhost:${port}`;
     const server = createServer(
@@ -269,7 +279,7 @@ export function start(port: number): Promise<() => Promise<void>> {
       },
     );
 
-    server.listen(port, () => {
+    server.listen(port, host, () => {
       resolve(
         () =>
           new Promise((res, rej) =>
@@ -292,9 +302,10 @@ if (
     new URL(`file://${process.argv[1]}`).pathname
 ) {
   const port = Number(getArgValue("--port") ?? process.env.PORT ?? "44123");
-  void start(port).then(() => {
+  const host = getArgValue("--host") ?? process.env.HOST ?? DEFAULT_HOST;
+  void start(port, host).then(() => {
     console.log(
-      `ORD Explorer auth-proxy listening on http://localhost:${port}`,
+      `ORD Explorer auth-proxy listening on ${host}:${port} (http://localhost:${port})`,
     );
     console.log(
       "Requires Chrome 94+ or Firefox 90+ (localhost must be a trustworthy origin)",
