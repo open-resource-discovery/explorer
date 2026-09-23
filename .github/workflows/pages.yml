@@ -31,7 +31,13 @@ jobs:
       - run: npm ci
 
       - name: Build app
-        run: npm run build
+        run: |
+          set -euo pipefail
+          npm run build
+          # Same step as the build so the guard observes the same env: a
+          # re-added `VITE_PROXY_BASE_URL: https://…` here trips it. Public
+          # deployments must never ship a hosted mTLS proxy origin.
+          npm run check:public-bundle
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
 
