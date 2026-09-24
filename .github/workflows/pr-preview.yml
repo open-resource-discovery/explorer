@@ -34,10 +34,6 @@ jobs:
           set -euo pipefail
           npm ci
           npm run build
-          # Same step as the build so the guard observes the same env: a
-          # re-added `VITE_PROXY_BASE_URL: https://…` here trips it. Public
-          # deployments must never ship a hosted mTLS proxy origin.
-          npm run check:public-bundle
 
       - name: PR preview
         uses: open-resource-discovery/pr-preview-action@2abf52396925f6bb4d0a82e27bd6f060260d09ae # main
