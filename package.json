@@ -70,13 +70,13 @@
     "@leeoniya/ufuzzy": "1.0.19",
     "@open-resource-discovery/ui-components": "0.2.0",
     "@open-resource-discovery/metadata-renderer": "1.0.1",
-    "@tanstack/react-router": "1.170.38",
+    "@tanstack/react-router": "1.170.39",
     "clsx": "2.1.1",
-    "hono": "4.13.8",
-    "lucide-react": "1.47.0",
+    "hono": "4.13.9",
+    "lucide-react": "1.48.0",
     "react-markdown": "10.1.0",
     "tailwind-merge": "3.7.0",
-    "undici": "8.10.2",
+    "undici": "8.11.2",
     "uuid": "14.0.2"
   },
   "overrides": {
