@@ -80,7 +80,7 @@
     "uuid": "14.0.2"
   },
   "overrides": {
-    "@ai-sdk/provider-utils": "4.0.51",
+    "@ai-sdk/provider-utils": "4.0.54",
     "dompurify": "3.4.15",
     "js-yaml": "4.3.2"
   },
