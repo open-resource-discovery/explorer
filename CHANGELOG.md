@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) rules.
 
+
 ## [unreleased]
+
+## [[0.2.0](https://github.com/open-resource-discovery/explorer/releases/tag/v0.2.0)] - 2026-09-28
 
 ### Added
 
@@ -23,6 +26,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 
 - Visibility and Release Status filter pills keep their colors after the `ui-components` upgrade
+
 
 ## [0.1.0] - 2026-08-03
 
