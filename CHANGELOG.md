@@ -9,10 +9,26 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- Provider server integration — connect the Explorer to a running ORD provider server and browse its documents
+- Server status panel surfacing provider server health and document availability
+- Embeddable library build (`npm run build:lib`) exposing `ExplorerPage`, `ConnectionDetailPage`, and `ServerStatusPanel` as reusable React components with TypeScript types
+- Per-perspective ORD document fetching
 - Package published to npm as [`@open-resource-discovery/explorer`](https://www.npmjs.com/package/@open-resource-discovery/explorer) — the built app (`dist/`) is now available for self-hosting
 - Docker image published to GitHub Container Registry at `ghcr.io/open-resource-discovery/explorer`
 
+### Changed
+
+- Reworked perspective and connection selection UI, streamlining the add-connection flow
+- Documented CSS embedding interop for host applications (`docs/css-embedding-interop.md`)
+- Ongoing dependency and toolchain updates across runtime and dev dependencies, including resolved Dependabot security advisories
+
+### Fixed
+
+- Visibility and Release Status filter pills keep their colors after the `ui-components` upgrade
+
 ## [0.1.0] - 2026-08-03
+
+<!-- Pre-public / internal baseline: this release was curated in the SAP-internal repository before the project was open-sourced. -->
 
 ### Added
 
