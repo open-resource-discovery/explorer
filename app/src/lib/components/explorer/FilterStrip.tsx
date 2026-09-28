@@ -29,6 +29,7 @@ export function FilterStrip<T extends string>({
               <button
                 key={seg.value}
                 aria-pressed={active}
+                data-testid={`filter-pill-${seg.value}`}
                 onClick={() => onToggle(seg.value)}
                 className={`flex flex-1 items-center justify-center gap-1 rounded-md border px-1.5 py-1 text-xs font-medium transition-colors ${active ? seg.colors.active : seg.colors.inactive}`}
               >
