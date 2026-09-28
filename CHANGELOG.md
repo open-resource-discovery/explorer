@@ -9,8 +9,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
-- Provider server integration — connect the Explorer to a running ORD provider server and browse its documents
-- Server status panel surfacing provider server health and document availability
 - Embeddable library build (`npm run build:lib`) exposing `ExplorerPage`, `ConnectionDetailPage`, and `ServerStatusPanel` as reusable React components with TypeScript types
 - Per-perspective ORD document fetching
 - Package published to npm as [`@open-resource-discovery/explorer`](https://www.npmjs.com/package/@open-resource-discovery/explorer) — the built app (`dist/`) is now available for self-hosting
