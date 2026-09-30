@@ -7,6 +7,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+### Fixed
+
+- Published package now ships the embeddable library build (`dist/lib`); the 0.2.0 tarball was missing it, so `@open-resource-discovery/explorer/components` could not be imported by consumers.
+
+## [0.2.0] - 2026-09-28
+
 ### Added
 
 - Embeddable library build (`npm run build:lib`) exposing `ExplorerPage`, `ConnectionDetailPage`, and `ServerStatusPanel` as reusable React components with TypeScript types
