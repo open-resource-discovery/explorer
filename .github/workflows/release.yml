@@ -110,3 +110,5 @@ jobs:
 
       - name: Create GitHub Release
         uses: open-resource-discovery/github-release@main
+        with:
+          ci-workflows: main.yml
