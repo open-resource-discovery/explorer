@@ -1,6 +1,6 @@
 {
   "name": "@open-resource-discovery/explorer",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "A UI for exploring ORD (Open Resource Discovery) documents - browse, fetch, and merge resources.",
   "license": "Apache-2.0",
   "publishConfig": {
@@ -48,6 +48,7 @@
     "generate:sample": "node --experimental-strip-types scripts/generate-sample-doc.ts",
     "build": "npm run generate:sample && tsc -b && vite build --config app/vite.config.ts",
     "build:lib": "vite build --config app/vite.config.lib.ts && tsc --project app/tsconfig.lib.json",
+    "prepack": "npm run build && npm run build:lib",
     "typecheck": "node node_modules/typescript/bin/tsc -b --noEmit",
     "lint": "npm run eslint:ci",
     "eslint": "eslint . --fix",
@@ -70,13 +71,13 @@
     "@leeoniya/ufuzzy": "1.0.19",
     "@open-resource-discovery/ui-components": "0.2.0",
     "@open-resource-discovery/metadata-renderer": "1.0.1",
-    "@tanstack/react-router": "1.170.38",
+    "@tanstack/react-router": "1.170.40",
     "clsx": "2.1.1",
-    "hono": "4.13.8",
-    "lucide-react": "1.47.0",
+    "hono": "4.13.9",
+    "lucide-react": "1.48.0",
     "react-markdown": "10.1.0",
     "tailwind-merge": "3.7.0",
-    "undici": "8.10.2",
+    "undici": "8.11.2",
     "uuid": "14.0.2"
   },
   "overrides": {
@@ -88,7 +89,7 @@
     "node": ">=22.19.0"
   },
   "devDependencies": {
-    "@scalar/types": "0.20.0",
+    "@scalar/types": "0.22.1",
     "@eslint/js": "10.0.1",
     "@monaco-editor/react": "4.7.0",
     "@open-resource-discovery/specification": "1.16.3",
@@ -102,23 +103,23 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.1",
-    "@vitest/coverage-v8": "5.0.1",
+    "@vitest/coverage-v8": "5.0.2",
     "eslint": "10.11.0",
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-react-refresh": "0.5.7",
     "globals": "17.12.0",
     "husky": "9.1.7",
-    "jsdom": "30.1.0",
-    "lint-staged": "17.5.1",
-    "prettier": "3.9.8",
+    "jsdom": "30.1.1",
+    "lint-staged": "17.6.0",
+    "prettier": "3.9.9",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "shiki": "4.4.3",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.70.0",
-    "vite": "8.3.0",
-    "vitest": "5.0.1",
+    "typescript-eslint": "8.70.1",
+    "vite": "8.3.1",
+    "vitest": "5.0.2",
     "zod": "4.6.5"
   }
 }

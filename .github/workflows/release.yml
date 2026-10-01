@@ -102,6 +102,12 @@ jobs:
       !contains(needs.*.result, 'failure') &&
       inputs.githubRelease
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Push changelog branch, create tags and releases
+      pull-requests: write # Open the changelog PR
+      actions: write # Dispatch CI workflows for the changelog PR
+      checks: write # Mirror CI job results as Check Runs on the changelog PR
+      statuses: write # Mirror CI job results as Commit Statuses on the changelog PR
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
