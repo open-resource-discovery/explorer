@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) rules.
 
+
 ## [unreleased]
+
+## [[0.2.1](https://github.com/open-resource-discovery/explorer/releases/tag/v0.2.1)] - 2026-10-01
 
 ### Fixed
 
 - Published package now ships the embeddable library build (`dist/lib`); the 0.2.0 tarball was missing it, so `@open-resource-discovery/explorer/components` could not be imported by consumers.
+
 
 ## [0.2.0] - 2026-09-28
 
