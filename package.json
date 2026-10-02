@@ -1,6 +1,6 @@
 {
   "name": "@open-resource-discovery/explorer",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "A UI for exploring ORD (Open Resource Discovery) documents - browse, fetch, and merge resources.",
   "license": "Apache-2.0",
   "publishConfig": {
@@ -48,6 +48,7 @@
     "generate:sample": "node --experimental-strip-types scripts/generate-sample-doc.ts",
     "build": "npm run generate:sample && tsc -b && vite build --config app/vite.config.ts",
     "build:lib": "vite build --config app/vite.config.lib.ts && tsc --project app/tsconfig.lib.json",
+    "prepack": "npm run build && npm run build:lib",
     "typecheck": "node node_modules/typescript/bin/tsc -b --noEmit",
     "lint": "npm run eslint:ci",
     "eslint": "eslint . --fix",
@@ -80,9 +81,9 @@
     "uuid": "14.0.2"
   },
   "overrides": {
-    "@ai-sdk/provider-utils": "4.0.51",
+    "@ai-sdk/provider-utils": "4.0.57",
     "dompurify": "3.4.15",
-    "js-yaml": "4.3.2"
+    "js-yaml": "5.4.2"
   },
   "engines": {
     "node": ">=22.19.0"
