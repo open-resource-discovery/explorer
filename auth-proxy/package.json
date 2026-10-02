@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/proxy.mjs --external:node:*",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/proxy.mjs --external:node:* --banner:js=\"import{createRequire as __createRequire}from'node:module';const require=__createRequire(import.meta.url);\"",
     "start": "node dist/proxy.mjs",
     "dev:server": "node --experimental-strip-types dev/mtls-server.ts",
     "dev:gen-certs": "node --experimental-strip-types dev/gen-certs.ts"

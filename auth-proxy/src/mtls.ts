@@ -89,14 +89,25 @@ function extractPemBlocks(content: string): string | null {
 /**
  * Load certificate/key content from file path, base64, or PEM format
  * Handles PEM files with metadata headers (e.g., subject=, issuer=)
+ *
+ * `allowFilePaths` gates the filesystem-read branch: it must be `false` for any
+ * value that arrives over the network (the /fetch path). Treating a
+ * client-supplied string as a filesystem path lets a caller make the proxy
+ * `readFileSync` arbitrary files on the proxy host (a path/existence oracle).
+ * Only the local CLI/env config path — where the operator controls the value —
+ * may pass `true`.
  */
-export function loadCertificateContent(value: string): string {
+export function loadCertificateContent(
+  value: string,
+  allowFilePaths: boolean,
+): string {
   const trimmed = value.trim();
 
-  // Check if it's a file path - read file first
-  if (isFilePath(trimmed)) {
+  // Check if it's a file path - read file first (local config only)
+  if (allowFilePaths && isFilePath(trimmed)) {
     const fileContent = readFileContent(trimmed);
-    return loadCertificateContent(fileContent); // Recursively process file content
+    // File contents are PEM/base64, never a path — but keep the flag consistent.
+    return loadCertificateContent(fileContent, allowFilePaths);
   }
 
   // Check if content contains PEM blocks (may have metadata before it)
@@ -154,8 +165,15 @@ export function validateMtlsOptions(options: MtlsOptions): string[] {
 
 /**
  * Build mTLS configuration for undici Agent from options
+ *
+ * `allowFilePaths` is forwarded to {@link loadCertificateContent}: pass `false`
+ * for network-supplied credentials (the /fetch path) so cert/key/ca strings are
+ * only ever parsed as inline PEM/base64, never dereferenced as filesystem paths.
  */
-export function buildMtlsConfig(options: MtlsOptions): MtlsConfig | undefined {
+export function buildMtlsConfig(
+  options: MtlsOptions,
+  allowFilePaths: boolean,
+): MtlsConfig | undefined {
   // If no mTLS options provided, return undefined
   if (!options.cert && !options.key && !options.ca) {
     return undefined;
@@ -164,11 +182,11 @@ export function buildMtlsConfig(options: MtlsOptions): MtlsConfig | undefined {
   const config: MtlsConfig = {};
 
   if (options.cert) {
-    config.cert = loadCertificateContent(options.cert);
+    config.cert = loadCertificateContent(options.cert, allowFilePaths);
   }
 
   if (options.key) {
-    const keyContent = loadCertificateContent(options.key);
+    const keyContent = loadCertificateContent(options.key, allowFilePaths);
     if (options.passphrase) {
       config.key = { pem: keyContent, passphrase: options.passphrase };
     } else {
@@ -177,7 +195,7 @@ export function buildMtlsConfig(options: MtlsOptions): MtlsConfig | undefined {
   }
 
   if (options.ca) {
-    config.ca = loadCertificateContent(options.ca);
+    config.ca = loadCertificateContent(options.ca, allowFilePaths);
   }
 
   return config;

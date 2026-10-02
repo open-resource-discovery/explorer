@@ -9,8 +9,7 @@ import {
 import type { ReactNode } from "react";
 
 export const PROXY_PORT = 44123;
-export const PROXY_BASE_URL =
-  import.meta.env.VITE_PROXY_BASE_URL ?? "/proxy-api";
+export const PROXY_BASE_URL = "/proxy-api";
 const HEALTH_CHECK_TIMEOUT_MS = 2_000;
 
 export interface ProxyHealth {

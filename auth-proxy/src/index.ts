@@ -42,21 +42,14 @@ function getCorporateProxyUrl(): string | undefined {
 }
 
 // ---------------------------------------------------------------------------
-// TLS validation opt-out for hosted (CF) deployments
+// TLS validation
 //
-// Local deployments bind to 127.0.0.1 — the user controls their machine and
-// its trust store, so rejectUnauthorized is true by default.
-//
-// CF deployments must reach SAP-internal endpoints whose certs are issued by
-// SAP's corporate PKI — present in corporate browsers but not in Node's
-// bundled OpenSSL. Set TRUST_ALL_CERTS=true in the CF environment (see
-// manifest.yml) to opt out of TLS validation for those deployments.
-//
-// Never set TRUST_ALL_CERTS=true in local or production environments where
-// MITM attacks are a realistic threat. See ADR-0008 for full rationale.
+// The proxy is local-only (bound to loopback — see ADR-0008): the user controls
+// their machine and its trust store, so outbound server certificates are always
+// validated. There is no hosted deployment and no opt-out.
 // ---------------------------------------------------------------------------
 
-const REJECT_UNAUTHORIZED = process.env.TRUST_ALL_CERTS !== "true";
+const REJECT_UNAUTHORIZED = true;
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -80,12 +73,16 @@ function getAllArgValues(name: string): string[] {
   return values;
 }
 
+// Only local origins are legitimate now that no hosted/public build talks to
+// the proxy (the CF side-car is decommissioned): the Vite dev/preview ports and
+// the docker app's nginx origin. Extra origins can still be added via
+// --allow-origin / ALLOW_ORIGIN for bespoke local setups.
 const ALLOWED_ORIGINS = new Set([
-  "https://open-resource-discovery.github.io",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5175",
   "http://localhost:4173",
+  "http://localhost:8080",
   ...getAllArgValues("--allow-origin"),
   ...(process.env.ALLOW_ORIGIN?.split(",")
     .map((o) => o.trim())
@@ -98,23 +95,48 @@ const ALLOWED_ORIGINS = new Set([
 
 const app = new Hono();
 
-// CORS middleware
+// CORS + CSRF middleware
 app.use("*", async (c, next) => {
   const origin = c.req.header("Origin");
+  const isAllowedOrigin = origin !== undefined && ALLOWED_ORIGINS.has(origin);
 
-  if (origin && ALLOWED_ORIGINS.has(origin)) {
+  if (isAllowedOrigin) {
     c.header("Access-Control-Allow-Origin", origin);
     c.header("Vary", "Origin");
     c.header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
     c.header("Access-Control-Allow-Headers", "Content-Type");
   }
 
-  // Handle preflight
+  // Preflight: only allowed origins may proceed.
   if (c.req.method === "OPTIONS") {
-    if (origin && ALLOWED_ORIGINS.has(origin)) {
-      return c.body(null, 204);
-    }
+    return isAllowedOrigin ? c.body(null, 204) : c.text("Forbidden", 403);
+  }
+
+  // Enforce the allowlist as real access control on state-changing methods.
+  // A CORS "simple request" (e.g. Content-Type: text/plain) triggers no
+  // preflight, so without this a cross-origin page could drive POST/DELETE
+  // side effects (CSRF / confused-deputy) even though it can't read the reply.
+  // A cross-origin request always carries an Origin, so reject any
+  // state-changing request whose Origin is present but not allowlisted. A
+  // missing Origin means same-origin (docker app → nginx → proxy) or local
+  // tooling; the proxy is loopback-bound (ADR-0008), so that is not a
+  // cross-site vector.
+  const isStateChanging = c.req.method !== "GET" && c.req.method !== "HEAD";
+  if (isStateChanging && origin !== undefined && !isAllowedOrigin) {
     return c.text("Forbidden", 403);
+  }
+
+  // Body-carrying routes call c.req.json() regardless of Content-Type, so a
+  // text/plain "simple request" could smuggle a JSON body cross-origin without
+  // a preflight. Require application/json: a cross-origin application/json POST
+  // is not a "simple request", so the browser must send a preflight that the
+  // allowlist above already gates — turning the allowlist into real access
+  // control on the action itself.
+  if (c.req.method === "POST") {
+    const contentType = c.req.header("Content-Type")?.toLowerCase() ?? "";
+    if (!contentType.includes("application/json")) {
+      return c.json({ error: "unsupported_media_type" }, 415);
+    }
   }
 
   await next();
@@ -172,12 +194,18 @@ app.post("/fetch", async (c) => {
   const corporateProxy = getCorporateProxyUrl();
   try {
     if (creds) {
-      const mtlsConfig = buildMtlsConfig({
-        cert: creds.cert,
-        key: creds.key,
-        passphrase: creds.passphrase,
-        ca: creds.caCert,
-      });
+      const mtlsConfig = buildMtlsConfig(
+        {
+          cert: creds.cert,
+          key: creds.key,
+          passphrase: creds.passphrase,
+          ca: creds.caCert,
+        },
+        // Credentials arrive over the network (POST /connections/:id), so never
+        // let cert/key/ca strings be dereferenced as filesystem paths — inline
+        // PEM/base64 only. (Audit finding F3.)
+        false,
+      );
       const connectOptions = createConnectOptions(
         REJECT_UNAUTHORIZED,
         mtlsConfig,
@@ -204,9 +232,12 @@ app.post("/fetch", async (c) => {
       response = await undiciFetch(url, { ...requestInit, dispatcher });
     }
   } catch (err) {
-    const cause =
-      err instanceof Error && err.cause ? String(err.cause) : undefined;
-    return c.json({ error: "fetch_failed", message: String(err), cause }, 502);
+    // Log the detail for the operator (this is a local proxy running on the
+    // user's own machine) but return a generic message: echoing String(err) /
+    // err.cause back to the caller discloses internal hostnames, URLs and
+    // filesystem paths. (Audit finding F3.)
+    console.error("[auth-proxy] /fetch failed:", err);
+    return c.json({ error: "fetch_failed" }, 502);
   }
 
   if (response.status === 401 || response.status === 403) {
@@ -260,7 +291,17 @@ function nodeRequestToFetchRequest(
 // HTTP server
 // ---------------------------------------------------------------------------
 
-export function start(port: number): Promise<() => Promise<void>> {
+// Bind to loopback by default so the proxy — which holds the user's mTLS
+// client cert/key — is never reachable from other hosts on the LAN (see
+// ADR-0008 and the TLS-validation note above). Configurable via HOST / --host
+// only so the docker image can set HOST=0.0.0.0 for the in-compose app→proxy
+// hop (no host port is published there, so all-interfaces stays private).
+const DEFAULT_HOST = "127.0.0.1";
+
+export function start(
+  port: number,
+  host: string = DEFAULT_HOST,
+): Promise<() => Promise<void>> {
   return new Promise((resolve, reject) => {
     const baseUrl = `http://localhost:${port}`;
     const server = createServer(
@@ -276,7 +317,7 @@ export function start(port: number): Promise<() => Promise<void>> {
       },
     );
 
-    server.listen(port, () => {
+    server.listen(port, host, () => {
       resolve(
         () =>
           new Promise((res, rej) =>
@@ -299,9 +340,10 @@ if (
     new URL(`file://${process.argv[1]}`).pathname
 ) {
   const port = Number(getArgValue("--port") ?? process.env.PORT ?? "44123");
-  void start(port).then(() => {
+  const host = getArgValue("--host") ?? process.env.HOST ?? DEFAULT_HOST;
+  void start(port, host).then(() => {
     console.log(
-      `ORD Explorer auth-proxy listening on http://localhost:${port}`,
+      `ORD Explorer auth-proxy listening on ${host}:${port} (http://localhost:${port})`,
     );
     console.log(
       "Requires Chrome 94+ or Firefox 90+ (localhost must be a trustworthy origin)",
