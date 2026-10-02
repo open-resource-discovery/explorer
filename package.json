@@ -82,7 +82,7 @@
   },
   "overrides": {
     "@ai-sdk/provider-utils": "4.0.57",
-    "dompurify": "3.4.15",
+    "dompurify": "3.4.16",
     "js-yaml": "5.4.2"
   },
   "engines": {
