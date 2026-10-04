@@ -73,7 +73,7 @@
     "@open-resource-discovery/metadata-renderer": "1.0.1",
     "@tanstack/react-router": "1.170.41",
     "clsx": "2.1.1",
-    "hono": "4.13.12",
+    "hono": "4.13.13",
     "lucide-react": "1.51.0",
     "react-markdown": "10.1.0",
     "tailwind-merge": "3.7.0",
