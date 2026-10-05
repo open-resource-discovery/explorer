@@ -5,7 +5,7 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D22.19.0-brightgreen.svg)](https://nodejs.org)
 [![Live Demo](https://img.shields.io/badge/demo-live-informational)](https://open-resource-discovery.github.io/explorer/)
 
-A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.github.io/specification/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
+A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.org/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
 
 ## Live Demo
 
