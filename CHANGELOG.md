@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+### Changed
+
+- Update the ORD specification dependency and bundled sample documents to ORD 1.17.
+
 ## [[0.2.1](https://github.com/open-resource-discovery/explorer/releases/tag/v0.2.1)] - 2026-10-01
 
 ### Fixed
