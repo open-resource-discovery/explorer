@@ -15,6 +15,9 @@ services:
       dockerfile: Dockerfile.proxy
     environment:
       - PORT=44123
+      # Bind all interfaces inside the compose network only — no host port is
+      # published for the proxy, so it stays private to the app container.
+      - HOST=0.0.0.0
       # Pass through corporate proxy settings if present
       - HTTPS_PROXY=${HTTPS_PROXY:-}
       - HTTP_PROXY=${HTTP_PROXY:-}

@@ -30,7 +30,6 @@ jobs:
         if: github.event.action != 'closed'
         env:
           VITE_BASE: /pr-preview/explorer/pr-${{ github.event.pull_request.number }}/
-          VITE_PROXY_BASE_URL: https://ord-explorer-auth-proxy.cfapps.sap.hana.ondemand.com
         run: |
           set -euo pipefail
           npm ci
