@@ -92,7 +92,8 @@
     "vue": "3.5.45"
   },
   "engines": {
-    "node": ">=22.19.0"
+    "node": ">=24.15.0",
+    "npm": ">=11.11.1"
   },
   "devDependencies": {
     "@scalar/types": "0.24.0",
