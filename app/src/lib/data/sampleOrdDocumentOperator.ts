@@ -1,7 +1,7 @@
 import type { OrdDocument } from "@open-resource-discovery/specification";
 
 export const sampleOrdDocumentOperator: OrdDocument = {
-  openResourceDiscovery: "1.14",
+  openResourceDiscovery: "1.17",
   description:
     "Operator perspective — internal configuration and monitoring resources",
   policyLevels: ["sap:core:v1"],

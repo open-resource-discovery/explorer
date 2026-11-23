@@ -22,12 +22,12 @@ export default async function globalSetup() {
 
   process.env.E2E_APP_PORT = String(appPort);
   process.env.E2E_PROXY_PORT = String(proxyPort);
+  process.env.ALLOW_ORIGIN = `http://localhost:${appPort}`;
 
   // Start auth-proxy
   const { start } = await import(
     new URL("../auth-proxy/src/index.ts", import.meta.url).pathname
   );
-  process.env.ALLOW_ORIGIN = `http://localhost:${appPort}`;
   const stopProxy: () => Promise<void> = await (
     start as (port: number) => Promise<() => Promise<void>>
   )(proxyPort);

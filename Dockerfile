@@ -1,5 +1,5 @@
 # Stage 1: build the SPA
-FROM node:24.22.1-alpine AS builder
+FROM node:26.13.1-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 COPY app/package*.json ./app/
@@ -9,6 +9,6 @@ RUN npm run build
 
 # Stage 2: nginx serving the SPA + reverse-proxying /proxy-api to the proxy sidecar
 FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist/app /usr/share/nginx/html
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 8080

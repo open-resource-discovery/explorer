@@ -5,12 +5,12 @@ on:
     branches: [main]
     types: [opened, reopened, synchronize, closed]
 
+permissions: {}
+
 jobs:
   pr-preview:
     permissions:
       contents: read
-      actions: write
-      pull-requests: read
 
     runs-on: ubuntu-latest
 
@@ -23,21 +23,20 @@ jobs:
         if: github.event.action != 'closed'
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.1"
+          node-version-file: ".nvmrc"
           cache: "npm"
 
       - name: Build preview
         if: github.event.action != 'closed'
         env:
           VITE_BASE: /pr-preview/explorer/pr-${{ github.event.pull_request.number }}/
-          VITE_PROXY_BASE_URL: https://ord-explorer-auth-proxy.cfapps.sap.hana.ondemand.com
         run: |
           set -euo pipefail
           npm ci
           npm run build
 
       - name: PR preview
-        uses: open-resource-discovery/pr-preview-action@2abf52396925f6bb4d0a82e27bd6f060260d09ae # main
+        uses: open-resource-discovery/pr-preview-action@2abf52396925f6bb4d0a82e27bd6f060260d09ae # main @ 2026-04-30; main
         with:
           fork: true
           target-repo: open-resource-discovery/pr-preview

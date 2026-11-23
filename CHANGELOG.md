@@ -7,6 +7,29 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+### Changed
+
+- Update the ORD specification dependency and bundled sample documents to ORD 1.17.
+- Require Node.js 26.13.1 LTS and npm 11.11.1; share the CI version through `.nvmrc` and align container builds.
+- Refresh compatible runtime and development dependencies, including the ORD renderer and UI components; align the Playwright package and container version.
+- Correct Renovate security-alert configuration and cover Node version files and Dockerfiles. Keep TypeScript within the supported typescript-eslint peer range.
+
+### Fixed
+
+- Preserve the AI SDK's compatible provider-utils version instead of forcing all major versions onto the older security override.
+- Build and start the bundled auth proxy successfully, with dedicated CI type, runtime and security checks.
+- Match the JSON media type exactly when validating proxy requests, including requests with MIME parameters.
+- Keep automatically imported vendor CSS in the component cascade layer so filter colors survive renderer and UI-component updates.
+- Serve the SPA from its actual Docker build output directory and verify the app and proxy through nginx in CI.
+
+### Security
+
+- Remove hosted mTLS proxy configuration; default the local proxy to loopback, enforce server certificate validation and reject untrusted request origins and network-supplied certificate paths.
+- Publish the Docker app and its proxy API only on the host loopback interface by default.
+- Pause fork-preview deployment while the shared worker still executes artifact metadata as shell code. Same-repository previews remain configured.
+- Restrict workflow permissions and pin release actions to reviewed commits.
+- Update vulnerable dependency paths, including fast-copy and the lint toolchain.
+
 ## [[0.2.1](https://github.com/open-resource-discovery/explorer/releases/tag/v0.2.1)] - 2026-10-01
 
 ### Fixed

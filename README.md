@@ -2,10 +2,10 @@
 
 [![CI](https://github.com/open-resource-discovery/explorer/actions/workflows/main.yml/badge.svg)](https://github.com/open-resource-discovery/explorer/actions/workflows/main.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](./LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D22.19.0-brightgreen.svg)](https://nodejs.org)
+[![Node](https://img.shields.io/badge/node-%3E%3D26.13.1-brightgreen.svg)](https://nodejs.org)
 [![Live Demo](https://img.shields.io/badge/demo-live-informational)](https://open-resource-discovery.github.io/explorer/)
 
-A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.github.io/specification/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
+A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.org/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
 
 ## Live Demo
 
@@ -22,6 +22,10 @@ The app manages one or more **connections** (system endpoints or direct document
 Authentication options: none, static bearer token, or mTLS (via local proxy — see below).
 
 ## Setup
+
+Use Node.js **26.13.1 LTS** or newer and npm **11.11.1** or newer. The tested
+Node.js version is pinned in `.nvmrc`; CI reads the same file. With nvm installed,
+run `nvm install` and `nvm use` before installing dependencies.
 
 ```sh
 npm install
@@ -46,12 +50,18 @@ mTLS connections require the local auth proxy (browser `fetch` cannot attach cli
 npm run proxy          # from the repo root — starts the compiled proxy
 ```
 
-Or run it directly from source during development:
+Or build and start the proxy package directly:
 
 ```sh
 cd auth-proxy
-npm run dev:server     # start the proxy from source
+npm ci
+npm run build
+npm start
 ```
+
+The container setup is available with `docker compose up --build`. Open
+`http://localhost:8080`; the app and its proxy API are published only on the
+host's loopback interface.
 
 ### Local mTLS test server
 

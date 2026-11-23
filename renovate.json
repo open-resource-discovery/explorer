@@ -2,24 +2,20 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", ":pinAllExceptPeerDependencies"],
   "semanticCommits": "enabled",
-  "enabledManagers": ["npm", "github-actions"],
+  "enabledManagers": ["npm", "github-actions", "nvm", "dockerfile"],
   "branchPrefix": "deps/",
   "timezone": "Europe/Berlin",
   "schedule": ["every weekend"],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "vulnerabilityAlerts": {
-    "enabled": true
+    "enabled": true,
+    "schedule": ["at any time"],
+    "automerge": false,
+    "semanticCommitType": "fix",
+    "groupName": "Security patches"
   },
   "packageRules": [
-    {
-      "description": "Security patches: bypass weekly schedule, automerge immediately",
-      "matchUpdateTypes": ["security"],
-      "schedule": ["at any time"],
-      "automerge": true,
-      "semanticCommitType": "fix",
-      "groupName": "Security patches"
-    },
     {
       "description": "Major updates: never automerge, require manual review",
       "matchUpdateTypes": ["major"],
@@ -42,6 +38,11 @@
       "semanticCommitType": "chore",
       "automerge": true,
       "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Keep the compiler within the current typescript-eslint peer range; revisit when that range changes.",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<6.1.0"
     }
   ]
 }

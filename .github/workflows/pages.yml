@@ -6,10 +6,7 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: {}
 
 concurrency:
   group: pages
@@ -17,6 +14,8 @@ concurrency:
 
 jobs:
   build:
+    permissions:
+      contents: read
     name: Build
     runs-on: ubuntu-latest
 
@@ -25,7 +24,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.1"
+          node-version-file: ".nvmrc"
           cache: "npm"
 
       - run: npm ci
@@ -34,7 +33,6 @@ jobs:
         run: npm run build
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
-          VITE_PROXY_BASE_URL: https://ord-explorer-auth-proxy.cfapps.sap.hana.ondemand.com
 
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
@@ -43,6 +41,10 @@ jobs:
           path: dist/app
 
   deploy:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
