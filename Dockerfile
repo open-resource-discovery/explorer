@@ -1,5 +1,5 @@
 # Stage 1: build the SPA
-FROM node:24.22.1-alpine AS builder
+FROM node:26.13.1-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 COPY app/package*.json ./app/
