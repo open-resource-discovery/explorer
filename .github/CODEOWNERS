@@ -1,0 +1,7 @@
+# Review owners for CI and build configuration.
+/.github/ @open-resource-discovery/explorer-admin
+/renovate.json @open-resource-discovery/explorer-admin
+/package.json @open-resource-discovery/explorer-admin
+/package-lock.json @open-resource-discovery/explorer-admin
+/Dockerfile* @open-resource-discovery/explorer-admin
+/auth-proxy/ @open-resource-discovery/explorer-admin

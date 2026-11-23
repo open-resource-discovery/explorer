@@ -1,6 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":pinAllExceptPeerDependencies"],
+  "extends": [
+    "config:recommended",
+    ":pinAllExceptPeerDependencies",
+    "helpers:pinGitHubActionDigests",
+    "docker:pinDigests"
+  ],
   "semanticCommits": "enabled",
   "enabledManagers": ["npm", "github-actions", "nvm", "dockerfile"],
   "branchPrefix": "deps/",
@@ -9,11 +14,7 @@
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "vulnerabilityAlerts": {
-    "enabled": true,
-    "schedule": ["at any time"],
-    "automerge": false,
-    "semanticCommitType": "fix",
-    "groupName": "Security patches"
+    "enabled": true
   },
   "packageRules": [
     {
@@ -43,6 +44,14 @@
       "description": "Keep the compiler within the current typescript-eslint peer range; revisit when that range changes.",
       "matchPackageNames": ["typescript"],
       "allowedVersions": "<6.1.0"
+    },
+    {
+      "description": "Security patches: allow off-schedule updates with manual review",
+      "matchJsonata": ["isVulnerabilityAlert = true"],
+      "schedule": ["at any time"],
+      "automerge": false,
+      "semanticCommitType": "fix",
+      "groupName": "Security patches"
     }
   ]
 }

@@ -10,7 +10,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 
 - Update the ORD specification dependency and bundled sample documents to ORD 1.17.
-- Require Node.js 26.13.1 LTS and npm 11.11.1; share the CI version through `.nvmrc` and align container builds.
+- Keep Node.js 24.15.0 and npm 11.11.1 as the Explorer package minimum. Pin Node.js 26.13.1 LTS for development, the auth proxy, and container builds.
 - Refresh compatible runtime and development dependencies, including the ORD renderer and UI components; align the Playwright package and container version.
 - Correct Renovate security-alert configuration and cover Node version files and Dockerfiles. Keep TypeScript within the supported typescript-eslint peer range.
 

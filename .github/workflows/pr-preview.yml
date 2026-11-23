@@ -5,13 +5,14 @@ on:
     branches: [main]
     types: [opened, reopened, synchronize, closed]
 
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
   pr-preview:
     permissions:
       contents: read
-
+      pull-requests: read
     runs-on: ubuntu-latest
 
     steps:
@@ -36,11 +37,13 @@ jobs:
           npm run build
 
       - name: PR preview
-        uses: open-resource-discovery/pr-preview-action@2abf52396925f6bb4d0a82e27bd6f060260d09ae # main @ 2026-04-30; main
+        uses: open-resource-discovery/pr-preview-action@9772862b578870a2db7953e35e3b5952f09e3f3f # shared action SHA tested in Explorer #89
         with:
-          fork: true
+          fork: false
           target-repo: open-resource-discovery/pr-preview
           pages-base-url: https://open-resource-discovery.github.io/pr-preview
           umbrella-dir: explorer
           token: ${{ secrets.PR_PREVIEW_TOKEN }}
           build-dir: dist/app
+          wait-poll-attempts: 180
+    if: github.event.pull_request.head.repo.full_name == github.repository

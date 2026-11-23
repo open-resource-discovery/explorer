@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/open-resource-discovery/explorer/actions/workflows/main.yml/badge.svg)](https://github.com/open-resource-discovery/explorer/actions/workflows/main.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](./LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D26.13.1-brightgreen.svg)](https://nodejs.org)
+[![Node](https://img.shields.io/badge/node-%3E%3D24.15.0-brightgreen.svg)](https://nodejs.org)
 [![Live Demo](https://img.shields.io/badge/demo-live-informational)](https://open-resource-discovery.github.io/explorer/)
 
 A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.org/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
@@ -23,8 +23,8 @@ Authentication options: none, static bearer token, or mTLS (via local proxy — 
 
 ## Setup
 
-Use Node.js **26.13.1 LTS** or newer and npm **11.11.1** or newer. The tested
-Node.js version is pinned in `.nvmrc`; CI reads the same file. With nvm installed,
+The Explorer package supports Node.js **24.15.0** or newer and npm **11.11.1** or newer.
+Development and the auth proxy use Node.js **26.13.1 LTS**, pinned in `.nvmrc`. With nvm installed,
 run `nvm install` and `nvm use` before installing dependencies.
 
 ```sh
