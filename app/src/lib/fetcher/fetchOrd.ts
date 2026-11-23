@@ -5,13 +5,13 @@ import type {
   OrdV1DocumentDescription,
 } from "@open-resource-discovery/specification";
 import { customFetch, HttpError, responseValidationError } from "./fetch.ts";
+import { mergeDocuments } from "./ordMerge.ts";
 import {
+  DEFAULT_PERSPECTIVE,
   getFetchUrl,
   isOrdConfiguration,
   isOrdDocument,
-  DEFAULT_PERSPECTIVE,
 } from "./ordUtils.ts";
-import { mergeDocuments } from "./ordMerge.ts";
 
 const MAX_PARALLEL_REQUESTS = 10;
 

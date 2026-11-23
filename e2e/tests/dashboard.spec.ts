@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/explorer";
+import { expect, test } from "../fixtures/explorer";
 
 test.describe("Dashboard", () => {
   test.beforeEach(async ({ explorer }) => {

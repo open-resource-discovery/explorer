@@ -3,12 +3,12 @@ import type { EntityType } from "@open-resource-discovery/specification";
 import type { Selection } from "../../useNavState";
 import { asBase } from "../resourceTypes";
 import {
+  formatDate,
+  groupRelGroups,
   OverviewBase,
   packageRelGroup,
   productRelGroups,
-  groupRelGroups,
   resourceRelGroup,
-  formatDate,
 } from "./OverviewBase";
 
 export function EntityTypeOverview({

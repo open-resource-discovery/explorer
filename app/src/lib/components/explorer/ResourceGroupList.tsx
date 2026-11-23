@@ -1,7 +1,7 @@
 import type { OrdDocument } from "@open-resource-discovery/specification";
+import { RelationshipCard } from "./RelationshipCard";
 import type { ResourceTypeConfig } from "./resourceTypeConfig";
 import { RESOURCE_TYPE_CONFIG } from "./resourceTypeConfig";
-import { RelationshipCard } from "./RelationshipCard";
 import type { Selection } from "./useNavState";
 
 interface ResourceItem {

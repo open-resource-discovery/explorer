@@ -1,6 +1,6 @@
-import { Bot } from "lucide-react";
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
 import type { Agent } from "@open-resource-discovery/specification";
+import { Bot } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
@@ -8,12 +8,12 @@ import type { Selection } from "../../useNavState";
 import { asBase } from "../resourceTypes";
 import { MD_CLASSES } from "../shared";
 import {
+  formatDate,
+  groupRelGroups,
   OverviewBase,
   packageRelGroup,
   productRelGroups,
-  groupRelGroups,
   resourceRelGroup,
-  formatDate,
 } from "./OverviewBase";
 
 export function AgentOverview({

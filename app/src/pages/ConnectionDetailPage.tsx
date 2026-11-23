@@ -1,13 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { AlertTriangle, LayoutGrid } from "lucide-react";
 import type { ReactNode } from "react";
-import { LayoutGrid, AlertTriangle } from "lucide-react";
-import { connectionDetailRoute } from "../router";
-import { getConnection } from "../lib/connection/store";
-import type { Connection } from "../lib/connection/types";
-import { usePerspectives } from "../lib/hooks/usePerspectives";
 import { AuthErrorCard } from "../lib/components/auth/AuthRecovery";
 import { ConnectionDetailPage as ConnectionDetailPageLib } from "../lib/components/ConnectionDetailPage";
-import type { Perspective } from "../lib/connection/types";
+import { getConnection } from "../lib/connection/store";
+import type { Connection, Perspective } from "../lib/connection/types";
+import { usePerspectives } from "../lib/hooks/usePerspectives";
+import { connectionDetailRoute } from "../router";
 
 function ConnectionDetail({
   connection,

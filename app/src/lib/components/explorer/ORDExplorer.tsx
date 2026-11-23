@@ -1,25 +1,30 @@
-import { useDeferredValue, useEffect, useRef, useState } from "react";
-import type { OrdDocument } from "@open-resource-discovery/specification";
-import { OrdDocumentContext } from "@lib/context/OrdDocumentContext";
+import { ThemeRootContent } from "@lib/components/ThemeRoot";
+import { ConnectionIdContext } from "@lib/context/ConnectionIdContext";
 import { DefinitionContentProvider } from "@lib/context/DefinitionContentProvider";
 import { NavExtensionContext } from "@lib/context/NavExtensionContext";
-import { ThemeRootContent } from "@lib/components/ThemeRoot";
+import { OrdDocumentContext } from "@lib/context/OrdDocumentContext";
 import { useTheme } from "@lib/hooks/useTheme";
-import { Moon, Sun } from "lucide-react";
-import { DashboardPage } from "./pages/DashboardPage";
-import { PackageDetailPage } from "./pages/PackageDetailPage";
-import { ConsumptionBundleDetailPage } from "./pages/ConsumptionBundleDetailPage";
-import { ProductDetailPage } from "./pages/ProductDetailPage";
-import { GroupDetailPage } from "./pages/GroupDetailPage";
-import { ResourceDetailPage } from "./pages/ResourceDetailPage";
-import { ExplorerSidebar } from "./ExplorerSidebar";
-import { useNavState } from "./useNavState";
-import type { Selection } from "./useNavState";
-import { RESOURCE_TYPE_CONFIG } from "./resourceTypeConfig";
 import { useProxy } from "@lib/proxy";
-import { ConnectionIdContext } from "@lib/context/ConnectionIdContext";
+import type { OrdDocument } from "@open-resource-discovery/specification";
+import { Moon, Sun } from "lucide-react";
+import {
+  useContext,
+  useDeferredValue,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { ExplorerSidebar } from "./ExplorerSidebar";
+import { ConsumptionBundleDetailPage } from "./pages/ConsumptionBundleDetailPage";
+import { DashboardPage } from "./pages/DashboardPage";
+import { GroupDetailPage } from "./pages/GroupDetailPage";
+import { PackageDetailPage } from "./pages/PackageDetailPage";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { asBase } from "./pages/ResourceCard";
-import { useContext } from "react";
+import { ResourceDetailPage } from "./pages/ResourceDetailPage";
+import { RESOURCE_TYPE_CONFIG } from "./resourceTypeConfig";
+import type { Selection } from "./useNavState";
+import { useNavState } from "./useNavState";
 
 export type { ResourceTypeGroup } from "./explorerTypes";
 

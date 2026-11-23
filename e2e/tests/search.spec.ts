@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/explorer";
+import { expect, test } from "../fixtures/explorer";
 
 // ordIds from the sample ORD document (sampleOrdDocument.ts)
 const BILLING_API = "sap.xref:apiResource:billing:v2";

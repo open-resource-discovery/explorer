@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
 import { renderHook } from "@testing-library/react";
-import { useResourceSearch } from "./useResourceSearch";
+import { describe, expect, it } from "vitest";
 import { FilterService } from "./FilterService";
 import type { SearchFilters } from "./SearchBar";
+import { useResourceSearch } from "./useResourceSearch";
 
 const empty = (): SearchFilters => FilterService.empty();
 

@@ -1,8 +1,8 @@
 import {
+  createConnection,
+  deleteConnection,
   getConnections,
   saveConnection,
-  deleteConnection,
-  createConnection,
 } from "./store";
 
 const SAMPLE_CONNECTION_ID = "sample";

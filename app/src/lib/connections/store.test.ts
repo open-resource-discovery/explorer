@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
-  loadConnections,
-  saveConnections,
-  getConnection,
   addConnection,
+  getConnection,
+  loadConnections,
   removeConnection,
+  saveConnections,
 } from "./store";
 import type { Connection } from "./types";
 

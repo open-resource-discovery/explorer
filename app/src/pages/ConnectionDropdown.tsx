@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
-import { ChevronDown, Server } from "lucide-react";
 import { getConnections } from "@lib/connection/store";
 import type { Connection } from "@lib/connection/types";
 import { useClickOutside } from "@lib/hooks/useClickOutside";
 import { Button } from "@open-resource-discovery/ui-components";
+import { useNavigate } from "@tanstack/react-router";
+import { ChevronDown, Server } from "lucide-react";
+import { useRef, useState } from "react";
 
 interface Props {
   currentConnectionId: string;

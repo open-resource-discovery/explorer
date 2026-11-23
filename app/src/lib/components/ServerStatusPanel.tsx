@@ -1,26 +1,26 @@
-import {
-  Server,
-  Clock,
-  HardDrive,
-  Cpu,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  GitCommit,
-  Loader2,
-  Settings,
-  ChevronDown,
-  Moon,
-  Sun,
-} from "lucide-react";
-import {
-  useState,
-  type ReactNode,
-  type MouseEvent as ReactMouseEvent,
-} from "react";
-import type { StatusResponse, UpdateStatus } from "@lib/status";
 import { ThemeRoot } from "@lib/components/ThemeRoot";
 import { useTheme } from "@lib/hooks/useTheme";
+import type { StatusResponse, UpdateStatus } from "@lib/status";
+import {
+  AlertTriangle,
+  CheckCircle,
+  ChevronDown,
+  Clock,
+  Cpu,
+  GitCommit,
+  HardDrive,
+  Loader2,
+  Moon,
+  Server,
+  Settings,
+  Sun,
+  XCircle,
+} from "lucide-react";
+import {
+  type MouseEvent as ReactMouseEvent,
+  type ReactNode,
+  useState,
+} from "react";
 
 export type { StatusResponse };
 
@@ -79,7 +79,7 @@ function formatBytes(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   const safeIndex = Math.min(i, units.length - 1);
   const unit = units[safeIndex] ?? "GB";
-  return `${(bytes / Math.pow(k, safeIndex)).toFixed(1)} ${unit}`;
+  return `${(bytes / k ** safeIndex).toFixed(1)} ${unit}`;
 }
 
 function getGitHubBaseUrl(githubUrl: string | undefined): string {

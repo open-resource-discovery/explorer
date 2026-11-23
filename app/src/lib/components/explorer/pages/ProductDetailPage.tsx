@@ -1,8 +1,8 @@
-import { ChevronLeft, ShoppingBag } from "lucide-react";
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
-import { CopyButton } from "./shared";
-import { ResourceGroupList, getResourcesInProduct } from "../ResourceGroupList";
+import { ChevronLeft, ShoppingBag } from "lucide-react";
+import { getResourcesInProduct, ResourceGroupList } from "../ResourceGroupList";
 import type { Selection } from "../useNavState";
+import { CopyButton } from "./shared";
 
 export interface ProductDetailPageProps {
   ordId: string;

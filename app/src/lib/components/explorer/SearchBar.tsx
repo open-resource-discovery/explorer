@@ -1,12 +1,12 @@
 import {
-  Search,
-  Globe,
-  Lock,
+  AlertTriangle,
   Building2,
   CheckCircle2,
-  FlaskConical,
   Code2,
-  AlertTriangle,
+  FlaskConical,
+  Globe,
+  Lock,
+  Search,
   Sunset,
 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -14,7 +14,11 @@ import { FilterService } from "./FilterService";
 
 export type VisibilityFilter = "public" | "internal" | "private";
 export type ReleaseStatusFilter =
-  "active" | "beta" | "deprecated" | "sunset" | "development";
+  | "active"
+  | "beta"
+  | "deprecated"
+  | "sunset"
+  | "development";
 
 export interface SearchFilters {
   visibility: Set<VisibilityFilter>;

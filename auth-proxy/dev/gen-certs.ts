@@ -1,7 +1,7 @@
-import { generate } from "selfsigned";
 import { writeFileSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { generate } from "selfsigned";
 
 const certsDir = join(dirname(fileURLToPath(import.meta.url)), "certs");
 

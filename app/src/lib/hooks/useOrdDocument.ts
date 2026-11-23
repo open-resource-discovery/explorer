@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
-import type { OrdDocument } from "@open-resource-discovery/specification";
 import { getConnection } from "@lib/connection/store";
-import { getFetchUrl, fetchOrdDocumentForPerspective } from "@lib/fetcher";
+import { fetchOrdDocumentForPerspective, getFetchUrl } from "@lib/fetcher";
+import type { AuthErrorKind } from "@lib/proxy";
 import {
-  useProxy,
-  fetchViaProxy,
   AuthFailedError,
   classifyAuthError,
+  fetchViaProxy,
+  useProxy,
 } from "@lib/proxy";
-import type { AuthErrorKind } from "@lib/proxy";
+import type { OrdDocument } from "@open-resource-discovery/specification";
+import { useCallback, useEffect, useState } from "react";
 
 export const PROXY_PORT = 44123;
 

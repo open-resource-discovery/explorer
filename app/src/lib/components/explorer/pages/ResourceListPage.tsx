@@ -1,22 +1,4 @@
-import type { ReactNode } from "react";
-import { useMemo } from "react";
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
-import {
-  ChevronRight,
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  ArrowLeftRight,
-  BanIcon,
-  Building2,
-  Lock,
-  CheckCircle2,
-  FlaskConical,
-  Code2,
-  AlertTriangle,
-  Sunset as SunsetIcon,
-} from "lucide-react";
-import type { ResourceTypeGroup } from "../ORDExplorer";
-import type { SearchFilters } from "../SearchBar";
 import type {
   Agent,
   ApiResource,
@@ -26,8 +8,26 @@ import type {
   EventResource,
   IntegrationDependency,
 } from "@open-resource-discovery/specification";
-import { useResourceSearch, type MatchInfo } from "../useResourceSearch";
+import {
+  AlertTriangle,
+  ArrowDownToLine,
+  ArrowLeftRight,
+  ArrowUpFromLine,
+  BanIcon,
+  Building2,
+  CheckCircle2,
+  ChevronRight,
+  Code2,
+  FlaskConical,
+  Lock,
+  Sunset as SunsetIcon,
+} from "lucide-react";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
+import type { ResourceTypeGroup } from "../ORDExplorer";
 import { RESOURCE_TYPE_CONFIG } from "../resourceTypeConfig";
+import type { SearchFilters } from "../SearchBar";
+import { type MatchInfo, useResourceSearch } from "../useResourceSearch";
 import { CopyButton } from "./shared";
 
 const PROTOCOL_LABEL: Record<string, string> = {

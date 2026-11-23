@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { ResourceTypeGroup } from "./explorerTypes";
-import type { SearchFilters } from "./SearchBar";
-import { ALL_VISIBILITY, ALL_RELEASE_STATUS } from "./SearchBar";
-import type { VisibilityFilter, ReleaseStatusFilter } from "./SearchBar";
 import { FilterService } from "./FilterService";
+import type {
+  ReleaseStatusFilter,
+  SearchFilters,
+  VisibilityFilter,
+} from "./SearchBar";
+import { ALL_RELEASE_STATUS, ALL_VISIBILITY } from "./SearchBar";
 
 export type Selection =
   | { id: "dashboard" }

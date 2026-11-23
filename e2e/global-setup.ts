@@ -1,6 +1,6 @@
 import { createServer } from "node:net";
-import { createServer as createViteServer } from "vite";
 import { resolve } from "node:path";
+import { createServer as createViteServer } from "vite";
 
 async function getFreePort(): Promise<number> {
   return new Promise((res, rej) => {

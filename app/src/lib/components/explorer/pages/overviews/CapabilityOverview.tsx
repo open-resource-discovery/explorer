@@ -3,11 +3,11 @@ import type { Capability } from "@open-resource-discovery/specification";
 import type { Selection } from "../../useNavState";
 import { asBase } from "../resourceTypes";
 import {
+  formatDate,
+  groupRelGroups,
   OverviewBase,
   packageRelGroup,
-  groupRelGroups,
   resourceRelGroup,
-  formatDate,
 } from "./OverviewBase";
 
 export function CapabilityOverview({

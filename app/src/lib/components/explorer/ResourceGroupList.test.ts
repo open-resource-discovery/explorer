@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
-import {
-  getResourcesInPackage,
-  getResourcesInBundle,
-  getResourcesInProduct,
-  getResourcesInGroup,
-} from "./ResourceGroupList";
 import type { OrdDocument } from "@open-resource-discovery/specification";
+import { describe, expect, it } from "vitest";
+import {
+  getResourcesInBundle,
+  getResourcesInGroup,
+  getResourcesInPackage,
+  getResourcesInProduct,
+} from "./ResourceGroupList";
 
 function doc(partial: Partial<OrdDocument>): OrdDocument {
   return { openResourceDiscovery: "1.9", ...partial } as OrdDocument;

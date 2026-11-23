@@ -1,9 +1,9 @@
 import type {
-  VisibilityFilter,
   ReleaseStatusFilter,
   SearchFilters,
+  VisibilityFilter,
 } from "./SearchBar";
-import { ALL_VISIBILITY, ALL_RELEASE_STATUS } from "./SearchBar";
+import { ALL_RELEASE_STATUS, ALL_VISIBILITY } from "./SearchBar";
 
 // Mutual exclusivity groups: selecting one deactivates the others in the same group.
 // Each sub-array is one exclusive group.

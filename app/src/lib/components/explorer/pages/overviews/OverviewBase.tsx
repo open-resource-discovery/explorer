@@ -1,33 +1,33 @@
-import { useState } from "react";
-import {
-  ExternalLink,
-  Link2,
-  Hash,
-  GitBranch,
-  Info,
-  BookOpen as BookOpenIcon,
-  Eye,
-  Layers,
-} from "lucide-react";
+import { ThemeRootContent } from "@lib/components/ThemeRoot";
+import type { OrdDocument } from "@open-resource-discovery/specification";
 import { SimpleDialog } from "@open-resource-discovery/ui-components";
+import {
+  BookOpen as BookOpenIcon,
+  ExternalLink,
+  Eye,
+  GitBranch,
+  Hash,
+  Info,
+  Layers,
+  Link2,
+} from "lucide-react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
-import type { AnyResource } from "../resourceTypes";
-import { asBase } from "../resourceTypes";
-import { SectionHeader, DetailRow, MD_CLASSES } from "../shared";
+import type { ResourceTypeGroup } from "../../explorerTypes";
+import { ordIdToResourceTypeGroup } from "../../ordIdUtils";
+import { RelationshipCard } from "../../RelationshipCard";
+import { RESOURCE_TYPE_CONFIG } from "../../resourceTypeConfig";
+import type { Selection } from "../../useNavState";
+import { MetadataPreview } from "../DefinitionLoader";
 import {
   getResourceDefinitions,
   pickPrimaryDefinition,
 } from "../definitionUtils";
-import { MetadataPreview } from "../DefinitionLoader";
-import { RelationshipCard } from "../../RelationshipCard";
-import { RESOURCE_TYPE_CONFIG } from "../../resourceTypeConfig";
-import type { ResourceTypeGroup } from "../../explorerTypes";
-import type { Selection } from "../../useNavState";
-import { ordIdToResourceTypeGroup } from "../../ordIdUtils";
-import type { OrdDocument } from "@open-resource-discovery/specification";
-import { ThemeRootContent } from "@lib/components/ThemeRoot";
+import type { AnyResource } from "../resourceTypes";
+import { asBase } from "../resourceTypes";
+import { DetailRow, MD_CLASSES, SectionHeader } from "../shared";
 
 export interface RelationshipItem {
   id: string;

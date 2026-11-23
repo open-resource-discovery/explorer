@@ -1,8 +1,8 @@
-import { useParams } from "@tanstack/react-router";
-import { ORDExplorer } from "../lib/components/explorer/ORDExplorer";
+import { AuthErrorCard } from "@lib/components/auth/AuthRecovery";
 import { getConnection } from "@lib/connection";
 import { useOrdDocument } from "@lib/hooks";
-import { AuthErrorCard } from "@lib/components/auth/AuthRecovery";
+import { useParams } from "@tanstack/react-router";
+import { ORDExplorer } from "../lib/components/explorer/ORDExplorer";
 
 export function ExplorerPage() {
   const { id: connectionId, docId: perspectiveId } = useParams({

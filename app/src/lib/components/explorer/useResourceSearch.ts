@@ -1,7 +1,7 @@
-import { useDeferredValue, useMemo } from "react";
 import uFuzzy from "@leeoniya/ufuzzy";
-import type { SearchFilters } from "./SearchBar";
+import { useDeferredValue, useMemo } from "react";
 import { FilterService } from "./FilterService";
+import type { SearchFilters } from "./SearchBar";
 
 export interface MatchInfo {
   titleRanges?: [number, number][];

@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
-import type { ResourceTypeGroup } from "./explorerTypes";
 import {
   BookOpen,
-  Zap,
-  Database,
-  Layers,
-  Cpu,
   Bot,
+  Cpu,
+  Database,
   GitMerge,
+  Layers,
+  Zap,
 } from "lucide-react";
+import type { ReactNode } from "react";
+import type { ResourceTypeGroup } from "./explorerTypes";
 
 export interface ResourceTypeConfig {
   type: ResourceTypeGroup;

@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
-import { usePerspectives } from "./usePerspectives";
 import type { Connection } from "@lib/connection/types";
+import { renderHook, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { usePerspectives } from "./usePerspectives";
 
 const mockFetchOrdConfiguration = vi.fn();
 const mockExtractPerspectives = vi.fn();

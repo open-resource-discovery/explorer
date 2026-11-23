@@ -1,8 +1,8 @@
-import { ChevronLeft, Layers2 } from "lucide-react";
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
-import { CopyButton } from "./shared";
-import { ResourceGroupList, getResourcesInGroup } from "../ResourceGroupList";
+import { ChevronLeft, Layers2 } from "lucide-react";
+import { getResourcesInGroup, ResourceGroupList } from "../ResourceGroupList";
 import type { Selection } from "../useNavState";
+import { CopyButton } from "./shared";
 
 export interface GroupDetailPageProps {
   groupId: string;

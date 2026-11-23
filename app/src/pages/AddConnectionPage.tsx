@@ -1,24 +1,25 @@
-import { useState } from "react";
-import { useNavigate, Link } from "@tanstack/react-router";
-import { AlertTriangle, Info } from "lucide-react";
+import { Radio } from "@base-ui/react/radio";
 import {
+  AUTH_TYPES,
+  type AuthType,
   createConnection,
-  saveConnection,
   getConnection,
   parseDestinationUrl,
+  saveConnection,
 } from "@lib/connection";
-import { AUTH_TYPES, type AuthType } from "@lib/connection";
 import { classifyPemFile } from "@lib/connection/pemUtils";
-import { useProxy, PROXY_BASE_URL } from "@lib/proxy";
+import { PROXY_BASE_URL, useProxy } from "@lib/proxy";
 import {
   Button,
   buttonVariants,
+  Field,
   Input,
   PasswordInput,
-  Field,
   RadioGroup,
 } from "@open-resource-discovery/ui-components";
-import { Radio } from "@base-ui/react/radio";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { AlertTriangle, Info } from "lucide-react";
+import { useState } from "react";
 
 // ---------------------------------------------------------------------------
 // mTLS PEM file input

@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { SearchBar, ALL_VISIBILITY, ALL_RELEASE_STATUS } from "./SearchBar";
+import { describe, expect, it, vi } from "vitest";
 import { FilterService } from "./FilterService";
+import { ALL_RELEASE_STATUS, ALL_VISIBILITY, SearchBar } from "./SearchBar";
 
 function renderSearchBar(
   overrides: Partial<Parameters<typeof SearchBar>[0]> = {},

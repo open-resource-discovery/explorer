@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import type { ReactNode } from "react";
+import { fetchTextViaProxy } from "@lib/proxy";
 import type { OrdDocument } from "@open-resource-discovery/specification";
+import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DefinitionContentContext,
   type DefinitionContentMap,
 } from "./DefinitionContentContext";
-import { fetchTextViaProxy } from "@lib/proxy";
 
 const BATCH_SIZE = 6;
 

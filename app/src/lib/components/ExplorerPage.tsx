@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
-import type { ReactNode } from "react";
-import type { OrdDocument } from "@open-resource-discovery/specification";
-import { fetchOrdDocumentForPerspective } from "@lib/fetcher";
 import { ORDExplorer } from "@lib/components/explorer/ORDExplorer";
+import { fetchOrdDocumentForPerspective } from "@lib/fetcher";
 import { ThemeProvider } from "@lib/hooks/useTheme.tsx";
 import { cn } from "@lib/utils/cn";
-import { Loader2, AlertTriangle } from "lucide-react";
+import type { OrdDocument } from "@open-resource-discovery/specification";
+import { AlertTriangle, Loader2 } from "lucide-react";
+import type { ReactNode } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface ExplorerPageProps {
   ordConfigUrl: string;

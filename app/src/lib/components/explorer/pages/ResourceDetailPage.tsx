@@ -1,21 +1,21 @@
-import { useState } from "react";
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
 import { Badge } from "@open-resource-discovery/ui-components";
 import { ArrowRight, CalendarClock } from "lucide-react";
+import { useState } from "react";
 import type { ResourceTypeGroup } from "../ORDExplorer";
+import { ordIdToResourceTypeGroup } from "../ordIdUtils";
 import { RESOURCE_TYPE_CONFIG } from "../resourceTypeConfig";
-import type { AnyResource, WithChangelog } from "./resourceTypes";
-import { asBase } from "./resourceTypes";
-import { VISIBILITY_PILL, RELEASE_STATUS_PILL } from "./pillConfig";
-import { CopyButton } from "./shared";
+import type { Selection } from "../useNavState";
+import { ChangelogTab } from "./ChangelogTab";
 import { getResourceDefinitions } from "./definitionUtils";
 import { OverviewTab } from "./OverviewTab";
 import { formatDate } from "./overviews/OverviewBase";
-import { SchemaTab } from "./SchemaTab";
+import { RELEASE_STATUS_PILL, VISIBILITY_PILL } from "./pillConfig";
 import { RawJsonTab } from "./RawJsonTab";
-import { ChangelogTab } from "./ChangelogTab";
-import type { Selection } from "../useNavState";
-import { ordIdToResourceTypeGroup } from "../ordIdUtils";
+import type { AnyResource, WithChangelog } from "./resourceTypes";
+import { asBase } from "./resourceTypes";
+import { SchemaTab } from "./SchemaTab";
+import { CopyButton } from "./shared";
 
 type Tab = "overview" | "schema" | "raw" | "changelog";
 
@@ -159,7 +159,8 @@ export function ResourceDetailPage({
                     const found = rtype
                       ? (
                           document[rtype] as
-                            { ordId: string; title: string }[] | undefined
+                            | { ordId: string; title: string }[]
+                            | undefined
                         )?.find((r) => r.ordId === s)
                       : undefined;
                     return rtype && found ? (

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import {
   createContext,
   useCallback,
@@ -6,7 +7,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import type { ReactNode } from "react";
 
 export const PROXY_PORT = 44123;
 export const PROXY_BASE_URL =

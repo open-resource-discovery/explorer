@@ -1,6 +1,6 @@
 import { Copy } from "lucide-react";
-import type { AnyResource } from "./resourceTypes";
 import { JsonHighlight } from "../../JsonHighlight";
+import type { AnyResource } from "./resourceTypes";
 
 export function RawJsonTab({ resource }: { resource: AnyResource }) {
   const json = JSON.stringify(resource, null, 2);

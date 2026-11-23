@@ -3,14 +3,14 @@ import type {
   OrdDocument,
   OrdV1DocumentDescription,
 } from "@open-resource-discovery/specification";
+import { mergeDocuments } from "./ordMerge.ts";
 import {
+  DEFAULT_PERSPECTIVE,
   getBaseUrl,
   getFetchUrl,
   isOrdConfiguration,
   isOrdDocument,
-  DEFAULT_PERSPECTIVE,
 } from "./ordUtils.ts";
-import { mergeDocuments } from "./ordMerge.ts";
 
 export interface FetchOrdDocumentResult {
   document: OrdDocument;

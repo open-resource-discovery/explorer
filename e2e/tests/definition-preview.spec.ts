@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/explorer";
+import { expect, test } from "../fixtures/explorer";
 
 // ordId from the sample ORD document (sampleOrdDocument.ts). Its primary
 // definition is astronomy-v1.oas3.json, served from public/ as a real static

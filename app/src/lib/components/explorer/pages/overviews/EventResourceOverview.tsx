@@ -3,13 +3,13 @@ import type { EventResource } from "@open-resource-discovery/specification";
 import type { Selection } from "../../useNavState";
 import { asBase } from "../resourceTypes";
 import {
+  bundleRelGroups,
+  formatDate,
+  groupRelGroups,
   OverviewBase,
   packageRelGroup,
-  bundleRelGroups,
   productRelGroups,
-  groupRelGroups,
   resourceRelGroup,
-  formatDate,
 } from "./OverviewBase";
 import { getExposedEntityTypeIds } from "./overviewUtils";
 

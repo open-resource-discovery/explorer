@@ -1,36 +1,36 @@
-import { useState, useCallback, useRef } from "react";
-import type { ReactNode } from "react";
+import { useOrdDocument } from "@lib/context/OrdDocumentContext";
+import { Button, Input } from "@open-resource-discovery/ui-components";
 import {
+  Box,
   ChevronDown,
   ChevronRight,
-  Search,
-  Package,
-  Box,
-  ShoppingBag,
   Layers2,
+  Package,
+  Search,
+  ShoppingBag,
 } from "lucide-react";
-import { useOrdDocument } from "@lib/context/OrdDocumentContext";
-import { RESOURCE_TYPE_CONFIG } from "./resourceTypeConfig";
+import type { ReactNode } from "react";
+import { useCallback, useRef, useState } from "react";
+import type { ResourceTypeGroup } from "./explorerTypes";
 import { FilterService } from "./FilterService";
+import { FilterStrip } from "./FilterStrip";
+import { RESOURCE_TYPE_CONFIG } from "./resourceTypeConfig";
 import type {
+  ReleaseStatusFilter,
   SearchFilters,
   VisibilityFilter,
-  ReleaseStatusFilter,
 } from "./SearchBar";
 import {
-  VISIBILITY_COLORS,
-  VISIBILITY_ICON,
-  VISIBILITY_LABEL,
   RELEASE_STATUS_COLORS,
   RELEASE_STATUS_ICON,
   RELEASE_STATUS_LABEL,
+  VISIBILITY_COLORS,
+  VISIBILITY_ICON,
+  VISIBILITY_LABEL,
 } from "./SearchBar";
-import { FilterStrip } from "./FilterStrip";
 import type { Selection } from "./useNavState";
-import type { ResourceTypeGroup } from "./explorerTypes";
-import { useResourceSearch } from "./useResourceSearch";
 import type { ResourceBase } from "./useResourceSearch";
-import { Button, Input } from "@open-resource-discovery/ui-components";
+import { useResourceSearch } from "./useResourceSearch";
 
 interface SidebarSectionProps {
   type: ResourceTypeGroup;

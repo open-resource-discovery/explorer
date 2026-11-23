@@ -1,15 +1,15 @@
+import { useOrdDocument } from "@lib/context/OrdDocumentContext";
+import { Badge } from "@open-resource-discovery/ui-components";
 import {
   ChevronLeft,
   ExternalLink,
   FileIcon,
   LifeBuoy,
-  Tag,
   Package,
+  Tag,
 } from "lucide-react";
-import { useOrdDocument } from "@lib/context/OrdDocumentContext";
-import { Badge } from "@open-resource-discovery/ui-components";
 import { CopyButton } from "../CopyButton";
-import { ResourceGroupList, getResourcesInPackage } from "../ResourceGroupList";
+import { getResourcesInPackage, ResourceGroupList } from "../ResourceGroupList";
 import type { Selection } from "../useNavState";
 
 export interface PackageDetailPageProps {

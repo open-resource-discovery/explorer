@@ -1,22 +1,22 @@
-import type { AnyResource } from "./resourceTypes";
-import type { ResourceTypeGroup } from "../explorerTypes";
-import type { Selection } from "../useNavState";
 import type {
-  ApiResource,
-  EventResource,
-  EntityType,
-  DataProduct,
-  Capability,
   Agent,
+  ApiResource,
+  Capability,
+  DataProduct,
+  EntityType,
+  EventResource,
   IntegrationDependency,
 } from "@open-resource-discovery/specification";
-import { ApiResourceOverview } from "./overviews/ApiResourceOverview";
-import { EventResourceOverview } from "./overviews/EventResourceOverview";
-import { EntityTypeOverview } from "./overviews/EntityTypeOverview";
-import { DataProductOverview } from "./overviews/DataProductOverview";
-import { CapabilityOverview } from "./overviews/CapabilityOverview";
+import type { ResourceTypeGroup } from "../explorerTypes";
+import type { Selection } from "../useNavState";
 import { AgentOverview } from "./overviews/AgentOverview";
+import { ApiResourceOverview } from "./overviews/ApiResourceOverview";
+import { CapabilityOverview } from "./overviews/CapabilityOverview";
+import { DataProductOverview } from "./overviews/DataProductOverview";
+import { EntityTypeOverview } from "./overviews/EntityTypeOverview";
+import { EventResourceOverview } from "./overviews/EventResourceOverview";
 import { IntegrationDependencyOverview } from "./overviews/IntegrationDependencyOverview";
+import type { AnyResource } from "./resourceTypes";
 
 export function OverviewTab({
   resource,

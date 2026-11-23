@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { Check, Copy } from "lucide-react";
 import type { ReactNode } from "react";
-import { Copy, Check } from "lucide-react";
+import { useState } from "react";
 
 export function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);

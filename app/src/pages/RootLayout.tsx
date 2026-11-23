@@ -1,3 +1,5 @@
+import { useNavExtension } from "@lib/context/NavExtensionContext";
+import { useTheme } from "@lib/hooks/useTheme";
 import {
   Link,
   Outlet,
@@ -5,8 +7,6 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { ChevronRight, Moon, Sun } from "lucide-react";
-import { useTheme } from "@lib/hooks/useTheme";
-import { useNavExtension } from "@lib/context/NavExtensionContext";
 import { ConnectionDropdown } from "./ConnectionDropdown";
 import { PerspectiveDropdown } from "./PerspectiveDropdown";
 

@@ -1,6 +1,6 @@
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
 import { Badge } from "@open-resource-discovery/ui-components";
-import { ExternalLink, Link, ChevronRight } from "lucide-react";
+import { ChevronRight, ExternalLink, Link } from "lucide-react";
 import type { Selection } from "../useNavState";
 
 export interface ConsumptionBundlesPageProps {

@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { useNavState } from "./useNavState";
+import { act, renderHook } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import { FilterService } from "./FilterService";
+import { useNavState } from "./useNavState";
 
 describe("useNavState — initial state", () => {
   it("defaults to dashboard selection", () => {

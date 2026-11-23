@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { OrdDocumentContext, useOrdDocument } from "./OrdDocumentContext";
 import type { OrdDocument } from "@open-resource-discovery/specification";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { OrdDocumentContext, useOrdDocument } from "./OrdDocumentContext";
 
 const minimalDoc: OrdDocument = {
   openResourceDiscovery: "1.14",

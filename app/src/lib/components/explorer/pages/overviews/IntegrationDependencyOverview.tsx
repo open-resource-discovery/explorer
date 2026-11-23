@@ -3,11 +3,11 @@ import type { IntegrationDependency } from "@open-resource-discovery/specificati
 import type { Selection } from "../../useNavState";
 import { asBase } from "../resourceTypes";
 import {
+  formatDate,
+  groupRelGroups,
   OverviewBase,
   packageRelGroup,
-  groupRelGroups,
   resourceRelGroup,
-  formatDate,
 } from "./OverviewBase";
 
 export function IntegrationDependencyOverview({

@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
 import { Badge } from "@open-resource-discovery/ui-components";
 import {
+  ChevronRight,
   ExternalLink,
   FileIcon,
   LifeBuoy,
   Tag,
-  ChevronRight,
 } from "lucide-react";
+import { useState } from "react";
 import type { Selection } from "../useNavState";
 
 function ExpandableText({

@@ -1,7 +1,8 @@
 // Adapted from @open-resource-discovery/crawler
+
+import { existsSync, readFileSync } from "fs";
+import { join, resolve } from "path";
 import type { Agent } from "undici";
-import { readFileSync, existsSync } from "fs";
-import { resolve, join } from "path";
 
 /**
  * mTLS configuration options from CLI or environment variables

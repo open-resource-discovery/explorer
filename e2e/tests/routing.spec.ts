@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/base";
+import { expect, test } from "../fixtures/base";
 
 test.beforeEach(async ({ page, baseURL }) => {
   await page.addInitScript((origin: string) => {

@@ -4,12 +4,12 @@ import {
   createRouter,
   redirect,
 } from "@tanstack/react-router";
-import { RootLayout } from "./pages/RootLayout";
-import { ConnectionsPage } from "./pages/ConnectionsPage";
-import { ConnectionDetailPage } from "./pages/ConnectionDetailPage";
-import { AddConnectionPage } from "./pages/AddConnectionPage";
-import { ExplorerPage } from "./pages/ExplorerPage";
 import { seedLocalConnectionIfEmpty } from "./lib/connection/seed";
+import { AddConnectionPage } from "./pages/AddConnectionPage";
+import { ConnectionDetailPage } from "./pages/ConnectionDetailPage";
+import { ConnectionsPage } from "./pages/ConnectionsPage";
+import { ExplorerPage } from "./pages/ExplorerPage";
+import { RootLayout } from "./pages/RootLayout";
 
 const rootRoute = createRootRoute({ component: RootLayout });
 

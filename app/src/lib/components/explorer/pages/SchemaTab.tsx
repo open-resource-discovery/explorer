@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useTheme } from "@lib/hooks/useTheme";
 import { SimpleDialog } from "@open-resource-discovery/ui-components";
 import { Eye, FileCode, Link2, Lock } from "lucide-react";
+import { useState } from "react";
 import type { ResourceTypeGroup } from "../ORDExplorer";
-import type { AnyResource } from "./resourceTypes";
-import { SectionHeader } from "./shared";
-import { CopyButton } from "./shared";
+import { LazyDefinitionLoader, RawDefinitionLoader } from "./DefinitionLoader";
 import {
   getResourceDefinitions,
   type ResourceDefinition,
 } from "./definitionUtils";
-import { LazyDefinitionLoader, RawDefinitionLoader } from "./DefinitionLoader";
-import { useTheme } from "@lib/hooks/useTheme";
+import type { AnyResource } from "./resourceTypes";
+import { CopyButton, SectionHeader } from "./shared";
 
 export function SchemaTab({
   resource,

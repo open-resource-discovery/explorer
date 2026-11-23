@@ -1,18 +1,18 @@
-import type { ReactNode } from "react";
+import { ThemeRoot } from "@lib/components/ThemeRoot";
+import type { AuthType, Perspective } from "@lib/connection/types";
+import type { PerspectivesState } from "@lib/hooks/usePerspectives";
 import {
-  PlugZap,
-  Globe,
-  RefreshCw,
-  Pencil,
   AlertTriangle,
   CheckCircle,
+  Globe,
   Layers,
-  XCircle,
   Loader2,
+  Pencil,
+  PlugZap,
+  RefreshCw,
+  XCircle,
 } from "lucide-react";
-import type { Perspective, AuthType } from "@lib/connection/types";
-import type { PerspectivesState } from "@lib/hooks/usePerspectives";
-import { ThemeRoot } from "@lib/components/ThemeRoot";
+import type { ReactNode } from "react";
 
 export interface ConnectionDetailPageProps {
   ordConfigUrl: string;

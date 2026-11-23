@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import { getConnection } from "@lib/connection/store";
+import { useClickOutside } from "@lib/hooks/useClickOutside";
+import { usePerspectives } from "@lib/hooks/usePerspectives";
+import { Button } from "@open-resource-discovery/ui-components";
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronDown, Layers } from "lucide-react";
-import { getConnection } from "@lib/connection/store";
-import { usePerspectives } from "@lib/hooks/usePerspectives";
-import { useClickOutside } from "@lib/hooks/useClickOutside";
-import { Button } from "@open-resource-discovery/ui-components";
+import { useRef, useState } from "react";
 
 interface Props {
   connectionId: string;

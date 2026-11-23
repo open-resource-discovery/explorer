@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
 import type { Connection, Perspective } from "@lib/connection/types";
-import type { OrdConfiguration } from "@open-resource-discovery/specification";
 import {
-  fetchOrdConfiguration,
   extractPerspectives,
-  getFetchUrl,
+  fetchOrdConfiguration,
   getBaseUrl,
+  getFetchUrl,
 } from "@lib/fetcher";
+import type { AuthErrorKind } from "@lib/proxy";
 import {
-  fetchViaProxy,
-  useProxy,
   AuthFailedError,
   classifyAuthError,
+  fetchViaProxy,
+  useProxy,
 } from "@lib/proxy";
-import type { AuthErrorKind } from "@lib/proxy";
+import type { OrdConfiguration } from "@open-resource-discovery/specification";
+import { useCallback, useEffect, useState } from "react";
 
 export type PerspectivesState =
   | { status: "loading" }

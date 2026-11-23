@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
-import { fetchTextViaProxy, useProxy } from "@lib/proxy";
 import { useConnectionId } from "@lib/context/ConnectionIdContext";
 import { useDefinitionContent } from "@lib/context/DefinitionContentContext";
-import { MetadataRenderer } from "@open-resource-discovery/metadata-renderer";
 import { useTheme } from "@lib/hooks/useTheme";
+import { fetchTextViaProxy, useProxy } from "@lib/proxy";
+import { MetadataRenderer } from "@open-resource-discovery/metadata-renderer";
+import { useEffect, useRef, useState } from "react";
 import { JsonHighlight } from "../../JsonHighlight";
 import { XmlHighlight } from "../../XmlHighlight";
 import type { ResourceDefinition } from "./definitionUtils";

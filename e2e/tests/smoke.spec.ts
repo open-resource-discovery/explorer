@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/explorer";
+import { expect, test } from "../fixtures/explorer";
 
 test("dashboard is visible on load", async ({ explorer }) => {
   await explorer.goto();

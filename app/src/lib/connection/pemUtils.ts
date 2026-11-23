@@ -1,5 +1,8 @@
 export type PemFileType =
-  "certificate" | "ca-bundle" | "private-key" | "unknown";
+  | "certificate"
+  | "ca-bundle"
+  | "private-key"
+  | "unknown";
 
 export function classifyPemFile(content: string): PemFileType {
   if (

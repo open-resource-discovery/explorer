@@ -1,13 +1,13 @@
-import type { ReactNode } from "react";
 import {
-  Building2,
-  Lock,
-  CheckCircle2,
-  FlaskConical,
-  Code2,
   AlertTriangle,
+  Building2,
+  CheckCircle2,
+  Code2,
+  FlaskConical,
+  Lock,
   Sunset as SunsetIcon,
 } from "lucide-react";
+import type { ReactNode } from "react";
 
 export const VISIBILITY_PILL: Record<
   string,

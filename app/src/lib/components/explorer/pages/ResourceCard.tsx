@@ -1,19 +1,3 @@
-import type { ReactNode } from "react";
-import { useState } from "react";
-import { Badge, Button } from "@open-resource-discovery/ui-components";
-import {
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  ArrowLeftRight,
-  BanIcon,
-  FileCode2,
-  CalendarClock,
-  ArrowRight,
-  ChevronDown,
-  ExternalLink,
-  Globe,
-} from "lucide-react";
-import type { ResourceTypeGroup } from "../ORDExplorer";
 import type {
   Agent,
   ApiResource,
@@ -23,6 +7,22 @@ import type {
   EventResource,
   IntegrationDependency,
 } from "@open-resource-discovery/specification";
+import { Badge, Button } from "@open-resource-discovery/ui-components";
+import {
+  ArrowDownToLine,
+  ArrowLeftRight,
+  ArrowRight,
+  ArrowUpFromLine,
+  BanIcon,
+  CalendarClock,
+  ChevronDown,
+  ExternalLink,
+  FileCode2,
+  Globe,
+} from "lucide-react";
+import type { ReactNode } from "react";
+import { useState } from "react";
+import type { ResourceTypeGroup } from "../ORDExplorer";
 
 const PROTOCOL_LABEL: Record<string, string> = {
   rest: "REST",

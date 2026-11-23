@@ -1,11 +1,11 @@
 import type { ChangelogEntry } from "@open-resource-discovery/specification";
-import { ExternalLink } from "lucide-react";
 import { Badge } from "@open-resource-discovery/ui-components";
+import { ExternalLink } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
-import type { AnyResource, WithChangelog } from "./resourceTypes";
 import { RELEASE_STATUS_PILL } from "./pillConfig";
+import type { AnyResource, WithChangelog } from "./resourceTypes";
 import { formatDate, MD_CLASSES } from "./shared";
 
 export function ChangelogTab({ resource }: { resource: AnyResource }) {

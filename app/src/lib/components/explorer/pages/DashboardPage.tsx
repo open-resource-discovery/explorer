@@ -1,19 +1,19 @@
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
-import { Box, Package, ShoppingBag, Users, Building2 } from "lucide-react";
+import { normalizeTestId } from "@lib/utils/normalize-test-id";
+import { Button } from "@open-resource-discovery/ui-components";
+import { Box, Building2, Package, ShoppingBag, Users } from "lucide-react";
+import type { ReactNode } from "react";
 import type { ResourceTypeGroup } from "../ORDExplorer";
-import { ResourceListPage } from "./ResourceListPage";
-import { PackagesPage } from "./PackagesPage";
-import { ConsumptionBundlesPage } from "./ConsumptionBundlesPage";
-import { ProductsPage } from "./ProductsPage";
-import { GroupsPage } from "./GroupsPage";
+import { RESOURCE_TYPE_CONFIG } from "../resourceTypeConfig";
 import type { SearchFilters } from "../SearchBar";
 import type { Selection } from "../useNavState";
-import type { ReactNode } from "react";
-import { normalizeTestId } from "@lib/utils/normalize-test-id";
-import { useResourceSearch } from "../useResourceSearch";
 import type { ResourceBase } from "../useResourceSearch";
-import { RESOURCE_TYPE_CONFIG } from "../resourceTypeConfig";
-import { Button } from "@open-resource-discovery/ui-components";
+import { useResourceSearch } from "../useResourceSearch";
+import { ConsumptionBundlesPage } from "./ConsumptionBundlesPage";
+import { GroupsPage } from "./GroupsPage";
+import { PackagesPage } from "./PackagesPage";
+import { ProductsPage } from "./ProductsPage";
+import { ResourceListPage } from "./ResourceListPage";
 
 interface DashboardCardProps {
   icon: ReactNode;

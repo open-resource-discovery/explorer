@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { seedLocalConnectionIfEmpty, makeSampleConnection } from "./seed";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { makeSampleConnection, seedLocalConnectionIfEmpty } from "./seed";
 import { loadConnections, saveConnections } from "./store";
 import type { Connection } from "./types";
 

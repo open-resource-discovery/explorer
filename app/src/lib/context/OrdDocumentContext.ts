@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
 import type { OrdDocument } from "@open-resource-discovery/specification";
+import { createContext, useContext } from "react";
 
 export const OrdDocumentContext = createContext<OrdDocument | null>(null);
 

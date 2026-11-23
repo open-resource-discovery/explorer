@@ -1,9 +1,9 @@
+import { NavExtensionContext } from "@lib/context/NavExtensionContext";
+import { ThemeProvider } from "@lib/hooks/useTheme";
+import { ProxyProvider } from "@lib/proxy";
 import { RouterProvider } from "@tanstack/react-router";
 import { useCallback, useRef, useState } from "react";
 import { router } from "./router";
-import { ProxyProvider } from "@lib/proxy";
-import { ThemeProvider } from "@lib/hooks/useTheme";
-import { NavExtensionContext } from "@lib/context/NavExtensionContext";
 import "./lib/styles.css";
 
 function App() {

@@ -214,9 +214,7 @@
   }
 
   .ord-root :where(code, kbd, samp, pre) {
-    font-family:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-      "Courier New", monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: inherit;
   }
 
@@ -248,19 +246,11 @@
   /* These drive every size/offset calculation inside the Scalar layout tree.  */
 
   .ord-root .scalar-api-reference {
-    --refs-header-height: calc(
-      var(--scalar-custom-header-height, 0px) + var(--scalar-header-height, 0px)
-    );
-    --refs-viewport-offset: calc(
-      var(--refs-header-height, 0px) + var(--refs-content-offset, 0px)
-    );
-    --refs-viewport-height: calc(
-      var(--full-height, 100dvh) - var(--refs-viewport-offset, 0px)
-    );
+    --refs-header-height: calc(var(--scalar-custom-header-height, 0px) + var(--scalar-header-height, 0px));
+    --refs-viewport-offset: calc(var(--refs-header-height, 0px) + var(--refs-content-offset, 0px));
+    --refs-viewport-height: calc(var(--full-height, 100dvh) - var(--refs-viewport-offset, 0px));
     --refs-sidebar-width: var(--scalar-sidebar-width, 288px);
-    --refs-sidebar-height: calc(
-      var(--full-height, 100dvh) - var(--refs-header-height, 0px)
-    );
+    --refs-sidebar-height: calc(var(--full-height, 100dvh) - var(--refs-header-height, 0px));
     --refs-content-max-width: var(--scalar-content-max-width, 1540px);
   }
 
@@ -302,9 +292,7 @@
 
   @media (width < 1000px) {
     .ord-root .references-layout {
-      --refs-sidebar-height: calc(
-        var(--full-height, 100dvh) - var(--scalar-custom-header-height, 0px)
-      );
+      --refs-sidebar-height: calc(var(--full-height, 100dvh) - var(--scalar-custom-header-height, 0px));
       grid-template-columns: 100%;
       grid-template-rows: var(--scalar-header-height, 0px) 0px auto auto;
       grid-template-areas:
@@ -645,13 +633,7 @@
   }
   .ord-root {
     @apply bg-background text-foreground;
-    font-family:
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      Roboto,
-      sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   .ord-root :where(button, a, [role="button"]) {

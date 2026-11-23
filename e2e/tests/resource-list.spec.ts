@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/explorer";
+import { expect, test } from "../fixtures/explorer";
 
 // ordIds from the sample ORD document (sampleOrdDocument.ts)
 const REST_API = "sap.xref:apiResource:astronomy:v1";

@@ -1,5 +1,5 @@
-import { test, expect } from "../fixtures/explorer";
 import type { Locator } from "@playwright/test";
+import { expect, test } from "../fixtures/explorer";
 
 // Regression guard for the ui-components 0.1.6 -> 0.2.0 layout break.
 //

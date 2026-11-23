@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { FilterService } from "./FilterService";
 import type { SearchFilters } from "./SearchBar";
-import { ALL_VISIBILITY, ALL_RELEASE_STATUS } from "./SearchBar";
+import { ALL_RELEASE_STATUS, ALL_VISIBILITY } from "./SearchBar";
 
 function empty(): SearchFilters {
   return FilterService.empty();

@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { AlertTriangle, KeyRound, RefreshCw, ShieldAlert } from "lucide-react";
-import { SimpleDialog } from "@open-resource-discovery/ui-components";
 import { classifyPemFile } from "@lib/connection/pemUtils";
-import { PROXY_BASE_URL } from "@lib/proxy";
-import { saveConnection, getConnection } from "@lib/connection/store";
+import { getConnection, saveConnection } from "@lib/connection/store";
 import type { AuthErrorKind } from "@lib/hooks";
+import { PROXY_BASE_URL } from "@lib/proxy";
+import { SimpleDialog } from "@open-resource-discovery/ui-components";
+import { AlertTriangle, KeyRound, RefreshCw, ShieldAlert } from "lucide-react";
+import { useState } from "react";
 
 // ---------------------------------------------------------------------------
 // Shared primitives

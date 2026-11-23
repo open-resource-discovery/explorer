@@ -1,8 +1,8 @@
-import { ChevronLeft, ExternalLink, Link, Box } from "lucide-react";
 import { useOrdDocument } from "@lib/context/OrdDocumentContext";
 import { Badge } from "@open-resource-discovery/ui-components";
+import { Box, ChevronLeft, ExternalLink, Link } from "lucide-react";
 import { CopyButton } from "../CopyButton";
-import { ResourceGroupList, getResourcesInBundle } from "../ResourceGroupList";
+import { getResourcesInBundle, ResourceGroupList } from "../ResourceGroupList";
 import type { Selection } from "../useNavState";
 
 export interface ConsumptionBundleDetailPageProps {

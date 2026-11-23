@@ -12,12 +12,7 @@
       // derive the base by taking the first two segments of the current path.
       var parts = window.location.pathname.split("/").filter(Boolean);
       var base = "/" + parts.slice(0, 2).join("/") + "/";
-      sessionStorage.setItem(
-        "spa-redirect",
-        window.location.pathname +
-          window.location.search +
-          window.location.hash,
-      );
+      sessionStorage.setItem("spa-redirect", window.location.pathname + window.location.search + window.location.hash);
       window.location.replace(base);
     </script>
   </head>

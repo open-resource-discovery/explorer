@@ -1,11 +1,11 @@
 import type {
   ApiResource,
-  EventResource,
-  EntityType,
   Capability,
+  EntityType,
+  EventResource,
 } from "@open-resource-discovery/specification";
-import type { AnyResource } from "./resourceTypes";
 import type { ResourceTypeGroup } from "../ORDExplorer";
+import type { AnyResource } from "./resourceTypes";
 
 export type ResourceDefinition = {
   type: string;

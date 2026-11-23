@@ -1,16 +1,16 @@
-import { useState, useRef, useEffect } from "react";
+import { Button } from "@open-resource-discovery/ui-components";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
-  PlugZap,
   Globe,
-  Plus,
   MoreHorizontal,
   Pencil,
+  PlugZap,
+  Plus,
   Trash2,
 } from "lucide-react";
-import { getConnections, deleteConnection } from "../lib/connection/store";
+import { useEffect, useRef, useState } from "react";
+import { deleteConnection, getConnections } from "../lib/connection/store";
 import type { Connection } from "../lib/connection/types";
-import { Button } from "@open-resource-discovery/ui-components";
 
 function ConnectionCard({
   conn,

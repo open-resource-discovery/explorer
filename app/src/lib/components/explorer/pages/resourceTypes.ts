@@ -1,12 +1,12 @@
 import type {
-  ApiResource,
-  EventResource,
-  EntityType,
-  DataProduct,
-  Capability,
   Agent,
-  IntegrationDependency,
+  ApiResource,
+  Capability,
   ChangelogEntry,
+  DataProduct,
+  EntityType,
+  EventResource,
+  IntegrationDependency,
 } from "@open-resource-discovery/specification";
 
 export type AnyResource =
