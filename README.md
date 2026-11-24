@@ -42,6 +42,18 @@ npm install
 | `npm test`         | Run unit tests                      |
 | `npm run test:e2e` | Run Playwright end-to-end tests     |
 
+## Embedding the packed components
+
+Build an installable tarball with `npm pack`. Its public entry points are
+`@open-resource-discovery/explorer/components` for React components and types, and
+`@open-resource-discovery/explorer/components/styles` for the stylesheet.
+
+Browser consumers that embed these components need a CommonJS `require` shim for
+`buffer`, `events`, `stream`, and `util`. Install it before loading the component
+entry point. A Vite consumer can use a bootstrap module that installs the shim and
+then dynamically imports the app. See the [provider-server shim](https://github.com/open-resource-discovery/provider-server/blob/5576e01c960a94b83b95c11feea3724404381d15/ui/src/buffer-shim.ts)
+for an example.
+
 ## mTLS proxy
 
 mTLS connections require the local auth proxy (browser `fetch` cannot attach client certificates). Run it alongside the dev server:

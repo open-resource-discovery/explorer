@@ -18,7 +18,7 @@ import {
   type ReactNode,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import type { StatusResponse, UpdateStatus } from "@lib/status";
+import type { StatusResponse, UpdateStatus } from "../status";
 import { ThemeRoot } from "@lib/components/ThemeRoot";
 import { useTheme } from "@lib/hooks/useTheme";
 

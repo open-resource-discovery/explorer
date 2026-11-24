@@ -15,7 +15,10 @@
       "types": "./dist/lib/index.d.ts",
       "import": "./dist/lib/index.mjs"
     },
-    "./components/styles": "./dist/lib/index.css"
+    "./components/styles": {
+      "types": "./dist/lib/styles.d.ts",
+      "default": "./dist/lib/index.css"
+    }
   },
   "homepage": "https://github.com/open-resource-discovery/explorer",
   "repository": {
