@@ -30,7 +30,7 @@ jobs:
       - name: Install pinned npm for dependency policy
         run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - run: npm run prettier:ci
 
@@ -58,7 +58,7 @@ jobs:
       - name: Install pinned npm for dependency policy
         run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - run: npm test
 
@@ -78,7 +78,7 @@ jobs:
       - name: Install pinned npm for dependency policy
         run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - run: npm run build
 
@@ -98,7 +98,7 @@ jobs:
       - name: Install pinned npm for dependency policy
         run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - name: Build with /explorer/ base and verify asset paths
         run: |
@@ -145,7 +145,7 @@ jobs:
       - name: Install pinned npm for dependency policy
         run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - run: npm run test:e2e
         env:

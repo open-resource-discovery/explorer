@@ -65,7 +65,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
-    "prepare": "husky"
+    "prepare": "husky",
+    "setup:hooks": "husky"
   },
   "dependencies": {
     "@leeoniya/ufuzzy": "1.0.19",
