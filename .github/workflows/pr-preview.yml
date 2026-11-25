@@ -37,9 +37,8 @@ jobs:
           npm run build
 
       - name: PR preview
-        uses: open-resource-discovery/pr-preview-action@9772862b578870a2db7953e35e3b5952f09e3f3f # shared action SHA tested in Explorer #89
+        uses: open-resource-discovery/pr-preview-action@245fafc76cbc9b14ca2b6a2b61b9ca64b1d89c98 # merged same-repository preview action
         with:
-          fork: false
           target-repo: open-resource-discovery/pr-preview
           pages-base-url: https://open-resource-discovery.github.io/pr-preview
           umbrella-dir: explorer
