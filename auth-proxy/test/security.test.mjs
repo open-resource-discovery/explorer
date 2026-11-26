@@ -59,6 +59,14 @@ test("allowed local JSON request can register credentials", async () => {
   );
 });
 
+test("both Compose loopback origins can register credentials", async () => {
+  for (const origin of ["http://localhost:8080", "http://127.0.0.1:8080"]) {
+    const response = await register(origin);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("Access-Control-Allow-Origin"), origin);
+  }
+});
+
 test("local tooling can register without an Origin header", async () => {
   assert.equal((await register(undefined)).status, 200);
 });
@@ -100,6 +108,7 @@ test("JSON requests may declare a charset", async () => {
 test("preflight accepts local origins and rejects untrusted origins", async () => {
   for (const [origin, status] of [
     ["http://localhost:8080", 204],
+    ["http://127.0.0.1:8080", 204],
     ["https://untrusted.invalid", 403],
   ]) {
     const response = await fetch(`${baseUrl}/fetch`, {

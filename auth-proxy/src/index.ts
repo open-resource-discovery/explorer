@@ -83,6 +83,7 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:5175",
   "http://localhost:4173",
   "http://localhost:8080",
+  "http://127.0.0.1:8080",
   ...getAllArgValues("--allow-origin"),
   ...(process.env.ALLOW_ORIGIN?.split(",")
     .map((o) => o.trim())
