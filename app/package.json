@@ -2,5 +2,14 @@
   "dependencies": {
     "rehype-raw": "7.0.0",
     "rehype-sanitize": "6.0.0"
-  }
+  },
+  "packageManager": "npm@11.20.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.20.0",
+      "onFail": "error"
+    }
+  },
+  "allowScripts": {}
 }

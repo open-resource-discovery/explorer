@@ -1,9 +1,9 @@
 # Stage 1: build the SPA
 FROM node:26.13.1-alpine@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS builder
 WORKDIR /app
-COPY package*.json ./
+COPY package*.json .npmrc ./
 COPY app/package*.json ./app/
-RUN npm ci
+RUN npm install --global --ignore-scripts npm@11.20.0 && npm ci --ignore-scripts
 COPY . .
 RUN npm run build
 

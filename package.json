@@ -68,7 +68,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
-    "prepare": "husky"
+    "prepare": "husky",
+    "setup:hooks": "husky"
   },
   "dependencies": {
     "@leeoniya/ufuzzy": "1.0.19",
@@ -131,5 +132,18 @@
     "vite": "8.3.8",
     "vitest": "5.1.1",
     "zod": "4.6.7"
+  },
+  "packageManager": "npm@11.20.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.20.0",
+      "onFail": "error"
+    }
+  },
+  "allowScripts": {
+    "@scarf/scarf@1.4.0": false,
+    "fsevents@2.3.3": false,
+    "vue-demi@0.14.10": false
   }
 }
