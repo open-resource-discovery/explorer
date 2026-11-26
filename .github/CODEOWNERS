@@ -12,4 +12,3 @@
 /app/package-lock.json @open-resource-discovery/explorer-admin
 /auth-proxy/package.json @open-resource-discovery/explorer-admin
 /auth-proxy/package-lock.json @open-resource-discovery/explorer-admin
-/SECURITY_INSTALL.md @open-resource-discovery/explorer-admin
