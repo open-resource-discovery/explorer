@@ -1,5 +1,6 @@
 # Dependencies that should never be in the Docker image
 node_modules
+auth-proxy/node_modules
 npm-debug.log*
 
 # Dev artifacts

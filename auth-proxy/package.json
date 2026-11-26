@@ -4,22 +4,36 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/proxy.mjs --external:node:*",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/proxy.mjs --external:node:* --banner:js=\"import{createRequire as __createRequire}from'node:module';const require=__createRequire(import.meta.url);\"",
     "start": "node dist/proxy.mjs",
     "dev:server": "node --experimental-strip-types dev/mtls-server.ts",
-    "dev:gen-certs": "node --experimental-strip-types dev/gen-certs.ts"
+    "dev:gen-certs": "node --experimental-strip-types dev/gen-certs.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
-    "hono": "4.13.16",
-    "undici": "8.12.2"
+    "hono": "4.13.20",
+    "undici": "8.13.1"
   },
   "devDependencies": {
-    "@types/node": "25.9.9",
+    "@types/node": "26.6.6",
     "esbuild": "0.28.2",
     "selfsigned": "5.5.0",
     "typescript": "6.0.3"
   },
   "engines": {
-    "node": ">=22.19.0"
+    "node": ">=26.13.1",
+    "npm": ">=11.11.1"
+  },
+  "packageManager": "npm@11.20.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.20.0",
+      "onFail": "error"
+    }
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": false
   }
 }

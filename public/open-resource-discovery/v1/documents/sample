@@ -1,5 +1,5 @@
 {
-  "openResourceDiscovery": "1.14",
+  "openResourceDiscovery": "1.17",
   "description": "Example based on https://example.com/",
   "policyLevels": [
     "sap:core:v1"

@@ -2,10 +2,10 @@
 
 [![CI](https://github.com/open-resource-discovery/explorer/actions/workflows/main.yml/badge.svg)](https://github.com/open-resource-discovery/explorer/actions/workflows/main.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](./LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D22.19.0-brightgreen.svg)](https://nodejs.org)
+[![Node](https://img.shields.io/badge/node-%3E%3D24.15.0-brightgreen.svg)](https://nodejs.org)
 [![Live Demo](https://img.shields.io/badge/demo-live-informational)](https://open-resource-discovery.github.io/explorer/)
 
-A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.github.io/specification/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
+A standalone web app for exploring [ORD (Open Resource Discovery)](https://open-resource-discovery.org/) documents — connect to any ORD-compliant system endpoint or document URL, browse its resources, and inspect definitions.
 
 ## Live Demo
 
@@ -23,6 +23,10 @@ Authentication options: none, static bearer token, or mTLS (via local proxy — 
 
 ## Setup
 
+The Explorer package supports Node.js **24.15.0** or newer and npm **11.11.1** or newer.
+Development and the auth proxy use Node.js **26.13.1 LTS**, pinned in `.nvmrc`. With nvm installed,
+run `nvm install` and `nvm use` before installing dependencies.
+
 ```sh
 npm install
 ```
@@ -38,6 +42,18 @@ npm install
 | `npm test`         | Run unit tests                      |
 | `npm run test:e2e` | Run Playwright end-to-end tests     |
 
+## Embedding the packed components
+
+Build an installable tarball with `npm pack`. Its public entry points are
+`@open-resource-discovery/explorer/components` for React components and types, and
+`@open-resource-discovery/explorer/components/styles` for the stylesheet.
+
+Browser consumers that embed these components need a CommonJS `require` shim for
+`buffer`, `events`, `stream`, and `util`. Install it before loading the component
+entry point. A Vite consumer can use a bootstrap module that installs the shim and
+then dynamically imports the app. See the [provider-server shim](https://github.com/open-resource-discovery/provider-server/blob/5576e01c960a94b83b95c11feea3724404381d15/ui/src/buffer-shim.ts)
+for an example.
+
 ## mTLS proxy
 
 mTLS connections require the local auth proxy (browser `fetch` cannot attach client certificates). Run it alongside the dev server:
@@ -46,12 +62,18 @@ mTLS connections require the local auth proxy (browser `fetch` cannot attach cli
 npm run proxy          # from the repo root — starts the compiled proxy
 ```
 
-Or run it directly from source during development:
+Or build and start the proxy package directly:
 
 ```sh
 cd auth-proxy
-npm run dev:server     # start the proxy from source
+npm ci
+npm run build
+npm start
 ```
+
+The container setup is available with `docker compose up --build`. Open
+`http://localhost:8080`; the app and its proxy API are published only on the
+host's loopback interface.
 
 ### Local mTLS test server
 

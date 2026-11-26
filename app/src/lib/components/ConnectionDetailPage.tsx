@@ -10,8 +10,8 @@ import {
   XCircle,
   Loader2,
 } from "lucide-react";
-import type { Perspective, AuthType } from "@lib/connection/types";
-import type { PerspectivesState } from "@lib/hooks/usePerspectives";
+import type { Perspective, AuthType } from "../connection/types";
+import type { PerspectivesState } from "../hooks/usePerspectives";
 import { ThemeRoot } from "@lib/components/ThemeRoot";
 
 export interface ConnectionDetailPageProps {

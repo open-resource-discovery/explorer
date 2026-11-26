@@ -3,12 +3,13 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
 import { localOrdPlugin } from "./vite-plugins/localOrdPlugin";
+import { layerOrdStylesPlugin } from "./vite-plugins/layerOrdStylesPlugin";
 
 export default defineConfig({
   root: resolve(__dirname, "."),
   base: process.env.VITE_BASE ?? "/",
   publicDir: resolve(__dirname, "../public"),
-  plugins: [react(), tailwindcss(), localOrdPlugin()],
+  plugins: [layerOrdStylesPlugin(), react(), tailwindcss(), localOrdPlugin()],
   server: {
     fs: {
       // Allow serving files from outside the app root (needed when

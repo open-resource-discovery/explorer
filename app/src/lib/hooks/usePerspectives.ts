@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { Connection, Perspective } from "@lib/connection/types";
+import type { Connection, Perspective } from "../connection/types";
 import type { OrdConfiguration } from "@open-resource-discovery/specification";
 import {
   fetchOrdConfiguration,
@@ -13,7 +13,7 @@ import {
   AuthFailedError,
   classifyAuthError,
 } from "@lib/proxy";
-import type { AuthErrorKind } from "@lib/proxy";
+import type { AuthErrorKind } from "../proxy/errors";
 
 export type PerspectivesState =
   | { status: "loading" }

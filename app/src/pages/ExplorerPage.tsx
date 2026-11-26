@@ -56,6 +56,7 @@ export function ExplorerPage() {
       connectionId={connectionId ?? ""}
       prefetchDefinitions={prefetchDefinitions}
       enableUrlSync
+      showThemeToggle={false}
     />
   );
 }
