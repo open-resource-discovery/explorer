@@ -12,3 +12,6 @@
 /app/package-lock.json @open-resource-discovery/explorer-admin
 /auth-proxy/package.json @open-resource-discovery/explorer-admin
 /auth-proxy/package-lock.json @open-resource-discovery/explorer-admin
+
+# Review the installer policy with the corresponding package owners.
+/.npmrc @open-resource-discovery/explorer-admin
