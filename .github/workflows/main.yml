@@ -11,21 +11,26 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+permissions:
+  contents: read
 jobs:
   lint:
     name: Static linting
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.1"
-          cache: "npm"
+          package-manager-cache: false
+          node-version: "26"
 
-      - run: npm ci
+      - name: Install pinned npm for dependency policy
+        run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
+
+      - run: npm ci --ignore-scripts
 
       - run: npm run prettier:ci
 
@@ -36,51 +41,64 @@ jobs:
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["24", "26"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.1"
-          cache: "npm"
+          package-manager-cache: false
+          node-version: ${{ matrix.node-version }}
 
-      - run: npm ci
+      - name: Install pinned npm for dependency policy
+        run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
+
+      - run: npm ci --ignore-scripts
 
       - run: npm test
 
   build:
     name: Build
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.1"
-          cache: "npm"
+          package-manager-cache: false
+          node-version: "26"
 
-      - run: npm ci
+      - name: Install pinned npm for dependency policy
+        run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
+
+      - run: npm ci --ignore-scripts
 
       - run: npm run build
 
   build-preview-validate:
     name: Validate asset paths under VITE_BASE prefixes
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.1"
-          cache: "npm"
+          package-manager-cache: false
+          node-version: "26"
 
-      - run: npm ci
+      - name: Install pinned npm for dependency policy
+        run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
+
+      - run: npm ci --ignore-scripts
 
       - name: Build with /explorer/ base and verify asset paths
         run: |
@@ -111,20 +129,23 @@ jobs:
   e2e:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     container:
       image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:7852dc5a7d72f5fe458a597d690f6c42fbc8e9e26ddfa95f8e6ef552558d9bbf
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24.22.1"
-          cache: "npm"
+          package-manager-cache: false
+          node-version: "26"
 
-      - run: npm ci
+      - name: Install pinned npm for dependency policy
+        run: npm install --global --ignore-scripts npm@11.20.0 --registry=https://registry.npmjs.org/
+
+      - run: npm ci --ignore-scripts
 
       - run: npm run test:e2e
         env:

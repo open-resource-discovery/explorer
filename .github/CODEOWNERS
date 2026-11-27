@@ -1,0 +1,17 @@
+# Review owners for CI and build configuration.
+/.github/ @open-resource-discovery/explorer-admin
+/renovate.json @open-resource-discovery/explorer-admin
+/package.json @open-resource-discovery/explorer-admin
+/package-lock.json @open-resource-discovery/explorer-admin
+/Dockerfile* @open-resource-discovery/explorer-admin
+/auth-proxy/ @open-resource-discovery/explorer-admin
+/app/.npmrc @open-resource-discovery/explorer-admin
+/auth-proxy/.npmrc @open-resource-discovery/explorer-admin
+/npmrc @open-resource-discovery/explorer-admin
+/app/package.json @open-resource-discovery/explorer-admin
+/app/package-lock.json @open-resource-discovery/explorer-admin
+/auth-proxy/package.json @open-resource-discovery/explorer-admin
+/auth-proxy/package-lock.json @open-resource-discovery/explorer-admin
+
+# Review the installer policy with the corresponding package owners.
+/.npmrc @open-resource-discovery/explorer-admin

@@ -20,6 +20,17 @@
     "typescript": "6.0.3"
   },
   "engines": {
-    "node": ">=22.19.0"
+    "node": ">=26"
+  },
+  "packageManager": "npm@11.20.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.20.0",
+      "onFail": "error"
+    }
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": false
   }
 }

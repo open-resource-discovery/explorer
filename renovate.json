@@ -1,8 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":pinAllExceptPeerDependencies"],
+  "extends": [
+    "config:recommended",
+    ":pinAllExceptPeerDependencies",
+    "helpers:pinGitHubActionDigests",
+    "docker:pinDigests"
+  ],
   "semanticCommits": "enabled",
-  "enabledManagers": ["npm", "github-actions"],
+  "enabledManagers": ["npm", "github-actions", "dockerfile"],
   "branchPrefix": "deps/",
   "timezone": "Europe/Berlin",
   "schedule": ["every weekend"],
@@ -14,11 +19,11 @@
   "packageRules": [
     {
       "description": "Security patches: bypass weekly schedule, automerge immediately",
-      "matchUpdateTypes": ["security"],
       "schedule": ["at any time"],
       "automerge": true,
       "semanticCommitType": "fix",
-      "groupName": "Security patches"
+      "groupName": "Security patches",
+      "matchJsonata": ["isVulnerabilityAlert = true"]
     },
     {
       "description": "Major updates: never automerge, require manual review",
